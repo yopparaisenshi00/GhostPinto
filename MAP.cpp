@@ -14,6 +14,7 @@
 #include "BGFG.h"
 #include "MAP.h"
 
+// Commit test
 
 enum {
 	normal = 0,//ターゲットデータ参照
