@@ -173,7 +173,7 @@ void	sceneMain::Update()
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN,FALSE); //BGM
 
-		count_down = 5;
+		count_down = 4;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		timer = 80 * 60;
@@ -187,10 +187,10 @@ void	sceneMain::Update()
 	case READY: 
 
 		count_down_timer++;
-		//if (count_down_timer > 60){
+		if (count_down_timer > 60){
 			count_down--;
 			count_down_timer = 0;
-		//}
+		}
 		if(count_down < 0)state = MAIN;
 		pPlayer->R_Update();
 		pFrame->R_Update();
@@ -216,7 +216,7 @@ void	sceneMain::Update()
 		pMAP->update();
 		pNumber->Update(timer);
 
-		
+		pLandScape->Update();
 
 
 
@@ -227,7 +227,7 @@ void	sceneMain::Update()
 				state = GAMEOVER;
 			//}
 		}
-		else if (pScore->getKill_num() >= 50 /*|| timer < 0 || KEY_Get(KEY_ENTER) == 3*/) {
+		else if (pScore->getKill_num() >= 50 || timer < 0 /*|| KEY_Get(KEY_ENTER) == 3*/) {
 			//if ( scene_timer++>60 ) {
 				state = GAMECLEAR;
 			//}
@@ -260,6 +260,7 @@ void	sceneMain::Update()
 //	ƒƒCƒ“•`‰æˆ—
 void	sceneMain::Render()
 {
+
 	//bg->Render();
 	pLandScape->RenderBG();
 	pMAP->Render();
@@ -286,9 +287,16 @@ void	sceneMain::Render()
 	pNumber->Render();
 	pUI->Render();
 
+	switch (state)
+	{
+	case READY:
+		pNumber->RenderFree(480 -32,270-96,count_down,1,64,0xFFFFFFFF);
+		break;
+		default:
+			break;
+	}
 
-
-	//pD_TEXT->Render();
+	pD_TEXT->Render();
 
 
 }

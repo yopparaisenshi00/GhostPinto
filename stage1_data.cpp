@@ -91,4 +91,5 @@ STAGE_DATA stage1_kill[] = {
 LAND_SCAPE_DATA stage1_bg_effct[] = {
 	{ LAND_SCAPE_DATA::BG,0,BG_pc,V2(128 * 2,540),V2(0,0),V2(0,0),V2(0,0),0},
 	{ LAND_SCAPE_DATA::BG,0,BG_container,V2(128 * 4,540),V2(0,0),V2(0,0),V2(0,0),0 },
+
 };

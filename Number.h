@@ -43,7 +43,10 @@ public:
 	void AddScale();	//ƒXƒRƒA‰ÁZ‚ÌŠg‘å•\¦
 	void Render(int x, int y, int digit_max); //w’è•ª•`‰æ
 	void Render2(int x, int y, int num);		//Œ…”•ª‚¾‚¯•`‰æ
-	void  Number::Render3(int x, int y, int digit_max, D3DCOLOR argb);
+	void Render3(int x, int y, int digit_max, D3DCOLOR argb);
+	//”’l•`‰æŠÖ”(w”’l•`‰æ(num) + w’è•ª•`‰æ + color)           (digitmax = •\¦•¶š”)
+	void RenderFree(int x, int y, int num, int digit_max,int _digitDispSize, D3DCOLOR argb);
+
 
 };
 #define pNumber (Number::getInstance())

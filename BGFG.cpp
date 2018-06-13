@@ -221,22 +221,3 @@ void BG_container(LAND_SCAPE_OBJ* obj) {
 
 }
 
-
-//void FGOBJ::Init() {
-//	clear();
-//	data = nullptr;
-//	z = 0;
-//	sz = 0;
-//}
-//
-//void FGOBJ::Update() {
-//	if (move)move(this);
-//	animation();
-//}
-//
-//
-//void FGOBJ::Render() {
-//	if (!data)return;
-//	shader2D->SetValue("FPower", sz);
-//	spr_data::Render(pos, data, &custom, 0xFFFFFFFF, shader2D, "depth");
-//}
