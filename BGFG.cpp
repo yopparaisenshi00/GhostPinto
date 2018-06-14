@@ -138,17 +138,23 @@ void LandScape::Update() {
 	}
 
 }
+static int d_txt_x = 0;
+static int d_txt_y = 0;
 
 void LandScape::RenderBG() {
 	bg.Render();
+	d_txt_y = 0;
+	d_txt_x = 0;
 	for (int i = BG_REDUCED_LV_MAX -1; i >= 0; i--) {
 		BG_RenderBox[i].Render();
 	}
 }
 void LandScape::RenderFG() {
-	for (int i = 0; i < FG_REDUCED_LV_MAX; i++) {
+
+	for (int i = FG_REDUCED_LV_MAX - 1; i >= 0; i--) {
 		FG_RenderBox[i].Render();
 	}
+
 }
 
 
@@ -201,36 +207,35 @@ void LandScape::ReducedObj::Update() {
 		}
 	}
 }
-
 void LandScape::ReducedObj::Render() {
+
 	for (int i = 0; i < count; i++) {
 		data[i]->Render();
+		count = 0;
+
+		//‰¡
+		iexPolygon::Rect((int)(pos.x), (int)(0), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
+		iexPolygon::Rect((int)(pos.x), (int)(0 + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
+		//c
+		iexPolygon::Rect((int)(pos.x), (int)(0), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(0), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
+
+
+		//‰¡
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
+		//c
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(pos.y), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
+
+
+		iexPolygon::Rect((int)(pos.x), (int)(bot), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
+		iexPolygon::Rect((int)(pos.x), (int)(bot + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
+		//SCREEN_WIDTH / Reduced_level
+		////c
+		iexPolygon::Rect((int)(pos.x), (int)(bot), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(bot), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
 	}
-	count = 0;
-
-	//‰¡
-	iexPolygon::Rect((int)(pos.x), (int)(0), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
-	iexPolygon::Rect((int)(pos.x), (int)(0 + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
-	//c
-	iexPolygon::Rect((int)(pos.x), (int)(0), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
-	iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(0), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
-
-
-	//‰¡
-	iexPolygon::Rect((int)(pos.x), (int)(pos.y), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
-	iexPolygon::Rect((int)(pos.x), (int)(pos.y + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
-	//c
-	iexPolygon::Rect((int)(pos.x),(int)(pos.y), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
-	iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(pos.y), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
-
-
-	iexPolygon::Rect((int)(pos.x), (int)(bot), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
-	iexPolygon::Rect((int)(pos.x), (int)(bot + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
-	//SCREEN_WIDTH / Reduced_level
-	////c
-	iexPolygon::Rect((int)(pos.x), (int)(bot), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
-	iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(bot), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
-
 }
 
 

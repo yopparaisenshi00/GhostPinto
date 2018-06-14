@@ -159,6 +159,7 @@ public:
 		}
 		else {
 			z *= -1;
+			z -= 1;
 			FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
 		}
 	}
