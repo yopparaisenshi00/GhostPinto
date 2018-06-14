@@ -1,7 +1,0 @@
-﻿  stage1_data.cpp
-c:\users\2170241\desktop\ghost_pinto\iex2010_base\ghostpinto\stage_data.h(3): warning C4099: 'LAND_SCAPE_DATA': タイプ名は最初 'struct' として使われていましたが 'class' として使われています。
-  c:\users\2170241\desktop\ghost_pinto\iex2010_base\ghostpinto\bgfg.h(9): note: 'LAND_SCAPE_DATA' の宣言を確認してください
-c:\users\2170241\desktop\ghost_pinto\iex2010_base\ghostpinto\stage_data.h(4): warning C4099: 'STAGE_DATA': タイプ名は最初 'struct' として使われていましたが 'class' として使われています。
-  c:\users\2170241\desktop\ghost_pinto\iex2010_base\ghostpinto\enemy.h(28): note: 'STAGE_DATA' の宣言を確認してください
-  IEX2010.vcxproj -> C:\Users\2170241\Desktop\Ghost_pinto\IEX2010_BASE\GhostPinto\Debug\IEX2010_base.exe
-  IEX2010.vcxproj -> C:\Users\2170241\Desktop\Ghost_pinto\IEX2010_BASE\GhostPinto\Debug\IEX2010_base.pdb (Full PDB)
