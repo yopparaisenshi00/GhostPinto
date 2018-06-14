@@ -275,7 +275,7 @@ void	sceneMain::Render()
 		pScore->Render();
 	}
 
-	//pLandScape->RenderFG();
+	pLandScape->RenderFG();
 
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ

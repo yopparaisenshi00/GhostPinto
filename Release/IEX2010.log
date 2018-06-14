@@ -1,0 +1,77 @@
+﻿  BGFG.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Effect.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  MAP.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Enemy.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_2DObject.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_3DObject.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Audio.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Direct3D.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Input.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Light.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Math.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Mesh.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Particle.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Polygon.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_RenderState.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Shader.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_SkinMesh.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_System.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_Texture.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  IEX_View.cpp
+c:\users\2170241\desktop\ghost_pinto_buckup20\ghost_pinto\iex\iExtreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  コンパイル中...
+  MiniMap.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Number.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Obj2D.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Frame.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Player.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Ranking.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sceneClear.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sceneMain.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sceneOver.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sceneTitle.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  sceneTutorial.cpp
+  Sound.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  spr_data.cpp
+  stage1_data.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Framework.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  System.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  WinMain.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  Trigger.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
+  UI.cpp
+C:\Users\2170241\Desktop\Ghost_pinto_buckup20\Ghost_pinto\IEX\iextreme.h(14): fatal error C1083: include ファイルを開けません。'd3dx9.h':No such file or directory
