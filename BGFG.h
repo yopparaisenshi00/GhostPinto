@@ -193,6 +193,21 @@ void MainBG(LAND_SCAPE_OBJ*);
 void BG_pc(LAND_SCAPE_OBJ*);
 void BG_container(LAND_SCAPE_OBJ*);
 void BG_Capsule_l(LAND_SCAPE_OBJ*);
+void BG_Capsule_d(LAND_SCAPE_OBJ*);
+void BG_Fly_mini_capsule_l(LAND_SCAPE_OBJ*);
+void BG_Fly_mini_capsule_d(LAND_SCAPE_OBJ*);
+void BG_Fly_mini_capsule_m(LAND_SCAPE_OBJ*);
+void BG_Fly_capsule_l(LAND_SCAPE_OBJ*);
+void BG_Fly_capsule_d(LAND_SCAPE_OBJ*);
+void BG_Fly_capsule_m(LAND_SCAPE_OBJ*);
+void BG_Mini_capsule_l(LAND_SCAPE_OBJ*);
+void BG_Mini_capsule_d(LAND_SCAPE_OBJ*);
+void BG_Break_capsule_u(LAND_SCAPE_OBJ*);
+void BG_Display_a(LAND_SCAPE_OBJ*);
+void BG_Display_b(LAND_SCAPE_OBJ*);
+void BG_Display_c(LAND_SCAPE_OBJ*);
+void BG_Display_d(LAND_SCAPE_OBJ*);
+
 #define pLandScape (LandScape::getInstance())
 
 

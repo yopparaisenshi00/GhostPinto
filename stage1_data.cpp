@@ -8,6 +8,7 @@
 
 
 //時間による出現データ
+//時間による出現データ
 STAGE_DATA stage1_time[] = {
 	//WAVE1(初期配置) 19匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
@@ -15,7 +16,7 @@ STAGE_DATA stage1_time[] = {
 	STAGE_DATA(0,		Rotation,	V2(1520,512),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1570,452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(600, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Rotation,	V2(700, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Rotation,	V2(700, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO + 30),
 	STAGE_DATA(0,		Rotation,	V2(650, 372),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1320,832),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1220,832),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -90,13 +91,60 @@ STAGE_DATA stage1_kill[] = {
 
 LAND_SCAPE_DATA stage1_bg_effct[] = {
 
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),0 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),20 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),40 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),60 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),90 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),-20 },
-	{ LSD::BOT	 ,0,BG_Capsule_l,V2(770,1024),V2(0,0),V2(0,0),V2(0,0),-80 },
+	{ LSD::BOT	 ,0,BG_Mini_capsule_l,V2(1000,1024),V2(0,0),V2(0,0),V2(0,0),0 },
 
-	{0,-1,nullptr, V2(0,0), V2(0, 0), V2(0, -1), V2(0, -2), 0 },
-};						  
+	{ LSD::BOT	 ,0,BG_Mini_capsule_d,V2(1160,1024),V2(0,0),V2(0,0),V2(0,0),0 },
+
+	{ LSD::BOT	 ,0,BG_Break_capsule_u,V2(1360,1024),V2(0,0),V2(0,0),V2(0,0),0 },
+	{ LSD::BOT	 ,0,BG_Display_b,V2(1300,800),V2(0,0),V2(0,0),V2(0,0),0 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_l,V2(200,1024),V2(0,0),V2(0,0),V2(0,0),10 },
+	{ LSD::BOT	 ,0,BG_Display_a,V2(128,900),V2(0,0),V2(0,0),V2(0,0),0 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_d,V2(400,1024),V2(0,0),V2(0,0),V2(0,0),10 },
+	{ LSD::BOT	 ,0,BG_Display_b,V2(464,800),V2(0,0),V2(0,0),V2(0,0),0 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_l,V2(600,1024),V2(0,0),V2(0,0),V2(0,0),10 },
+	{ LSD::BOT	 ,0,BG_Display_c,V2(664,900),V2(0,0),V2(0,0),V2(0,0),0 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_l,V2(1200,1024),V2(0,0),V2(0,0),V2(0,0),40 },
+	{ LSD::BOT	 ,0,BG_Display_a,V2(1128,700),V2(0,0),V2(0,0),V2(0,0),40 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_d,V2(1500,1024),V2(0,0),V2(0,0),V2(0,0),40 },
+	{ LSD::BOT	 ,0,BG_Display_d,V2(1628,740),V2(0,0),V2(0,0),V2(0,0),40 },
+
+	{ LSD::BOT	 ,0,BG_Capsule_l,V2(1800,1024),V2(0,0),V2(0,0),V2(0,0),40 },
+	{ LSD::BOT	 ,0,BG_Display_c,V2(1920,700),V2(0,0),V2(0,0),V2(0,0),40 },
+
+	{ LSD::BOT	 ,0,BG_Mini_capsule_d,V2(260,1024),V2(0,0),V2(0,0),V2(0,0),40 },
+	{ LSD::BOT	 ,0,BG_Mini_capsule_d,V2(560,1024),V2(0,0),V2(0,0),V2(0,0),40 },
+
+
+	{ LSD::CENTER,0,BG_Fly_mini_capsule_l,V2(200,312),V2(0,0),V2(0,0),V2(0,0),20 },
+
+	{ LSD::CENTER,0,BG_Fly_mini_capsule_d,V2(500,512),V2(0,0),V2(0,0),V2(0,0),20 },
+
+	{ LSD::CENTER,0,BG_Fly_mini_capsule_d,V2(1500,412),V2(0,0),V2(0,0),V2(0,0),20 },
+
+	{ LSD::CENTER,0,BG_Fly_mini_capsule_d,V2(1800,512),V2(0,0),V2(0,0),V2(0,0),20 },
+
+	{ LSD::BOT	 ,0,BG_Fly_capsule_m,V2(2150,200),V2(0,0),V2(0,0),V2(0,0),40 },
+	{ LSD::BOT	 ,0,BG_Display_b,V2(2100,200),V2(0,0),V2(0,0),V2(0,0),40 },
+
+	{ LSD::CENTER,0,BG_Fly_mini_capsule_m,V2(800,312),V2(0,0),V2(0,0),V2(0,0),20 },
+
+
+	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(-1200,312),V2(0,0),V2(0,0),V2(0,0),60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_l,V2(-400,312),V2(0,0),V2(0,0),V2(0,0),60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(400,312),V2(0,0),V2(0,0),V2(0,0),60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_l,V2(1200,312),V2(0,0),V2(0,0),V2(0,0),60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(2000,312),V2(0,0),V2(0,0),V2(0,0),60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(2800,312),V2(0,0),V2(0,0),V2(0,0),60 },
+
+
+	{ LSD::BOT	 ,0,BG_container,V2(1850,1024),V2(0,0),V2(0,0),V2(0,0), 0 },
+	{ LSD::BOT	 ,0,BG_pc,V2(770,1024),V2(0,0),V2(0,0),V2(0,0), 0 },
+	{ LSD::BOT	 ,0,BG_pc,V2(1400,1024),V2(0,0),V2(0,0),V2(0,0), 40 },
+
+	{ 0,-1,nullptr, V2(0,0), V2(0, 0), V2(0, -1), V2(0, -2), 0 },
+};

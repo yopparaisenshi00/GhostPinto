@@ -330,6 +330,7 @@ void Player::judge() {//
 		if ((enemy[i]->noHit_flg) && Judge(this, enemy[i])) {
 			suffer_damage();
 			Recoil(enemy[i]->pos, enemy[i]->spd); //ƒ_ƒ[ƒW‚Ì”½“®
+			break;
 		}
 	}
 }

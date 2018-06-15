@@ -50,37 +50,37 @@ SPR_DATA spr_container[] = {
 };
  
 //地上大カプセル
-SPR_DATA spr_Capsule_l = { Capsule_l,0, 0,177, 512, -89, -512};
-SPR_DATA spr_Capsule_d = { Capsule_d,0,256,0,177,512,-89,-512};
+SPR_DATA spr_Capsule_l = { Capsule_l,0,  0,	177,512,-89,-512 };
+SPR_DATA spr_Capsule_d = { Capsule_d,256,0,	177,512,-89,-512 };
 
 //地上小カプセル
-SPR_DATA spr_Mini_capsule_l ={ Mini_capsule_l,512,0,128,498,-128 / 2,-498 / 2 };
-SPR_DATA spr_Mini_capsule_d ={ Mini_capsule_d,640,0,128,498,-128 / 2,-498 / 2 };
+SPR_DATA spr_Mini_capsule_l = { Mini_capsule_l,512,0,128,226,-128 / 2,-226 };
+SPR_DATA spr_Mini_capsule_d = { Mini_capsule_d,640,0,128,226,-128 / 2,-226 };
 
 //地上割カプセル脚
-SPR_DATA spr_Break_capsule_u = {  Break_capsule_u,512,256,158,256,-158 / 2,-256 / 2 };
+SPR_DATA spr_Break_capsule_u = { Break_capsule_u,512,256,158,256,-158 / 2,-256 };
 //割カプセル頭
-SPR_DATA spr_Break_capsule_o = {  Break_capsule_o,1664,0,153,141,-76,-70 };
+SPR_DATA spr_Break_capsule_o = { Break_capsule_o,1664,0,153,141,-76,-70 };
 
 //空中大カプセル
-SPR_DATA spr_Fly_capsule_d ={  Fly_capsule_d,896,0,128,512,-128 / 2,-512 / 2 };
-SPR_DATA spr_Fly_capsule_l ={  Fly_capsule_l,768,0,128,512,-128 / 2,-512 / 2 };
+SPR_DATA spr_Fly_capsule_d = { Fly_capsule_d,896,0,128,512,-128 / 2,-512 / 2 };
+SPR_DATA spr_Fly_capsule_l = { Fly_capsule_l,768,0,128,512,-128 / 2,-512 / 2 };
 
 //空中大メタルカプセル
-SPR_DATA spr_Fly_capsule_m = {  Fly_capsule_m,1024,0,153,448,-77,-448 / 2 };
+SPR_DATA spr_Fly_capsule_m = { Fly_capsule_m,1024,0,153,448,-77,-448 / 2 };
 
 //空中小カプセル
-SPR_DATA spr_Fly_mini_capsule_l = {  Fly_mini_capsule_l,1280,0,113,384,-57,-384 / 2 };
-SPR_DATA spr_Fly_mini_capsule_d = {  Fly_mini_capsule_d,1408,0,113,384,-57,-384 / 2 };
+SPR_DATA spr_Fly_mini_capsule_l = { Fly_mini_capsule_l,1280,0,113,384,-57,-384 / 2 };
+SPR_DATA spr_Fly_mini_capsule_d = { Fly_mini_capsule_d,1408,0,113,384,-57,-384 / 2 };
 
 //空中小メタルカプセル
-SPR_DATA spr_Fly_mini_capsule_m = {  Fly_mini_capsule_m,1536,0,113,337,-57,-169 };
+SPR_DATA spr_Fly_mini_capsule_m = { Fly_mini_capsule_m,1536,0,113,337,-57,-169 };
 
 //ディスプレイ類
-SPR_DATA spr_Display_a = {  Display_a,1280,384,128,93,-128 / 2,-47 };
-SPR_DATA spr_Display_b = {  Display_b,1408,384,128,75,-128 / 2,-38 };
-SPR_DATA spr_Display_c = {  Display_c,1536,384,128,97,-128 / 2,-49 };
-SPR_DATA spr_Display_d ={  Display_d,  1664,384,128,97,-128 / 2,-49 };
+SPR_DATA spr_Display_a = { Display_a,1280,384,128,93,-128 / 2,-93 / 2 };
+SPR_DATA spr_Display_b = { Display_b,1408,384,128,75,-128 / 2,-75 / 2 };
+SPR_DATA spr_Display_c = { Display_c,1536,384,128,97,-128 / 2,-97 / 2 };
+SPR_DATA spr_Display_d = { Display_d,  1664,384,128,97,-128 / 2,-97 / 2 };
 
 enum {
 	INIT = 0,	//初期設定
@@ -429,6 +429,8 @@ void BG_pc(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
 		//obj->animeData = spr_pc;
 		obj->data = &spr_pc[0];
 		obj->state = BEGIN;
@@ -449,6 +451,8 @@ void BG_container(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
 		obj->animeData = spr_container;
 		obj->data = &spr_container[0];
 		obj->state = BEGIN;
@@ -461,10 +465,13 @@ void BG_container(LAND_SCAPE_OBJ* obj) {
 
 }
 
+//地上大カプセル
 void BG_Capsule_l(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Capsule_l;
 		obj->state = BEGIN;
 		break;
@@ -474,4 +481,214 @@ void BG_Capsule_l(LAND_SCAPE_OBJ* obj) {
 		break;
 	}
 
+}
+void BG_Capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
+	switch (obj->state)
+	{
+	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
+		obj->data = &spr_Capsule_d;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+//空中大カプセル
+void BG_Fly_capsule_l(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
+		obj->data = &spr_Fly_capsule_l;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+void BG_Fly_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
+	switch (obj->state)
+	{
+	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
+		obj->data = &spr_Fly_capsule_d;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+void BG_Fly_capsule_m(LAND_SCAPE_OBJ* obj) {//メタル
+	switch (obj->state)
+	{
+	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
+		obj->data = &spr_Fly_capsule_m;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+
+//割れカプセル
+void BG_Break_capsule_u(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Break_capsule_u;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+//フライminiカプセル
+void BG_Fly_mini_capsule_l(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Fly_mini_capsule_l;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+void BG_Fly_mini_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Fly_mini_capsule_d;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+//フライminiメタルカプセル
+void BG_Fly_mini_capsule_m(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Fly_mini_capsule_m;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+//地上miniカプセル
+void BG_Mini_capsule_l(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Mini_capsule_l;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+void BG_Mini_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Mini_capsule_d;
+		obj->state = BEGIN;
+
+		break;
+	case BEGIN:
+
+	default:
+		break;
+	}
+
+}
+
+//ディスプレイ
+void BG_Display_a(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Display_a;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+	default:
+		break;
+	}
+}
+void BG_Display_b(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Display_b;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+	default:
+		break;
+	}
+}
+void BG_Display_c(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Display_c;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+	default:
+		break;
+	}
+}
+void BG_Display_d(LAND_SCAPE_OBJ* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->data = &spr_Display_d;
+		obj->state = BEGIN;
+		break;
+	case BEGIN:
+	default:
+		break;
+	}
 }
