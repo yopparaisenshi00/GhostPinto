@@ -341,7 +341,9 @@ void LAND_SCAPE_OBJ::Update() {
 
 void LAND_SCAPE_OBJ::Render() {
 	if (!data)return;
-	shader2D->SetValue("FPower", sz);
+	sz = pEnemy_Manager->get_sz(z);
+	
+	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 	spr_data::Render(pos, data, &custom, 0xFFFFFFFF, shader2D, "depth");
 
 }

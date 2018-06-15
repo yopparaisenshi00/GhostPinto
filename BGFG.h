@@ -58,8 +58,8 @@ public:
 	
 	void(*move)(LAND_SCAPE_OBJ*);
 	bool init_fg;
-	int sz;
-	int z;
+	float sz;
+	float z;
 
 
 	void clear() {
