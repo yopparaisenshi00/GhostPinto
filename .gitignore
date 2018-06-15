@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# My rule
+*.VC.db
+*.VC.VC.opendb
