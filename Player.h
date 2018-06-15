@@ -105,6 +105,14 @@ public:
 	int jet_eff_timer;			//
 	int p_eff_timer;			//
 
+	int old_mlt;
+
+	struct gage { //ゲージ用
+		V2 pos;
+		D3DCOLOR argb;
+		spr_data::CUSTOM custom;
+	};
+	gage g;
 
 	virtual void clear();		// メンバ変数のクリア
 	
@@ -117,6 +125,8 @@ public:
 	void judge();
 	void suffer_damage();
 	void Recoil(V2 enemy_pos, V2 enemy_spd); //ダメージ時の反動
+	D3DCOLOR Light(D3DCOLOR color);
+	void mlt_Update();
 
 	//void Deat_Enemy() {
 	//	

@@ -50,6 +50,7 @@ private:
 	//------------------------------
 	int score;//スコア
 	int combo;//コンボ数
+	int maxcombo;//最大コンボ数
 	int combotimer;//コンボ持続タイマー
 	//------------------------------
 	//関数
@@ -59,6 +60,7 @@ private:
 		OBJ2D::clear();
 		score = 0;
 		combo = 0;
+		maxcombo = 0;
 		combotimer = 0;
 		kill_num = 0;
 	}
@@ -77,16 +79,23 @@ public:
 			combo = 0;
 			combotimer = 0;
 		}
+		if ( maxcombo<combo ) { //最大コンボ数保存
+			maxcombo = combo;
+		}
 	}
 
-
-	//スコア加算
-	void addScore(int add) {
+	//スコア加算(映っている間)
+	void add_ClearlyScore(int add) {
+		score += add;
+	}
+	//スコア加算(倒した後)
+	void add_KillScore(int add) {
 		score += add + (combo * COMBO_BONUS);
 		combotimer = 0;
 		combo++;
 		kill_num++;
 	}
+
 	//スコアを返す
 	int getScore() {
 		return score;
@@ -98,6 +107,10 @@ public:
 	//コンボ数を返す
 	int getCombo() {
 		return combo;
+	}
+	//最大コンボ数を返す
+	int getMaxCombo() {
+		return maxcombo;
 	}
 
 

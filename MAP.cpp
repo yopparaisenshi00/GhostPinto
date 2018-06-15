@@ -14,7 +14,6 @@
 #include "BGFG.h"
 #include "MAP.h"
 
-//  test
 
 enum {
 	normal = 0,//ターゲットデータ参照
@@ -91,6 +90,7 @@ void MAP::clear()
 	effect_shifted_objects = V2(0,0);
 	effect_shifted_all = V2(0, 0);
 	Shake_state = 0;
+	dust_timer = 0;
 	//ミニマップ初期化
 
 	minimap.clear();
@@ -105,6 +105,16 @@ void MAP::clear()
 // 更新処理
 void MAP::update()
 {
+	//塵エフェクト
+	if ( dust_timer++>200 ) {
+		for ( int i = 0; i<4; i++ ){
+			pEffect_Manager->searchSet(
+				V2(400*i+(rand()%100), SCREEN_HEIGHT-(rand()%100)),					//x=400*i-600*i,y=440-540
+				V2((float)(rand()%2)/100.0f+0.02f, -(float)(rand()%2+1)), dust);	//x=0.04f-0.07f,y=-(1-3)
+		}
+		dust_timer = 0;
+	}
+
 
 	if (!scrollCenter) { if (nextscrollCenter) { scrollCenter = nextscrollCenter; nextscrollCenter = NULL; }return; }
 

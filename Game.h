@@ -70,18 +70,7 @@ public:
 			text_box[i].pos = pos;
 			break;
 		}
-	}
-
-	void set_Text(V2 pos, char* text, V2 data, DWORD color = 0xFFFFFFFF) {
-		for (int i = 0; i < text_max; i++) {
-			if (text_box[i].color != 0)continue;
-			sprintf_s(text_box[i].text, 128, "%s:(%.2f,%.2f)", text, data.x,data.y);
-			text_box[i].color = color;
-			text_box[i].pos = pos;
-			break;
-		}
-	}
-
+	}		
 	void set_Text(V2 pos, char* text, int data, DWORD color = 0xFFFFFFFF) {
 		for (int i = 0; i < text_max; i++) {
 			if (text_box[i].color != 0)continue;
@@ -95,7 +84,7 @@ public:
 	void Render() {
 		for (int i = 0; i < text_max;i++) {
 			if (text_box[i].color == 0)continue;
-			IEX_DrawText(text_box[i].text, (int)text_box[i].pos.x, (int)text_box[i].pos.y,256, 16, (int)text_box[i].color);
+			IEX_DrawText(text_box[i].text, (int)text_box[i].pos.x, (int)text_box[i].pos.y,128, 16, (int)text_box[i].color);
 		}
 	}
 

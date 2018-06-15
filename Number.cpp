@@ -21,7 +21,6 @@ Number crushnum2;	//撃破目標数
 Number exorcisetimer; //霊力タイマー
 
 
-
 SPR_DATA ui_data[] = {
 	{ spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
 	{ spr_data::UI6,  0,125,  120,40,  0,0 },//COMBO
@@ -53,7 +52,7 @@ Number::Number() {
 	crushnum.numImage = new iex2DObj("DATA\\Public\\number.png");
 	crushnum2.numImage = new iex2DObj("DATA\\Public\\number.png");
 	exorcisetimer.numImage = new iex2DObj("DATA\\Public\\number.png");
-	numImage = new iex2DObj("DATA\\Public\\number.png");
+
 
 	score.SetSize(32);			//スコア文字サイズ設定
 	combo.SetSize(32);			//コンボ文字サイズ設定
@@ -100,23 +99,19 @@ void Number::Update(int timer) {
 	n_timer = timer;
 }
 
-#include "Enemy.h"
 
 void Number::Render() {
 	score.Render(790, 60, 5);								//スコア描画
-															//	combo.Render2(580, 130, pScore->getCombo());			//コンボ描画
-															//	combo.Render(pPlayer->pos.x+20,pPlayer->pos.y-70, 2);	//コンボ描画
+	//combo.Render2(580, 130, pScore->getCombo());			//コンボ描画
 	gametimer.Render3(400, 15, 2, gametimer_argb);			//ゲームタイマー (上2ケタ)描画
 	gametimer2.Render3(400 + 125, 39, 2, gametimer_argb);	//ゲームタイマー2(下2ケタ)描画
-	gametimer.Render(400, 15, 2);						//ゲームタイマー (上2ケタ)描画
-	gametimer2.Render(400 + 125, 39, 2);						//ゲームタイマー2(下2ケタ)描画
-	crushnum.Render(760, 150, 2);								//撃破数描画
-	crushnum2.Render(860, 150, 2);							//撃破数描画
+	crushnum.Render(775, 150, 2);								//撃破数描画
+	crushnum2.Render(875, 150, 2);							//撃破数描画
 	if (pFrame->exorciseDwon_timer>0) {					//霊力タイマー
 		exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画
 	}
 	spr_data::Render(V2(750, 20), &ui_data[0]);	//　SCORE
-												//	spr_data::Render(V2(550,100),&ui_data[1]);	//　COMBO
+	//spr_data::Render(V2(550,100),&ui_data[1]);	//　COMBO
 	spr_data::Render(V2(750, 100), &ui_data[2]);	//　撃破数
 }
 
@@ -247,34 +242,4 @@ void  Number::Render3(int x, int y, int digit_max, D3DCOLOR argb)
 			custom.angle, custom.centRotate, custom.centX, custom.centY, RS_ALPH,
 			argb, custom.reflectX, custom.scaleMode);
 	}
-}
-
-//数値描画関数(指数値描画(num) + 指定分描画 + color)           (digitmax = 表示文字数)  
-void  Number::RenderFree(int x, int y, int num, int digit_max,int _digitDispSize, D3DCOLOR argb = 0xFFFFFFFF)
-{
-	int Size = _digitDispSize;
-	Number::tagDIGIT _digit[DIGIT_MAX];
-	for (int i = 0; i < digit_max; i++)
-	{
-		_digit[i].val = num % 10;	//  一の位を抽出
-		_digit[i].x = 0;
-		_digit[i].y = 0;
-		_digit[i].w = _digit[i].h = 1;
-		_digit[i].timer = 0;
-		num /= 10;					//  桁を1つシフト
-	}
-	for (int i = 0; i < digit_max; i++){
-		x -= Size * i;
-		int  sx = (_digit[i].val % NUM_DIGIT_1LINE) * DIGIT_SIZE;
-		int  sy = (_digit[i].val / NUM_DIGIT_1LINE) * DIGIT_SIZE;
-
-		numImage->customRender(
-			x + _digit[i].x - 3, y + _digit[i].y,														//描画位置x,描画位置y
-			custom.scaleX*Size *_digit[i].w, custom.scaleY*Size *_digit[i].h,		//描画幅x,描画幅y
-			sx, sy,
-			DIGIT_SIZE, DIGIT_SIZE,														//切抜位置x,切抜位置y, 文字サイズ,文字サイズ
-			custom.angle, custom.centRotate, custom.centX, custom.centY, RS_ALPH,
-			argb, custom.reflectX, custom.scaleMode);
-	}
-
 }

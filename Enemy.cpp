@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "Frame.h"
+#include "Number.h"
 #include "Enemy.h"
 #include "Effect.h"
 #include "stage_data.h"
@@ -37,10 +38,11 @@ enum {
 	CLEAR,	//初期化
 };
 
-
+//仮＿敵データ
 static SPR_DATA Enemy_data = SPR_DATA{ spr_data::Enemy1, 0, 0, 64, 64, -32, -32 };
 
 
+//通常-----------------------------------------------------------------
 static SPR_DATA Enemy_data_yellow[] = { //黄
 	SPR_DATA{ spr_data::Enemy2, 64 * 0, 64 * 0,	64,64,-32,-32,0 },
 	SPR_DATA{ spr_data::Enemy2, 64 * 1, 64 * 0,	64,64,-32,-32,1 },
@@ -71,6 +73,86 @@ static SPR_DATA Enemy_data_white[] = { //白
 	SPR_DATA{ spr_data::Enemy2, 64 * 2, 64 * 4,	64,64,-32,-32,2 },
 	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,3 },
 };
+static SPR_DATA Enemy_data_kari[] = { //仮
+	SPR_DATA{ spr_data::Enemy1, 64 * 0, 0, 64, 64, -32, -32,0 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 0, 0, 64, 64, -32, -32,1 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 0, 0, 64, 64, -32, -32,2 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 0, 0, 64, 64, -32, -32,3 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 1, 0, 64, 64, -32, -32,4 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,5 },
+};
+//白-------------------------------------------------------------------
+static SPR_DATA Enemy_data_yellow_damage[] = { //黄
+	SPR_DATA{ spr_data::Enemy2, 64 * 4, 64 * 0,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 5, 64 * 0,	64,64,-32,-32,1 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 6, 64 * 0,	64,64,-32,-32,2 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,3 },
+};
+static SPR_DATA Enemy_data_green_damage[] = { //緑
+	SPR_DATA{ spr_data::Enemy2, 64 * 4, 64 * 1,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 5, 64 * 1,	64,64,-32,-32,1 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,2 },
+};
+static SPR_DATA Enemy_data_pink_damage[] = { //ピンク
+	SPR_DATA{ spr_data::Enemy2, 64 * 4, 64 * 2,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 5, 64 * 2,	64,64,-32,-32,1 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 6, 64 * 2,	64,64,-32,-32,2 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,3 },
+};
+static SPR_DATA Enemy_data_blue_damage[] = { //青
+	SPR_DATA{ spr_data::Enemy2, 64 * 4, 64 * 3,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 5, 64 * 3,	64,64,-32,-32,1 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 6, 64 * 3,	64,64,-32,-32,2 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 7, 64 * 3,	64,64,-32,-32,3 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,4 },
+};
+static SPR_DATA Enemy_data_white_damage[] = { //白
+	SPR_DATA{ spr_data::Enemy2, 64 * 4, 64 * 4,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 5, 64 * 4,	64,64,-32,-32,1 },
+	SPR_DATA{ spr_data::Enemy2, 64 * 6, 64 * 4,	64,64,-32,-32,2 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,3 },
+};
+static SPR_DATA Enemy_data_kari_damage[] = { //仮
+	SPR_DATA{ spr_data::Enemy1, 64 * 2, 0,	64,64,-32,-32,0 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 2, 0,	64,64,-32,-32,1 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 2, 0,	64,64,-32,-32,2 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 2, 0,	64,64,-32,-32,3 },
+	SPR_DATA{ spr_data::Enemy1, 64 * 2, 0,	64,64,-32,-32,4 },
+	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,5},
+};
+//通常＆白-------------------------------------------------------------
+static SPR_DATA* yellow_data[] = {
+	{Enemy_data_yellow},
+	{Enemy_data_yellow_damage},
+};
+static SPR_DATA* green_data[] = {
+	{Enemy_data_green},
+	{Enemy_data_green_damage},
+};
+static SPR_DATA* pink_data[] = {
+	{Enemy_data_pink},
+	{Enemy_data_pink_damage},
+};
+static SPR_DATA* blue_data[] = {
+	{Enemy_data_blue},
+	{Enemy_data_blue_damage},
+};
+static SPR_DATA* white_data[] = {
+	{Enemy_data_white},
+	{Enemy_data_white_damage},
+};
+static SPR_DATA* kari_data[] = {
+	{Enemy_data_kari},
+	{Enemy_data_kari_damage},
+};
+
+enum {
+	normal = 0,
+	Damage,
+};
+
+
+
 
 enum {	//テクスチャ番号変換
 	pinto_s = spr_data::UI1,
@@ -85,7 +167,7 @@ SPR_DATA spr_combo = { spr_data::UI6,0,125,120,40,0,0 }; //COMBO
 
 
 
-														 //当たり判定(obj1のサイズ内にobj2のサイズが全て入っているか)
+//当たり判定(obj1のサイズ内にobj2のサイズが全て入っているか)
 bool E_Judge(OBJ2D *obj1, OBJ2D *obj2)
 {
 	if (obj1->pos.x + obj1->size.x > obj2->pos.x + obj2->size.x) return false;
@@ -122,9 +204,40 @@ V2 E_P(OBJ2D *obj1, OBJ2D *obj2, V2 spd)
 
 
 
+//敵ダメージ点滅関数
+void Frash_white(Enemy* obj,int num) {
+	obj->flash_timer++;
+	pScore->add_ClearlyScore(1); //スコア加算
+
+	if ( (obj->flash_timer%(num*2))<=4 ) { //01234
+		obj->animeData = obj->Anime_Box[Damage];
+		obj->alpha -= 255/3;
+		//pScore->add_ClearlyScore(obj->score/200); //スコア加算
+	}
+	else if ( (obj->flash_timer%(num*2))<=9 ) { //56789
+		obj->animeData = obj->Anime_Box[normal];
+		obj->alpha = 255;
+	}
+	else if ( (obj->flash_timer%(num*2))<=14 ) { //1011121314
+		obj->animeData = obj->Anime_Box[Damage];
+		obj->alpha -= 255/3;
+		//pScore->add_ClearlyScore(obj->score/200); //スコア加算
+	}
+	else {
+		obj->animeData = obj->Anime_Box[normal];
+		obj->alpha = 255;
+	}
+}
+
+//なにで判断するか,間隔,点滅させたいargb,色１,色２
+void Frash_Color(Enemy* obj,int num,D3DCOLOR argb1, D3DCOLOR argb2) {
+	obj->flash_timer++;
+	if ((obj->flash_timer % (num * 2)) <  num) obj->custom.argb = argb1;
+	if ((obj->flash_timer % (num * 2)) >= num) obj->custom.argb = argb2;
+}
 //点滅関数(色)
 //なにで判断するか,間隔,点滅させたいargb,色１,色２
-D3DCOLOR Frash_Color(int timer, int num, D3DCOLOR argb, D3DCOLOR argb1, D3DCOLOR argb2) {
+D3DCOLOR Frash_Color(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1, D3DCOLOR argb2) {
 	if ((timer % (num * 2)) <  num) argb = argb1;
 	if ((timer % (num * 2)) >= num) argb = argb2;
 	return argb;
@@ -144,6 +257,7 @@ int Frash_Alpha(int timer, int num, int alpha, float alpha1, float alpha2, int e
 
 void Enemy_Manager::just_dragIn(Enemy* obj) {
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲なら
+		pEffect_Manager->searchSet(V2(12, 4), V2(10, 2), Shake); //振動
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Just_pinto);
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (!enemy[i] || !enemy[i]->move)continue;
@@ -170,12 +284,16 @@ void Enemy_Manager::damage_Calculation(Enemy* obj) {
 			pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
 			obj->zlock_flg = true;
 		}
-		Frash_Color(obj->timer, 15, obj->custom.argb, 0xFFFFFFFF, 0xFFFF0000); //点滅(白,赤)
+		if ( obj->damage>(obj->damageMAX-obj->damageMAX/4) ) Frash_white(obj,11); //白点滅(早)
+		else Frash_white(obj, 35); //白点滅(遅)
 		obj->damage += DAMAGE;
 		obj->damageflg = true;
 	}
-	else obj->damageflg = false;
-
+	else {
+		obj->damageflg = false;
+		obj->animeData = obj->Anime_Box[normal];
+		obj->alpha = 255;
+	}
 }
 
 
@@ -350,6 +468,7 @@ void Enemy::clear() {
 	init_fg = false;
 	z_flg = false;
 	zlock_flg = false;
+	flash_timer = 0;
 
 	for (int i = 0; i < 16; i++) {
 		f_work[i] = 0;
@@ -401,10 +520,11 @@ void Enemy::Render() {
 void Enemy::UIRender() {
 	if (data) {
 		if (E_lenge(this, pFrame, FRAME_SIZE / 2)) {
-			spr_data::Render(pos, &spr_pinto_s, ui_argb, 0);
-
-			spr_data::Render(pos, &spr_pinto_a, 0xFFFFFFFF, /*z + pFrame->Get_f_z()   */z > pFrame->Get_f_z() ? sz : -sz);
-			//		iexPolygon::Rect((SCREEN_WIDTH / 2) + z - DAMAGE_SIZE, PINTO_POSY, DAMAGE_SIZE + DAMAGE_SIZE, 20, 0, 0xFF00FFFF);// Z
+			if ( state!=APPEARANCE ) {
+				spr_data::Render(pos, &spr_pinto_s, ui_argb, 0);
+				spr_data::Render(pos, &spr_pinto_a, 0xFFFFFFFF, /*z + pFrame->Get_f_z()   */z > pFrame->Get_f_z() ? sz : -sz);
+				//iexPolygon::Rect((SCREEN_WIDTH / 2) + z - DAMAGE_SIZE, PINTO_POSY, DAMAGE_SIZE + DAMAGE_SIZE, 20, 0, 0xFF00FFFF);// Z
+			}
 		}
 	}
 
@@ -460,12 +580,42 @@ void Enemy_appearance(Enemy* obj) {
 //死亡時エフェクト
 void Enemy_DeadEffect(Enemy*obj) {
 	for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_k);	//パーティクルエフェクトキラキラ
-	pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), CircleExt1);		//丸エフェクト
-	pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), CircleExt2);		//丸エフェクト
+	pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt_lightB);	//丸エフェクト
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲ならエフェクト追加
+		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt);		//丸エフェクト
+		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(2.0f, 2.5f), CircleExt);		//丸エフェクト
+		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 3.5f), CircleExt);		//丸エフェクト
 		for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_c);	//パーティクルエフェクト●
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Ext);				//敵消滅エフェクト
-																							//Vib_Set(7, 1);
+		//pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
+	}
+}
+
+//コンボ関数
+void Combo(Enemy* obj) {
+	int combo = pScore->getCombo(); //コンボ数
+	if ( combo>=2 ) { //2コンボから
+		int _combo = combo;
+		int count = 0;
+		int n = 0;
+		int pos_x = 0;
+
+		//桁数を調べる-----------------------------------
+		while ( _combo>=10 ) { //10以上なら
+			_combo /= 10;		//10で割って
+			count++;		//x位置ずらしカウント
+		}
+		//描画-------------------------------------------
+		do {
+			_combo = combo % 10;	//1の位抽出
+			combo /= 10;			//1の位切捨て排除
+			pos_x = obj->pos.x+50+(count-(count-n)*-32); //x位置ずらし
+			pEffect_Manager->searchSet(V2(pos_x, obj->pos.y-40), V2((float)_combo, 0), Combo);		//コンボ
+			//count--;
+			n++;
+		} while ( combo>0 );
+
+		pEffect_Manager->searchSet(V2(pos_x+59+count*32, obj->pos.y-36), V2(0, 0), ComboText);		//コンボテキスト
 	}
 }
 
@@ -474,22 +624,15 @@ void Enemy_DeadEffect(Enemy*obj) {
 void Enemy_Dead(Enemy* obj) {
 	pFrame->add_Exorcise(KILL_CURE);
 	pEnemy_Manager->just_dragIn(obj);
-	Enemy_DeadEffect(obj);				//死亡時エフェクト
-										//FLOAT a = pScore->getCombo();
-										//pEffect_Manager->searchSet(V2(obj->pos.x+50, obj->pos.y+20), V2(a, 0), Combo);			//コンボ
+	Enemy_DeadEffect(obj);			//死亡時エフェクト
+	pScore->add_KillScore(obj->score);		//スコア,コンボ,kill数加算
+	Combo(obj);						//コンボ表示
 	IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
-	pScore->addScore(100);
 	pPlayer->mltfcs.add_point(1);
 	obj->clear();
 }
 
 
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-//　敵関数
-//
-////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -558,23 +701,26 @@ void Sudden(Enemy* obj) {
 }
 
 
-
 //テレポート
 void Teleport(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
-		obj->animeData = Enemy_data_blue;
+		obj->Anime_Box = blue_data;
+		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-
 		obj->damageMAX = 400;
 		obj->f_work[1] = obj->pos.x;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->score = 100;
 		Enemy_Init(obj);
-		obj->state = BEGIN;
+		obj->state = APPEARANCE;
 		//break;
+	case APPEARANCE:
+		Enemy_appearance(obj);
+		break;
 	case BEGIN:
 		obj->rangeflg = E_lenge(obj, pPlayer, 300); //距離判定
 		if (obj->rangeflg == true) { //範囲内なら
@@ -624,33 +770,35 @@ void Teleport(Enemy* obj) {
 
 
 //襲ってくる敵
-//襲ってくる敵
 void Normal(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
-		obj->animeData = Enemy_data_pink;
+		obj->Anime_Box = pink_data;
+		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-
-		//obj->data = &Enemy_data;
 		obj->damageMAX = 400;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		Enemy_Init(obj);
-		obj->state = BEGIN;
+		obj->score = 100;
+		obj->state = APPEARANCE;
 		//break;
+	case APPEARANCE:
+		Enemy_appearance(obj);
+		break;
 	case BEGIN:	//もし範囲内ならプレイヤーに近づく
 		Enemy_Update(obj);
 		obj->rangeflg = E_lenge(obj, pPlayer, 300); //距離判定
 		if (obj->rangeflg == true) {
 			obj->pos -= E_P(obj, pPlayer, obj->spd); //移動処理
 		}
-
 		break;
 	case DEAD: //死亡処理
 		Enemy_Dead(obj);
 		pEnemy_Kill->kill_num_pink++;
+
 
 		break;
 	default:
@@ -664,10 +812,9 @@ void Tombo(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
-		obj->animeData = Enemy_data_green;
+		obj->Anime_Box = green_data;
+		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		//obj->data = &Enemy_data;
-		//obj->z = ((rand() % (PINTO_MAX * 2)) - PINTO_MAX);//ピントあたり範囲設定
 		obj->damageMAX = 1000;
 		obj->pos.y -= 10;			//----------
 		obj->ANGLE = INIT_ANGLE;	//　回転用
@@ -678,6 +825,7 @@ void Tombo(Enemy* obj) {
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->size = V2(20 / 2, 20 / 2);
 		Enemy_Init(obj);
+		obj->score = 100;
 		obj->state = APPEARANCE;
 		//break;
 	case APPEARANCE:
@@ -688,7 +836,7 @@ void Tombo(Enemy* obj) {
 		obj->rangeflg = E_lenge(obj, pPlayer, 1000); //距離判定
 		if (obj->rangeflg == true) { //範囲内なら
 
-									 //				obj->spd = E_P(obj, pPlayer, obj->spd); //移動処理 8.0f
+//				obj->spd = E_P(obj, pPlayer, obj->spd); //移動処理 8.0f
 
 			obj->dx = obj->pos.x - pPlayer->pos.x;				//
 			obj->dy = obj->pos.y - pPlayer->pos.y;				//
@@ -763,7 +911,8 @@ void zMove(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
-		obj->animeData = Enemy_data_white;
+		obj->Anime_Box =white_data;
+		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
 
 		obj->f_work[3] = obj->z;
@@ -771,6 +920,7 @@ void zMove(Enemy* obj) {
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->size = V2(20 / 2, 20 / 2);
+		obj->score = 100;
 		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
@@ -809,11 +959,15 @@ void zMove(Enemy* obj) {
 void Big(Enemy* obj) {
 	switch (obj->state) {
 	case INIT:
-		obj->data = &Enemy_data;
+		//obj->data = &Enemy_data;
+		obj->Anime_Box =kari_data;
+		obj->animeData = obj->Anime_Box[normal];
+		obj->data = &obj->animeData[0];
 		obj->damageMAX = 1000;
 		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = B_scale;		//
+		obj->custom.scaleX = obj->custom.scaleY = B_scale;
 		obj->size = V2(40, 40);
+		obj->score = 200;
 		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
@@ -837,33 +991,6 @@ void Big(Enemy* obj) {
 		break;
 	}
 }
-
-
-//デカイ2(横移動のみ)
-void Big2(Enemy* obj) {
-	switch (obj->state) {
-	case INIT:
-		obj->data = &Enemy_data;
-		obj->damageMAX = 1000;
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = B_scale;		//
-		obj->size = V2(40, 40);
-		Enemy_Init(obj);
-		obj->state = MOVE;
-		//break;
-	case MOVE: //移動処理
-		Enemy_Update(obj);
-		obj->pos.x += obj->spd.x;
-		//ダメージ処理
-		break;
-	case DEAD: //死亡処理
-		Enemy_Dead(obj);
-		break;
-	default:
-		break;
-	}
-}
-
 
 
 
@@ -1045,19 +1172,23 @@ void Rotation(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
-		obj->animeData = Enemy_data_yellow;
+		obj->Anime_Box = yellow_data;
+		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
 
-		//obj->data = &Enemy_data;
 		//親設定(制御に自身の存在を渡す)
 		obj->damageMAX = DAMAGE_MAX;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->score = 100;
 		Enemy_Init(obj);
-		obj->state = MOVE;
+		obj->state = APPEARANCE;
 		//break;
-	case MOVE:
+	case APPEARANCE:
+		Enemy_appearance(obj);
+		break;
+	case BEGIN:
 		//制御に合わせて動く(親の周囲を回転)
 		Enemy_Update(obj);
 		{
