@@ -34,3 +34,6 @@
 # My rule
 *.suo
 [De]bug
+*.VC.opendb
+*.db
+*.sdf
