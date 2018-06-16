@@ -50,6 +50,7 @@ public:
 
 	spr_data::CUSTOM custom;
 
+
 private:
 
 };
@@ -109,6 +110,10 @@ public:
 
 
 
-
 bool Judge(OBJ2D *obj1, OBJ2D *obj2);
+
+void line_rect(V2 center, V2 ofs, DWORD color,int centMode);
+void line_rect(float centerx, float centery, float ofsetx, float ofsety, DWORD  color, int centMode);
+inline void drawline(V2 center, V2 ofs, DWORD color);
+
 #endif 

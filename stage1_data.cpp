@@ -147,5 +147,7 @@ LAND_SCAPE_DATA stage1_bg_effct[] = {
 	{ LSD::BOT	 ,0,BG_pc,V2(770,1024),V2(0,0),V2(0,0),V2(0,0), 0 },
 	{ LSD::BOT	 ,0,BG_pc,V2(1400,1024),V2(0,0),V2(0,0),V2(0,0), 40 },
 
+	{ LSD::CENTER,0,BG_Fly_capsule_l,V2(1200,312),V2(0,0),V2(0,0),V2(0,0),-60 },
+
 	{ 0,-1,nullptr, V2(0,0), V2(0, 0), V2(0, -1), V2(0, -2), 0 },
 };

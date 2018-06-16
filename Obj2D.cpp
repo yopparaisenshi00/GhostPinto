@@ -47,5 +47,51 @@ bool Judge(OBJ2D *obj1, OBJ2D *obj2)
 }
 
 
+void line_rect(V2 center = V2(0, 0), V2 ofs = V2(0,0), DWORD color = 0xFFFFFFFF, int centMode = 0) {
+	switch (centMode)
+	{
+	case CENTER:
+		drawline(center, ofs, color);
+		break;
+	case LEFTTOP:
+		drawline(center - ofs, ofs, color);
+		break;
+	case TOPCENTER:
+		drawline(center + V2(0,ofs.y), ofs, color);
+		break;
+	case RIGHTTOP:
+		drawline(center + V2(ofs.x,-ofs.y), ofs, color);
+		break;
+	case RIGHTCENTER:
+		drawline(center + V2(ofs.x, 0), ofs, color);
+		break;
+	case RIGHTBOTTOM:
+		drawline(center + ofs, ofs, color);
+		break;
+	case BOTTOMCENTER:
+		drawline(center - V2(0,ofs.y), ofs, color);
+		break;
+	case LEFTBOTTOM:
+		drawline(center + V2(ofs.y,-ofs.y), ofs, color);
+		break;
+	case LEFTCENTER:
+		drawline(center - V2(ofs.x, 0), ofs, color);
+		break;
+	default:
+		break;
+	}
+}
+void line_rect(float centerx = 0, float centery = 0, float ofsetx = 0, float ofsety = 0, DWORD  color = 0xFFFFFFFF, int centMode = 0) {
+	line_rect(V2(centerx, centery), V2(ofsetx, ofsety), color,centMode);
+}
+
+inline void drawline(V2 center, V2 ofs, DWORD color) {
+	iexPolygon::Rect((int)(center.x - ofs.x), (int)(center.y + ofs.y), (int)(ofs.x * 2), 1, 0, color);
+	iexPolygon::Rect((int)(center.x - ofs.x), (int)(center.y - ofs.y), (int)(ofs.x * 2), 1, 0, color);
+
+	//////èc
+	iexPolygon::Rect((int)(center.x + ofs.x), (int)(center.y - ofs.y), 1, (int)ofs.y * 2, 0, color);
+	iexPolygon::Rect((int)(center.x - ofs.x), (int)(center.y - ofs.y), 1, (int)ofs.y * 2, 0, color);
+}
 
 

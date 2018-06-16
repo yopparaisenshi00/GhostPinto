@@ -382,6 +382,7 @@ void Enemy::UIUpdate() {
 		ui_argb = 0xDD5BE1FF; //Å¶êÖêF
 		count = 0;
 	}
+	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
 }
 void Enemy_Manager::stageUpdate()
 {

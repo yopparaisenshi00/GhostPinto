@@ -512,7 +512,7 @@ typedef struct tagLNVERTEX {
 //
 //*****************************************************************************************************************************
 
-enum SCALE_MODE
+typedef enum SCALE_MODE
 {
 	LEFTTOP,
 	TOPCENTER,
@@ -523,7 +523,7 @@ enum SCALE_MODE
 	LEFTBOTTOM,
 	LEFTCENTER,
 	CENTER,
-};
+}CENT_MODE;
 
 //------------------------------------------------------
 //		çÏê¨ÉtÉâÉO

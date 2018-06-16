@@ -97,7 +97,7 @@ enum {
 };
 
 float BG_REDUCED_DATA[] = {
-	1,1.1,1.3,2,4,6
+	1,1.2,1.4,2,4,6
 };
 float FG_REDUCED_DATA[] = {
 	0.5,0.7,
@@ -128,7 +128,8 @@ void LandScape::Update() {
 
 	//bg.Update();
 	for (int i = 0; i < LANDSCAPE_MAX; i++) {
-		if (!LandScapeObjs[i] || !LandScapeObjs[i]->init_fg)continue;
+		if (!LandScapeObjs[i])break;
+		if(!LandScapeObjs[i]->init_fg)continue;
 		LandScapeObjs[i]->Update();
 	}
 	for (int i = 0; i < BG_REDUCED_LV_MAX; i++) {
@@ -176,12 +177,15 @@ void LandScape::stage_update() {
 }
 
 void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
+	ReducedObj* data;
 	if (z > -1) { //0以上なら背景、以下なら前景
 		//エラーチェック// 配列サイズに収まっているか
 		if (z < 0 || z < FG_REDUCED_LV_MAX) {
 			z = (BG_REDUCED_LV_MAX-1);
 		}
 		BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
+		data = &BG_RenderBox[z];
+
 	}
 	else {
 		z *= -1;
@@ -191,7 +195,11 @@ void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
 			z = (FG_REDUCED_LV_MAX - 1);
 		}
 		FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
+		data = &FG_RenderBox[z];
 	}
+	obj->custom.scaleX = 1 / data->Reduced_level;
+	obj->custom.scaleY = 1 / data->Reduced_level;
+
 }
 
 //******************************************************************************
@@ -213,12 +221,8 @@ void LandScape::ReducedObj::Init(float _Reduced_level) {
 
 void LandScape::ReducedObj::Update() {
 	for (int i = 0; i < count; i++) {
-		data[i]->custom.scaleX = 1 / Reduced_level;
-		data[i]->custom.scaleY = 1 / Reduced_level;
-
 		switch (data[i]->type)
 		{
-
 		case LSD::CENTER:
 			data[i]->pos = pos + (data[i]->pos / Reduced_level);
 			
@@ -354,7 +358,7 @@ void LandScape::ReducedObj::Render() {
 //*********************************************************************************
 //--プロトタイプ宣言--//
 void Reduced(LAND_SCAPE_OBJ* obj);
-
+int check_behind_obj(OBJ2D* obj);
 //---------------------------------------------------------------
 // 共通関数
 //---------------------------------------------------------------
@@ -363,28 +367,64 @@ void LAND_SCAPE_OBJ::Init() {
 	clear();
 	custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 }
-
 void LAND_SCAPE_OBJ::Update() {
 	if (move)move(this);
-	custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
-	if (z < 0) 
-	{
-		V2 pPos = pPlayer->pos;
-		
-	}
 
 	animation();
 	Reduced(this);
+
+
+	if (z < 0) {
+		
+		int alpha = custom.argb >> 24;
+		if (check_behind_obj(this))
+		{
+			if (alpha >= BEHIND_OBJ_ALPHA) {
+				alpha -= ALPHA_ACT;
+			}
+		}
+		else {
+			if (alpha >= 0xFF) {
+				alpha & 0xFF;
+				alpha | 0xFF;
+			}
+			else {
+				alpha += ALPHA_ACT;
+			}
+		}
+		custom.argb = (custom.argb & 0x00FFFFFF) | (alpha << 24);
+	}
+
+
+
 }
+int check_behind_obj(OBJ2D* obj)
+{
+	if(Judge(obj, pPlayer)){ return TRUE; }
+	Enemy** enemy = pEnemy_Manager->enemy;
+	for (int i = 0; i < ENEMY_MAX; i++) {
+		//存在チェック
+		if (!enemy[i])break;
+		if (!enemy[i]->init_fg)continue;
+		//判定処理
+		if (Judge(obj, enemy[i])) {
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+
 
 
 void LAND_SCAPE_OBJ::Render() {
 	if (!data)return;
 	sz = pEnemy_Manager->get_sz(z);
-	
 	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-	spr_data::Render(pos, data, &custom, 0xFFFFFFFF, shader2D, "depth");
+	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
+	//line_rect(pos,V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
+	//if(z < 0)line_rect(pos,V2(size.x, size.y), 0xFFFFFFFF, custom.scaleMode);
 
 }
 
@@ -473,10 +513,11 @@ void BG_pc(LAND_SCAPE_OBJ* obj) {
 	{
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
-
 		//obj->animeData = spr_pc;
 		obj->data = &spr_pc[0];
 		obj->state = BEGIN;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		break;
 	case BEGIN:
 		obj->state = MOVE;
@@ -498,6 +539,8 @@ void BG_container(LAND_SCAPE_OBJ* obj) {
 
 		obj->animeData = spr_container;
 		obj->data = &spr_container[0];
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -513,9 +556,13 @@ void BG_Capsule_l(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
-		obj->custom.scaleMode = SCALE_MODE::CENTER;
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Capsule_l;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
+		obj->size = V2(obj->data->dw/2, obj->data->dh/2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -529,9 +576,11 @@ void BG_Capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 	switch (obj->state)
 	{
 	case INIT:
-		obj->custom.scaleMode = SCALE_MODE::CENTER;
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Capsule_d;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -549,6 +598,8 @@ void BG_Fly_capsule_l(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Fly_capsule_l;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -564,6 +615,8 @@ void BG_Fly_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_capsule_d;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -579,7 +632,7 @@ void BG_Fly_capsule_m(LAND_SCAPE_OBJ* obj) {//メタル
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_capsule_m;
-		obj->size = V2(obj->data->sx,obj->data->sy);
+		obj->size = V2(obj->data->dw/2,obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -596,7 +649,10 @@ void BG_Break_capsule_u(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
 		obj->data = &spr_Break_capsule_u;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -605,14 +661,16 @@ void BG_Break_capsule_u(LAND_SCAPE_OBJ* obj) {
 	default:
 		break;
 	}
-
 }
+
 //フライminiカプセル
 void BG_Fly_mini_capsule_l(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_mini_capsule_l;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -627,7 +685,10 @@ void BG_Fly_mini_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Fly_mini_capsule_d;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -643,7 +704,11 @@ void BG_Fly_mini_capsule_m(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Fly_mini_capsule_m;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 
 		break;
@@ -659,7 +724,11 @@ void BG_Mini_capsule_l(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
 		obj->data = &spr_Mini_capsule_l;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 
 		break;
@@ -674,7 +743,10 @@ void BG_Mini_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
 		obj->data = &spr_Mini_capsule_d;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -691,7 +763,10 @@ void BG_Display_a(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Display_a;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -703,7 +778,10 @@ void BG_Display_b(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Display_b;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -715,7 +793,10 @@ void BG_Display_c(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Display_c;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -727,7 +808,10 @@ void BG_Display_d(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		obj->custom.scaleMode = SCALE_MODE::CENTER;
+
 		obj->data = &spr_Display_d;
+		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:

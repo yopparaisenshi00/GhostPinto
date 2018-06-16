@@ -158,7 +158,7 @@ void	sceneMain::Update()
 		state = BIGEN;
 	case BIGEN:
 		//‰ŠúÝ’è
-		pMAP->init(&st1_bg);
+		pMAP->Init(&st1_bg);
 		pLandScape->Init(stage_no);
 		pLandScape->setMainBG(&main, MainBG);
 
@@ -194,15 +194,15 @@ void	sceneMain::Update()
 			count_down_timer = 0;
 		}
 		if (count_down < 0)state = MAIN;
+		//pPlayer->R_Update();
+		//pFrame->R_Update();
 		pPlayer->R_Update();
 		pFrame->R_Update();
 		pEnemy_Manager->Update();
 		pEnemy_Manager->UIUpdate();
 		pEffect_Manager->Update();
 		pScore->Update();
-		pMAP->update();
-		//bg->Update();
-		//fg->Update();
+		pMAP->Update();
 		pNumber->Update(timer);
 		pLandScape->Update();
 
@@ -213,9 +213,8 @@ void	sceneMain::Update()
 		pEnemy_Manager->Update();
 		pEnemy_Manager->UIUpdate();
 		pEffect_Manager->Update();
-		pLandScape->Update();
 		pScore->Update();
-		pMAP->update();
+		pMAP->Update();
 		pNumber->Update(timer);
 
 		pLandScape->Update();

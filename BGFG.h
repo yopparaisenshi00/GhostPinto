@@ -1,12 +1,17 @@
 #ifndef _LAND_SCAPE_H_
 #define _LAND_SCAPE_H_
 
+#define BEHIND_OBJ_ALPHA (0x55) //前景透過限度
+#define ALPHA_ACT (0x11)		//前景透過速度
 
-#define _DEBUG_REDUCEDLINE_RENDER_ //縮尺サイズのライン描画 (大元)
+
+
+//#define _DEBUG_REDUCEDLINE_RENDER_ //縮尺サイズのライン描画 (大元)
 
 #define _DEBUG_REDUCEDLINE_TOP_ //縮尺サイズのライン描画TOP
 #define _DEBUG_REDUCEDLINE_BOT_ //縮尺サイズのライン描画BOT
 #define _DEBUG_REDUCEDLINE_CENTER_ //縮尺サイズのライン描画CENTER
+
 
 class LAND_SCAPE_OBJ;
 typedef struct LAND_SCAPE_DATA {
