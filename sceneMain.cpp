@@ -262,7 +262,6 @@ void	sceneMain::Update()
 //	ƒƒCƒ“•`‰æˆ—
 void	sceneMain::Render()
 {
-
 	//bg->Render();
 	pLandScape->RenderBG();
 	pMAP->Render();
@@ -299,7 +298,6 @@ void	sceneMain::Render()
 	}
 
 	pD_TEXT->Render();
-
 
 }
 

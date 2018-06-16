@@ -175,6 +175,33 @@ void LandScape::stage_update() {
 	}
 }
 
+void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
+	if (z > -1) { //0以上なら背景、以下なら前景
+		//エラーチェック// 配列サイズに収まっているか
+		if (z < 0 || z < FG_REDUCED_LV_MAX) {
+			z = (BG_REDUCED_LV_MAX-1);
+		}
+		BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
+	}
+	else {
+		z *= -1;
+		z -= 1;
+		//エラーチェック// 配列サイズに収まっているか
+		if (z < 0 || z < FG_REDUCED_LV_MAX) {
+			z = (FG_REDUCED_LV_MAX - 1);
+		}
+		FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
+	}
+}
+
+//******************************************************************************
+//
+//		描画順序制御
+//
+//******************************************************************************
+//------------------------------------------------------------------------------
+//		初期設定
+//------------------------------------------------------------------------------
 
 void LandScape::ReducedObj::Init(float _Reduced_level) {
 	clear();
@@ -215,29 +242,35 @@ void LandScape::ReducedObj::Render() {
 		data[i]->Render();
 	}
 	count = 0;
+#ifdef _DEBUG_REDUCEDLINE_RENDER_
 
-		////横
-		//iexPolygon::Rect((int)(pos.x), (int)(0), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
-		//iexPolygon::Rect((int)(pos.x), (int)(0 + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
+#ifdef _DEBUG_REDUCEDLINE_TOP_
+		//横
+		iexPolygon::Rect((int)(pos.x), (int)(0), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
+		iexPolygon::Rect((int)(pos.x), (int)(0 + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFFFF00);
+		//縦
+		iexPolygon::Rect((int)(pos.x), (int)(0), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(0), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
+
+#endif //_DEBUG_REDUCEDLINE_TOP_
+#ifdef _DEBUG_REDUCEDLINE_CENTER_
+		//横
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
+		//縦
+		iexPolygon::Rect((int)(pos.x), (int)(pos.y), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(pos.y), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
+#endif //_DEBUG_REDUCEDLINE_CENTER_
+#ifdef _DEBUG_REDUCEDLINE_BOT_
+		iexPolygon::Rect((int)(pos.x), (int)(bot), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
+		iexPolygon::Rect((int)(pos.x), (int)(bot + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
+		//SCREEN_WIDTH / Reduced_level
 		////縦
-		//iexPolygon::Rect((int)(pos.x), (int)(0), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
-		//iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(0), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFFFF00);
+		iexPolygon::Rect((int)(pos.x), (int)(bot), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
+		iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(bot), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
+#endif //_DEBUG_REDUCEDLINE_BOT_
+#endif
 
-
-		////横
-		//iexPolygon::Rect((int)(pos.x), (int)(pos.y), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
-		//iexPolygon::Rect((int)(pos.x), (int)(pos.y + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFF00FF00);
-		////縦
-		//iexPolygon::Rect((int)(pos.x), (int)(pos.y), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
-		//iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(pos.y), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFF00FF00);
-
-
-		//iexPolygon::Rect((int)(pos.x), (int)(bot), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
-		//iexPolygon::Rect((int)(pos.x), (int)(bot + SCREEN_HEIGHT / Reduced_level), (int)(SCREEN_WIDTH / Reduced_level), 1, 0, 0xFFFF0000);
-		////SCREEN_WIDTH / Reduced_level
-		//////縦
-		//iexPolygon::Rect((int)(pos.x), (int)(bot), 1, (int)SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
-		//iexPolygon::Rect((int)(pos.x + (int)(SCREEN_WIDTH / Reduced_level)), (int)(bot), 1, SCREEN_HEIGHT / Reduced_level, 0, 0xFFFF0000);
 }
 
 
@@ -314,13 +347,14 @@ void LandScape::ReducedObj::Render() {
 //}
 
 
-//---------------------------------------------------------------
+//*********************************************************************************
 //
 // 背景Obj
 //
-//---------------------------------------------------------------
+//*********************************************************************************
 //--プロトタイプ宣言--//
 void Reduced(LAND_SCAPE_OBJ* obj);
+
 //---------------------------------------------------------------
 // 共通関数
 //---------------------------------------------------------------
@@ -333,6 +367,12 @@ void LAND_SCAPE_OBJ::Init() {
 void LAND_SCAPE_OBJ::Update() {
 	if (move)move(this);
 	custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
+
+	if (z < 0) 
+	{
+		V2 pPos = pPlayer->pos;
+		
+	}
 
 	animation();
 	Reduced(this);
@@ -356,7 +396,7 @@ void Reduced(LAND_SCAPE_OBJ* obj) {
 	//int ScrollY = pMAP->getScrollY();
 	V2 Scroll(pMAP->getScrollX(), pMAP->getScrollY());
 	obj->pos = obj->wpos - Scroll;
-
+	
 	if (scale > -1) {
 		obj->pos = obj->wpos - Scroll;
 		switch (scale)
@@ -409,6 +449,7 @@ void Reduced(LAND_SCAPE_OBJ* obj) {
 
 	pLandScape->add_RenderObj(obj,scale);
 }
+
 
 
 //---------------------------------------------------------------
@@ -522,7 +563,6 @@ void BG_Fly_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 	{
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
-
 		obj->data = &spr_Fly_capsule_d;
 		obj->state = BEGIN;
 		break;
@@ -538,8 +578,9 @@ void BG_Fly_capsule_m(LAND_SCAPE_OBJ* obj) {//メタル
 	{
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
-
 		obj->data = &spr_Fly_capsule_m;
+		obj->size = V2(obj->data->sx,obj->data->sy);
+
 		obj->state = BEGIN;
 		break;
 	case BEGIN:

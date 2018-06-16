@@ -2,8 +2,11 @@
 #define _LAND_SCAPE_H_
 
 
+#define _DEBUG_REDUCEDLINE_RENDER_ //kÚƒTƒCƒY‚Ìƒ‰ƒCƒ“•`‰æ (‘åŒ³)
 
-
+#define _DEBUG_REDUCEDLINE_TOP_ //kÚƒTƒCƒY‚Ìƒ‰ƒCƒ“•`‰æTOP
+#define _DEBUG_REDUCEDLINE_BOT_ //kÚƒTƒCƒY‚Ìƒ‰ƒCƒ“•`‰æBOT
+#define _DEBUG_REDUCEDLINE_CENTER_ //kÚƒTƒCƒY‚Ìƒ‰ƒCƒ“•`‰æCENTER
 
 class LAND_SCAPE_OBJ;
 typedef struct LAND_SCAPE_DATA {
@@ -60,6 +63,7 @@ public:
 	bool init_fg;
 	float sz;
 	float z;
+	
 
 
 	void clear() {
@@ -153,16 +157,17 @@ public:
 	void Update();
 	void RenderBG();
 	void RenderFG();
-	void add_RenderObj(LAND_SCAPE_OBJ* obj,int z) {
-		if (z > -1) { //0ˆÈã‚È‚ç”wŒiAˆÈ‰º‚È‚ç‘OŒi
-			BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
-		}
-		else {
-			z *= -1;
-			z -= 1;
-			FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
-		}
-	}
+	void add_RenderObj(LAND_SCAPE_OBJ* obj, int z); 
+	//{
+	//	if (z > -1) { //0ˆÈã‚È‚ç”wŒiAˆÈ‰º‚È‚ç‘OŒi
+	//		BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
+	//	}
+	//	else {
+	//		z *= -1;
+	//		z -= 1;
+	//		FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
+	//	}
+	//}
 private:
 
 	struct ReducedObj {
