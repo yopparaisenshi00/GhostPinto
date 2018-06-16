@@ -1,6 +1,5 @@
 #ifndef _NUMBERS_H_
 #define _NUMBERS_H_
-
 //*****************************************************************************
 //
 //		ナンバー関連クラス
@@ -43,7 +42,10 @@ public:
 	void AddScale();	//スコア加算の拡大表示
 	void Render(int x, int y, int digit_max); //指定分描画
 	void Render2(int x, int y, int num);		//桁数分だけ描画
-	void  Number::Render3(int x, int y, int digit_max, D3DCOLOR argb);
+	void Render3(int x, int y, int digit_max, D3DCOLOR argb);
+	//数値描画関数(指数値描画(num) + 指定分描画 + color)           (digitmax = 表示文字数)
+	void RenderFree(int x, int y, int num, int digit_max, int _digitDispSize, D3DCOLOR argb);
+
 
 };
 #define pNumber (Number::getInstance())

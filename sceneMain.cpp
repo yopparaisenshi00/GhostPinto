@@ -33,7 +33,7 @@
 //										作成者:
 //
 //*****************************************************************************
-static SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540};
+SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
 
 
 
@@ -75,7 +75,7 @@ static IMG_DATA IMG_Main[] = {
 };
 
 static SPR_DATA numbers[10] = {
-	{ spr_data::Number2,64 * 0,64 ,192,64, -64,-32},
+	{ spr_data::Number2,64 * 0,64 ,192,64, -64,-32 },
 	{ spr_data::Number,64 * 1,0 ,64,64, -32,-32,64,64 },
 	{ spr_data::Number,64 * 2,0 ,64,64, -32,-32,64,64 },
 	{ spr_data::Number,64 * 3,0 ,64,64, -32,-32,64,64 },
@@ -96,14 +96,14 @@ static SPR_DATA numbers[10] = {
 bool sceneMain::Initialize()
 {
 	//	環境設定
-	iexLight::SetFog( 800, 1000, 0 );		//	フォグ(2Dでは半無意味)
+	iexLight::SetFog(800, 1000, 0);		//	フォグ(2Dでは半無意味)
 
-	//	カメラ設定
+										//	カメラ設定
 	view = new iexView();
 	state = 0;
 	count_down = 0;
-	scene_timer=0;
-	
+	scene_timer = 0;
+
 	pPlayer;
 	pFrame;
 	pNumber;
@@ -112,10 +112,12 @@ bool sceneMain::Initialize()
 }
 
 void sceneMain::UnInit() {
+
 }
 
 sceneMain::~sceneMain()
 {
+
 }
 
 
@@ -162,7 +164,7 @@ void	sceneMain::Update()
 
 		//((BG*)bg)->Init();
 		//bg->data(&main)
-//		fg->Init();
+		//		fg->Init();
 		pEffect_Manager->Init();
 		//pEnemy_Manager->Init();
 		//stageNo = SCENE_TITLE->bgNum;
@@ -171,27 +173,27 @@ void	sceneMain::Update()
 		pMAP->SetCenter((OBJ2D*)pPlayer);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		IEX_PlaySound(BGM_MAIN,FALSE); //BGM
+		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		count_down = 5;
+		count_down = 4;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		timer = 80 * 60;
 		scene_timer = 0;
 
-	//	KEY_Vibration(200,200);
+		//	KEY_Vibration(200,200);
 		state = FADE_IN;
 	case FADE_IN:
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
 		state = READY;
-	case READY: 
+	case READY:
 
 		count_down_timer++;
-		//if (count_down_timer > 60){
+		if (count_down_timer > 60) {
 			count_down--;
 			count_down_timer = 0;
-		//}
-		if(count_down < 0)state = MAIN;
+		}
+		if (count_down < 0)state = MAIN;
 		pPlayer->R_Update();
 		pFrame->R_Update();
 		pEnemy_Manager->Update();
@@ -203,7 +205,7 @@ void	sceneMain::Update()
 		//fg->Update();
 		pNumber->Update(timer);
 		pLandScape->Update();
-		
+
 		break;
 	case MAIN:
 		pPlayer->Update();
@@ -216,20 +218,20 @@ void	sceneMain::Update()
 		pMAP->update();
 		pNumber->Update(timer);
 
-		
+		pLandScape->Update();
 
 
 
 		//pNumber->Update();
 
-		if ( pPlayer->hp <=0 || KEY_Get(KEY_SPACE) == 3) {
+		if (pPlayer->hp <= 0 /*|| KEY_Get(KEY_SPACE) == 3*/) {
 			//if ( scene_timer++>60 ) {
-				state = GAMEOVER;
+			state = GAMEOVER;
 			//}
 		}
-		else if (pScore->getKill_num()>=50 || timer < 0 || KEY_Get(KEY_ENTER) == 3) {
+		else if (pScore->getKill_num() >= 50 || timer < 0 /*|| KEY_Get(KEY_ENTER) == 3*/) {
 			//if ( scene_timer++>60 ) {
-				state = GAMECLEAR;
+			state = GAMECLEAR;
 			//}
 		}
 
@@ -260,6 +262,7 @@ void	sceneMain::Update()
 //	メイン描画処理
 void	sceneMain::Render()
 {
+
 	//bg->Render();
 	pLandScape->RenderBG();
 	pMAP->Render();
@@ -270,25 +273,32 @@ void	sceneMain::Render()
 
 	if (!pFrame->exorciseDwon_flg) { //霊力があれば描画
 		pEnemy_Manager->UIRender();
-		//pFrame->Render();
+		//pFrame->Render();   
 		pScore->Render();
 	}
 
-	//pLandScape->RenderFG();
+	pLandScape->RenderFG();
 
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //霊力があれば描画
 
-	pMAP->MiniMapRender();
+		pMAP->MiniMapRender();
 
-	pPlayer->UIRender();
+		pPlayer->UIRender();
 	}
 	pNumber->Render();
 	pUI->Render();
 
+	switch (state)
+	{
+	case READY:
+		pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
+		break;
+	default:
+		break;
+	}
 
-
-	//pD_TEXT->Render();
+	pD_TEXT->Render();
 
 
 }
