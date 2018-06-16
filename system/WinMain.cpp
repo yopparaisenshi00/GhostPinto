@@ -13,7 +13,7 @@
 //
 //*****************************************************************************************************************************
 
-char*	AppTitle = "GhostPinto";
+char*	AppTitle = "IEX2010_base";
 
 BOOL	bFullScreen = FALSE;
 DWORD	ScreenMode  = SCREEN960;

@@ -100,6 +100,8 @@ void Player::Init() {
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
+	g.pos = D3DXVECTOR2(960-30, 420);
+
 	state++;
 	//fearstd = ((float)192 / (float)FERE_MAX);
 }
@@ -111,6 +113,34 @@ void Player::Update() {
 void Player::R_Update() {
 	anime();//アニメーション
 	judge();
+}
+
+//発光関数
+D3DCOLOR Player::Light(D3DCOLOR color) {
+	if ( color>=0x11FFFFFF ) color -= 0x66000000;
+	else color = 0x00FFFFFF;
+	return color;
+}
+
+//マルチフォーカス処理
+void Player::mlt_Update() {
+	//ゲージ拡大
+	if ( old_mlt<mltfcs.lv ) {
+		g.custom.scaleMode = CENTER;
+		g.custom.scaleX = g.custom.scaleY = 3.0f;
+	}
+	//ゲージ縮小
+	else if ( old_mlt==mltfcs.lv ) {
+		g.custom.scaleMode = CENTER;
+		g.custom.scaleX = g.custom.scaleY -= 0.2f;
+		if ( g.custom.scaleX<=1.0f ) g.custom.scaleX = g.custom.scaleY = 1.0f;
+	}
+	//使ったら発光
+	if ( old_mlt!=mltfcs.lv ) g.argb = 0xFFFFFFFF;	
+	if ( g.argb>=0x11FFFFFF ) g.argb -= 0x11000000;
+	else g.argb = 0x00FFFFFF;
+
+	old_mlt = mltfcs.lv;
 }
 
 void Player::move() {
@@ -148,20 +178,33 @@ void Player::move() {
 		//-----------------------------------------------------------
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
 			pFrame->use_Multifocus(mltfcs.lv);
-
 			mltfcs.lv = 0;
 			//mltfcs.add_point(0);
 		}
+		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
+			//最大,最小,時間
+			pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
+		}
+
+		mlt_Update();
 		//-----------------------------------------------------------
+
 
 		//-----------------------------------------------------------
 		//  ピントロック
 		//-----------------------------------------------------------
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
+			pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
+			//pEffect_Manager->searchSet(pos, V2( 3, -3), noAction);
+			//pEffect_Manager->searchSet(pos, V2( 3,  3), noAction);
+			//pEffect_Manager->searchSet(pos, V2(-3, -3), noAction);
+			//pEffect_Manager->searchSet(pos, V2(-3,  3), noAction);
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
+		
+
 		break;
 	case 3:
 
@@ -229,7 +272,7 @@ void Player::anime() {
 
 	//ダメージ
 	else if (s.old_nodamage == false && s.nodamage == true) {
-		IEX_PlaySound(SE_DAMAGE, FALSE); //ダメージ
+		if ( anime_no==1 )IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
 		if (reflect) {
 			if (anime_no > 5) s.old_nodamage = true;
 			data = &p_damage[anime_no]; //左ダメージ
@@ -293,19 +336,19 @@ void Player::Render() {
 }
 void Player::UIRender() {
 
-	V2 gage1 = V2(960 - 30, 420);
 	for (int i = 0; i < 3; i++)
 	{
-		//iexPolygon::Rect((int)gage.x, (int)gage.y,100,24,0,0xFFFF0000);
-		spr_data::Render(V2(gage1.x, gage1.y), &multi[0]);
-		gage1 += V2(0, 45);
+		spr_data::Render(V2(g.pos.x+custom.ef_ofsX, g.pos.y), &multi[0]); //マルチフォーカス欠
+		g.pos += V2(0, 45);
 	}
-	V2 gage = V2(960 - 30, 420);
+	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < mltfcs.lv; i++)
 	{
-		//iexPolygon::Rect((int)gage.x, (int)gage.y,100,24,0,0xFFFF0000);
-		spr_data::Render(V2(gage.x, gage.y), &multi[2]);
-		gage += V2(0, 45);
+		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2]); //マルチフォーカス満
+		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],g.argb,0); //白
+		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2],&g.custom,0xFFFFFFFF); //マルチフォーカス満
+		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],&g.custom,g.argb); //白
+		g.pos += V2(0, 45);
 	}
 	iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 
@@ -347,9 +390,10 @@ void Player::clear() {
 	jimen_flg = false;
 	fear_flg = false;
 
-
 	jet_eff_timer = 0;
 	p_eff_timer = 0;
+
+	g.pos = D3DXVECTOR2(960-30, 420);
 }
 
 void Player::SetMain() {

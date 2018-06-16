@@ -116,7 +116,7 @@ void Render3(V2 pos,SPR_DATA* data,int num,D3DCOLOR color)
 	int count = 0;
 
 	//桁数を調べる------------------
-	while ( _num>10 ) { //10以上なら
+	while ( _num>=10 ) { //10以上なら
 		_num /= 10;		//10で割って
 		count++;		//x位置ずらしカウント
 	}

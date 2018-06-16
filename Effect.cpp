@@ -1,4 +1,3 @@
-
 #include "iextreme.h"
 #include "Game.h"
 #include "Player.h"
@@ -6,6 +5,25 @@
 #include "MAP.h"
 #include "Effect.h"
 
+
+
+
+
+enum {
+	INIT=0,		//初期設定
+	MOVE,		//移動処理
+	MOVE2,		//移動処理2
+	MOVE3,		//移動処理3
+	MOVE4,		//移動処理4
+	CLEAR,		//消去処理
+};
+
+
+
+
+
+
+// commit
 
 //※いらない素材
 static SPR_DATA Frame_data = SPR_DATA{ spr_data::UI1,0,0,240,160,-120,-80, };
@@ -57,20 +75,6 @@ static SPR_DATA justpinto_data = SPR_DATA{ spr_data::UI1,0,0,128,128,-64,-64,0 }
 //飛行エフェクト素材(消滅エフェクトの流用)
 static SPR_DATA jet_data = SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,0 };
 
-
-////プレイヤー後方エフェクト
-//static SPR_DATA p_eff_data[] = {
-//	SPR_DATA{ spr_data::Player_eff, 128, 0 * 6,	 6,	6, -6 / 2,-6 / 2,0 }, //p_eff1
-//	SPR_DATA{ spr_data::Player_eff, 128, 1 * 6,	 6,	6, -6 / 2,-6 / 2,1 }, //p_eff2
-//	SPR_DATA{ spr_data::Player_eff, 128, 2 * 6,	 6,	6, -6 / 2,-6 / 2,2 }, //p_eff3
-//	SPR_DATA{ spr_data::Player_eff, 128, 3 * 6,	 6,	6, -6 / 2,-6 / 2,3 }, //p_eff4
-//	SPR_DATA{ spr_data::Player_eff, 128, 4 * 6,	 9, 9, -9 / 2,-9 / 2,4 }, //p_eff1*1.5
-//	SPR_DATA{ spr_data::Player_eff, 128, 4 * 6 + 1 * 9, 9, 9, -9 / 2,-9 / 2,5 }, //p_eff2*1.5
-//	SPR_DATA{ spr_data::Player_eff, 128, 4 * 6 + 2 * 9, 9, 9, -9 / 2,-9 / 2,6 }, //p_eff3*1.5
-//	SPR_DATA{ spr_data::Player_eff, 128, 4 * 6 + 3 * 9, 9, 9, -9 / 2,-9 / 2,7 }, //p_eff4*1.5
-//	SPR_LOOP
-//};
-
 //プレイヤー後方エフェクト
 static SPR_DATA p_eff_data[] = {
 	SPR_DATA{ spr_data::Player_eff, 128, 1 * 6,	 6,	6, -6 / 2,-6 / 2,1 }, //p_eff2
@@ -104,7 +108,7 @@ static SPR_DATA kirakira_ext_data = SPR_DATA{ spr_data::Player_eff,320,56,24,24,
 static SPR_DATA Lock_data = SPR_DATA{ spr_data::UI6,0,310,100,50,-50,-25 };
 
 //コンボ
-SPR_DATA combo_number[10] = {
+static SPR_DATA combo_number[10] = {
 	{ spr_data::Number,64 * 0,64 * 0,64,64,-32,-32,64 / 2,64 / 2 }, //0
 	{ spr_data::Number,64 * 1,64 * 0,64,64,-32,-32,64 / 2,64 / 2 }, //1
 	{ spr_data::Number,64 * 2,64 * 0,64,64,-32,-32,64 / 2,64 / 2 }, //2
@@ -117,9 +121,18 @@ SPR_DATA combo_number[10] = {
 	{ spr_data::Number,64 * 4,64 * 1,64,64,-32,-32,64 / 2,64 / 2 }, //9
 };
 
+//コンボテキスト
+static SPR_DATA combo_text = SPR_DATA{ spr_data::UI6,0,125,120,40,-60,-20  };
 
 
-//プレイヤー後方エフェクト
+//塵エフェクト
+static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2 };
+
+//スカエフェクト
+static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,-9/2 };
+//static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,1*6,6,6,-6/2,-6/2 };
+
+
 
 //static SPR_DATA p_eff_data[] = {
 //	SPR_DATA{spr_data::Player_eff, 128, 0*6,	 6,	6, -6/2,-6/2,1}, //p_eff1
@@ -224,6 +237,28 @@ void Effect_Manager::Update() {
 
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (!e[i])continue;
+			//e[i]->custom.ef_ofsX = shift_objects.x;
+			e[i]->custom.ef_ofsY = shift_objects.y;
+		}
+
+		Effect** f = pEffect_Manager->effect;
+		for (int i = 0; i < EFF_MAX; i++) {
+			if (!f[i])continue;
+			//f[i]->custom.ef_ofsX += shift_objects.x;
+			f[i]->custom.ef_ofsY += shift_objects.y;
+		}
+
+
+	}
+	if ((shift_all_trg == true)) {
+		Player* p = pPlayer;
+		p->custom.ef_ofsX = shift_objects.x;
+		p->custom.ef_ofsY = shift_objects.y;
+
+		Enemy** e = pEnemy_Manager->enemy;
+
+		for (int i = 0; i < ENEMY_MAX; i++) {
+			if (!e[i])continue;
 			e[i]->custom.ef_ofsX = shift_objects.x;
 			e[i]->custom.ef_ofsY = shift_objects.y;
 		}
@@ -234,11 +269,6 @@ void Effect_Manager::Update() {
 			f[i]->custom.ef_ofsX += shift_objects.x;
 			f[i]->custom.ef_ofsY += shift_objects.y;
 		}
-
-
-	}
-	if ((shift_all_trg == true)) {
-						
 	}
 
 	if ((shift_objects_trg == 0x02) || (shift_all_trg == 0x02)) {
@@ -258,11 +288,9 @@ void Effect_Manager::Update() {
 
 		for (int i = 0; i < EFF_MAX; i++) {
 			if (!f[i])continue;
-
 			f[i]->custom.ef_ofsX = 0;
 			f[i]->custom.ef_ofsY = 0;
 		}
-
 	}
 
 	if ((shift_all_trg == 0x10)) {
@@ -321,18 +349,18 @@ void framerotate(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		obj->data = &Frame_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 1;
 		obj->custom.angle = 0;
-		obj->state++;
-	case 1:
+		obj->state=MOVE;
+	case MOVE:
 		obj->custom.scaleX = obj->custom.scaleY -= 0.05f;
 		obj->custom.angle -= 15;
-		if (obj->custom.scaleX<0) obj->state = 2;
+		if (obj->custom.scaleX<0) obj->state = CLEAR;
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -346,7 +374,7 @@ void Extinction(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		//obj->data = &Ext_data;
 		obj->animeData = anime_Jet_data;
 		obj->data = &obj->animeData[0];
@@ -355,18 +383,18 @@ void Extinction(Effect *obj)
 		obj->i_work[0] = (int)obj->pos.y;
 		obj->timer = 0;
 		obj->alpha = 255;
-		obj->state++;
-	case 1:
+		obj->state=MOVE;
+	case MOVE:
 		obj->pos -= obj->spd;
 		if ( /*(obj->i_work[0]-100)>obj->pos.y ||*/ obj->timer++>50) {
 			if (obj->alpha>25) obj->alpha -= 25; //透明処理
 			else {
 				obj->alpha = 0;
-				obj->state = 2; //透明になったら消去処理へ
+				obj->state = CLEAR; //透明になったら消去処理へ
 			}
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -380,28 +408,28 @@ void kemuri(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		//obj->data = &Ext_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 0.7f;
 		obj->timer = 0;
 		obj->alpha = (int)(255 * 0.7f);
-		obj->state++;
-	case 1:
+		obj->state=MOVE;
+	case MOVE:
 		obj->pos += obj->spd;
 		obj->custom.scaleX = obj->custom.scaleY -= 0.02f;
 		if (obj->custom.scaleX<0) {
-			obj->state = 2;
+			obj->state = CLEAR;
 		}
 		if (obj->timer++>10) {
 			//if ( obj->alpha>25 ) obj->alpha-=50; //透明処理
 			//else {
 			//	obj->alpha = 0;
-			//	obj->state = 2; //透明になったら消去処理へ
+			//	obj->state = CLEAR; //透明になったら消去処理へ
 			//}
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -453,21 +481,21 @@ void Ext(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		obj->animeData = anime_ext_data;
 		obj->data = &obj->animeData[0];
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 2.0f;
 		obj->timer = 0;
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		if (obj->timer++>30) {
-			obj->state = 2; //消去処理へ
+			obj->state = CLEAR; //消去処理へ
 			obj->timer = 0;
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -476,24 +504,42 @@ void Ext(Effect *obj)
 }
 
 //敵消滅エフェクト(丸)
-void CircleExt1(Effect *obj) {
+void CircleExt(Effect *obj) {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
+		//else if (obj->timer%5 <= 2) obj->custom.argb = 0xCCFFFFFF;	//白色
+		//if (obj->timer%5 <= 1) obj->custom.argb = 0xCCffab05;	//オレンジ色
+		//else if (obj->timer%5 <= 3) obj->custom.argb = 0xCCc577ef;	//紫色
+		//else if (obj->timer%5 <= 5) obj->custom.argb = 0xFFD68D8D;	//薄赤色
 		obj->data = &EdgeCircle_ext_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 0.5f;
-		obj->custom.argb = 0xFF7ce2ef; //水色
-		obj->alpha = (int)(255 * 0.8f);
-		obj->state++;
+		obj->alpha = 0; //透明
+		obj->timer = 0;
+		obj->state = MOVE;
 		//break;
-	case 1:
-		obj->custom.scaleX = obj->custom.scaleY += 0.2f;	//拡大処理
-		if (obj->custom.scaleX>1.7f) {	//一定の大きさになったら
-			obj->state = 2;				//消去処理へ
+	case MOVE:
+		//spd.x=0		出現time
+		//spd.y=2.0f	拡大限度
+		if(obj->timer==(int)(obj->spd.x)) obj->alpha = (int)(255*0.8f);//指定秒数経ったら現れる
+		if (obj->timer>=(int)(obj->spd.x)) { 
+			obj->custom.scaleX = obj->custom.scaleY += 0.2f;	//拡大処理
+				 if (obj->timer%5 <= 1) obj->custom.argb = 0xFFFFFF90;	//赤色
+			else if (obj->timer%5 <= 3) obj->custom.argb = 0xFFFFCC90;	//青色
+			else if (obj->timer%5 <= 5) obj->custom.argb = 0xFFFFAA90;	//緑色
 		}
+		if (obj->custom.scaleX>=obj->spd.y) {	//一定の大きさになったら
+			obj->alpha -= 255/8;
+			if ( obj->alpha<0 ) {	//透明になったら
+				obj->alpha = 0;
+				obj->timer = 0;
+				obj->state = CLEAR;	//消去へ
+			}
+		}
+		obj->timer++;
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -503,33 +549,40 @@ void CircleExt1(Effect *obj) {
 }
 
 //敵消滅エフェクト(丸)
-void CircleExt2(Effect *obj) {
+void CircleExt_lightB(Effect *obj) {
 	switch (obj->state)
 	{
-	case 0:
-		obj->data = &EdgeCircle_ext_data;
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = 0.7f;
-		obj->custom.argb = 0xFF7ce2ef; //水色
-		obj->alpha = 0; //透明
-		obj->timer = 0;
-		obj->state++;
-		//break;
-	case 1:
-		if (obj->timer++>2) { //指定秒数経ったら
-			obj->alpha = (int)(255 * 0.8f); //現れる
-			obj->custom.scaleX = obj->custom.scaleY += 0.2f;	//拡大処理
-			if (obj->custom.scaleX>2.0f) {	//一定の大きさになったら
-				obj->state = 2;				//消去処理へ
-				obj->timer = 0;
+		case INIT:
+			obj->data = &EdgeCircle_ext_data;
+			obj->custom.scaleMode = CENTER;
+			obj->custom.scaleX = obj->custom.scaleY = 0.5f;
+			obj->custom.argb = 0xDD5BE1FF;
+			obj->alpha = 0; //透明
+			obj->timer = 0;
+			obj->state = MOVE;
+			//break;
+		case MOVE:
+			//spd.x=0		出現time
+			//spd.y=2.0f	拡大限度
+			if(obj->timer==(int)(obj->spd.x)) obj->alpha = (int)(255);//指定秒数経ったら現れる
+			if (obj->timer>=(int)(obj->spd.x)) { 
+				obj->custom.scaleX = obj->custom.scaleY += 0.2f;	//拡大処理
 			}
-		}
-		break;
-	case 2:
-		obj->clear();
-		break;
-	default:
-		break;
+			if (obj->custom.scaleX>=obj->spd.y) {	//一定の大きさになったら
+				obj->alpha -= 255/8;
+				if ( obj->alpha<0 ) {	//透明になったら
+					obj->alpha = 0;
+					obj->timer = 0;
+					obj->state = CLEAR;	//消去へ
+				}
+			}
+			obj->timer++;
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
 	}
 
 }
@@ -537,7 +590,7 @@ void CircleExt2(Effect *obj) {
 //敵消滅エフェクト(散らばる●)
 void ParticleExt_c(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &Circle_ext_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 0.1f;
@@ -545,9 +598,9 @@ void ParticleExt_c(Effect* obj) {
 		obj->timer = 0;
 		obj->alpha = 0;
 		obj->i_work[6] = 0;
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->alpha = (int)(255);
 		//obj->custom.scaleX = obj->custom.scaleY =(float)(rand()%30)/10.0f+1.0f;	//大きさ変更(1.0～2.0倍)
 		obj->custom.scaleX = obj->custom.scaleY = (float)(rand() % 10) / 15.0f;	//大きさ変更(0.1～1.0倍)
@@ -561,10 +614,10 @@ void ParticleExt_c(Effect* obj) {
 		obj->pos.y += obj->spd.y; //散らばる処理
 
 		if (obj->timer++>20) {	//指定時間経ったら
-			obj->state = 2;		//消去処理へ
+			obj->state = CLEAR;		//消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -575,7 +628,7 @@ void ParticleExt_c(Effect* obj) {
 //敵消滅エフェクト(散らばるキラキラ)
 void ParticleExt_k(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &kirakira_ext_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 0.1f;
@@ -583,9 +636,9 @@ void ParticleExt_k(Effect* obj) {
 		obj->timer = 0;
 		obj->alpha = 0;
 		obj->i_work[6] = 0;
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->alpha = (int)(255);
 		//obj->custom.scaleX = obj->custom.scaleY =(float)(rand()%10)/10.0f+1.0f;	//大きさ変更(1.0～2.0倍)
 		obj->custom.scaleX = obj->custom.scaleY = (float)(rand() % 10) / 5.0f;	//大きさ変更(0.5～2.0倍)
@@ -599,10 +652,10 @@ void ParticleExt_k(Effect* obj) {
 		obj->pos.y += obj->spd.y; //散らばる処理
 
 		if (obj->timer++>20) {	//指定時間経ったら
-			obj->state = 2;		//消去処理へ
+			obj->state = CLEAR;		//消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -615,36 +668,36 @@ void ParticleExt_k(Effect* obj) {
 //Lockエフェクト
 void Lock(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &Lock_data;
 		obj->custom.argb = 0xFFFFFFFF;
 		obj->custom.scaleMode = CENTER;
 		obj->timer = 0;
 		obj->alpha = 255;
 		obj->i_work[6] = 0;
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->i_work[6] = obj->timer % 5;
 		if (obj->i_work[6] <= 1) obj->custom.argb = 0xCCffab05;	//オレンジ色
 		else if (obj->i_work[6] <= 3) obj->custom.argb = 0xCCc577ef;	//紫色
 		else if (obj->i_work[6] <= 5) obj->custom.argb = 0xFFD68D8D;	//薄赤色
 
-		if (obj->timer++>18) obj->state = 2; //拡大へ
+		if (obj->timer++>18) obj->state = MOVE2; //拡大へ
 		break;
-	case 2: //拡大
+	case MOVE2: //拡大
 		obj->custom.scaleX = obj->custom.scaleY += 0.7f;
-		if (obj->custom.scaleX >= 1.7f) obj->state = 3;
+		if (obj->custom.scaleX >= 1.7f) obj->state = MOVE3;
 		break;
-	case 3: //縮小
+	case MOVE3: //縮小
 		obj->custom.scaleX = obj->custom.scaleY -= 0.2f;
-		if (obj->custom.scaleX <= 1.4f) obj->state = 4;
+		if (obj->custom.scaleX <= 1.4f) obj->state = MOVE4;
 		break;
-	case 4: //scaleY縮小
+	case MOVE4: //scaleY縮小
 		obj->custom.scaleY -= 0.3f;
-		if (obj->custom.scaleY<0.0f) obj->state = 5;
+		if (obj->custom.scaleY<0.0f) obj->state = CLEAR;
 		break;
-	case 5:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -656,39 +709,30 @@ void Lock(Effect* obj) {
 //コンボ
 void Combo(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &combo_number[0];
-		obj->custom.argb = 0xFFff644c;
 		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = 1.3f;
 		obj->timer = 0;
-		obj->alpha = 255;
-		obj->i_work[6] = 0;
+		obj->i_work[6] = 0; //色変更ランダム用
 		obj->i_work[7] = 0; //コンボ用
 		obj->i_work[8] = obj->pos.y; //座標保存用
-		obj->spd.y -= 8;
-		obj->state++;
+		obj->spd.y = -4;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->i_work[7] = obj->spd.x; //コンボ
 		obj->data = &combo_number[obj->i_work[7]]; //コンボ表示
 
-												  //obj->i_work[6] = obj->timer%5;
-												  //if (obj->i_work[6]<=1) obj->custom.argb = 0xCCffab05;	//オレンジ色
-												  //else if (obj->i_work[6]<=3) obj->custom.argb = 0xCCc577ef;	//紫色
-												  //else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFD68D8D;	//薄赤色
+		obj->i_work[6] = obj->timer%3;
+		if (obj->i_work[6]==0) obj->custom.argb = 0xCCffab05;	//オレンジ色
+		else if (obj->i_work[6]==1) obj->custom.argb = 0xCCc577ef;	//紫色
+		else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
 
-												  //obj->pos.y += obj->spd.y;
-												  //if ( obj->i_work[8]>=obj->pos.y ) {
-												  //	obj->spd.y += 1;
-												  //}
-												  //else obj->spd.y = 0;
-												  //if (obj->i_work[8]-obj->spd.y > obj->pos.y ) obj->state = 2; //拡大へ
-
-
-
-		if (obj->timer++>18) obj->state = 2; //拡大へ
+		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
+		else if (obj->timer++>10) obj->state = CLEAR; //消去
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -697,29 +741,155 @@ void Combo(Effect* obj) {
 
 }
 
+//コンボテキスト
+void ComboText(Effect* obj) {
+	switch ( obj->state ){
+	case INIT:
+		obj->data = &combo_text;
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY =0.6f;
+		obj->timer = 0;
+		obj->i_work[6] = 0; //色変更ランダム用
+		obj->i_work[8] = obj->pos.y; //座標保存用
+		obj->spd.y = -4;
+		obj->state=MOVE;
+		//break;
+	case MOVE:
+		obj->i_work[6] = obj->timer%3;
+		if (obj->i_work[6]==0) obj->custom.argb = 0xCCffab05;	//オレンジ色
+		else if (obj->i_work[6]==1) obj->custom.argb = 0xCCc577ef;	//紫色
+		else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
+
+		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
+		else if (obj->timer++>10) obj->state = CLEAR; //消去
+		break;
+	case CLEAR:
+		obj->clear();
+		break;
+	default:
+		break;
+
+	}
+}
+
+
+//塵(ちり)エフェクト
+void dust(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+			obj->data = &dust_data;
+			obj->timer = 0;
+			obj->alpha = 0;
+			obj->state=MOVE;
+			//break;
+		case MOVE:
+			obj->timer++;
+			//移動----------------------------------------------
+			//obj->pos.x += cosf(obj->timer*0.03f);
+			obj->pos.x += cosf(obj->timer*obj->spd.x);
+			obj->pos.y += obj->spd.y;
+
+			//出現処理------------------------------------------
+			if ( obj->timer>(rand()%100) ) obj->alpha += 25;
+			if ( obj->alpha>255 ) obj->alpha = 255;
+
+			if ( obj->pos.y<200 ) {
+				//透明処理------------------------------------------
+				obj->alpha -= 25;
+				if ( obj->alpha<0 ) obj->alpha = 0;
+				obj->state = CLEAR; //上までいったら消去
+			}
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
+
+
+//スカエフェクト
+void noAction(Effect *obj) {
+	switch (obj->state)
+	{
+		case INIT:
+			obj->data = &EdgeCircle_ext_data;
+			obj->custom.scaleMode = CENTER;
+			obj->custom.scaleX = obj->custom.scaleY = 0.5f;
+			obj->custom.argb = 0xFFffa8a8;
+			obj->state=MOVE;
+			//break;
+		case MOVE:
+			obj->custom.scaleX = obj->custom.scaleY += 0.25f;	//拡大処理
+			if (obj->custom.scaleX>2.0f) {	//一定の大きさになったら
+				obj->alpha -= 255/6;
+				if ( obj->alpha<0 ) {	//透明になったら
+					obj->alpha = 0;
+					obj->state = CLEAR;	//消去へ
+				}
+			}
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
+//void noAction(Effect* obj) {
+//	switch ( obj->state ) {
+//		case INIT:
+//			obj->data = &noAction_data;
+//			obj->alpha = 0;
+//			obj->timer = 0;
+//			obj->custom.scaleMode = CENTER;
+//			obj->state = MOVE;
+//			//break;
+//		case MOVE:
+//			if ( obj->timer==7 ) obj->alpha = 255-30;										//出現
+//			if ( obj->timer<=10 ) obj->pos += obj->spd;										//移動
+//			if ( obj->timer>=10 )obj->custom.scaleX = obj->custom.scaleY += 0.3f;			//拡大
+//			if ( obj->custom.scaleX>=1.6f ) obj->custom.scaleX = obj->custom.scaleY = 4.0f;	//拡大限度
+//			if ( obj->timer>=16 ) obj->alpha -= 255/6;										//透明
+//			if ( obj->alpha<0 ) {	//透明になったら
+//				obj->alpha = 0;
+//				obj->state = CLEAR;	//消去へ
+//			}
+//			obj->timer++;
+//			break;
+//		case CLEAR:
+//			obj->clear();
+//			break;
+//		default:
+//			break;
+//	}
+//}
+
+
 //テレポートエフェクト
 void TeleportExt(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		obj->animeData = anime_tele_data;
 		obj->data = &obj->animeData[0];
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 0.5f;
 		obj->alpha = (int)(255 * 0.7f);
-		obj->custom.argb = 0xFF6ba5ce;
+		obj->custom.argb = 0xFFFFFFFF;
 		obj->timer = 0;
-		obj->state++;
-	case 1:
+		obj->state=MOVE;
+	case MOVE:
 		if (obj->timer++>16) {
-			obj->state = 2; //消去処理へ
+			obj->state = CLEAR; //消去処理へ
 		}
 		//if ( obj->data->texNum < 0 ) { //アニメーションが最後なら
 		//	obj->state = 2;					//消去処理へ
 		//}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -733,7 +903,7 @@ void Just_pinto(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		//obj->animeData = anime_ext_data;
 		obj->data = &justpinto_data;
 		obj->custom.scaleMode = CENTER;
@@ -741,17 +911,17 @@ void Just_pinto(Effect *obj)
 		obj->custom.argb = 0xDDff9393; //赤色
 		obj->timer = 0;
 		obj->alpha = (int)(255 * 0.8f);
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->alpha -= 6;					//透明処理
 		if (obj->alpha<0) obj->alpha = 0;	//
 		obj->custom.scaleX = obj->custom.scaleY += 0.17f;	//拡大処理
 		if (obj->custom.scaleX>3.0f) {	//一定の大きさになったら
-			obj->state = 2;					//消去処理へ
+			obj->state = CLEAR;					//消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -765,7 +935,7 @@ void pinto_lock(Effect *obj)
 {
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		//obj->animeData = anime_ext_data;
 		obj->data = &justpinto_data;
 		obj->custom.scaleMode = CENTER;
@@ -775,15 +945,15 @@ void pinto_lock(Effect *obj)
 		obj->alpha = (int)(255 * 0.8f);
 		obj->state++;
 		//break;
-	case 1:
+	case MOVE:
 		obj->alpha -= 6;					//透明処理
 		if (obj->alpha<0) obj->alpha = 0;	//
 		obj->custom.scaleX = obj->custom.scaleY -= 0.17f;	//拡大処理
 		if (obj->custom.scaleX<0.5f) {	//一定の大きさになったら
-			obj->state = 2;					//消去処理へ
+			obj->state = CLEAR;					//消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -795,7 +965,7 @@ void pinto_lock(Effect *obj)
 //ジェットエフェクト
 void Jet(Effect *obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		//obj->animeData = anime_ext_data;
 		obj->data = &jet_data;
 		obj->custom.scaleMode = CENTER;
@@ -803,9 +973,9 @@ void Jet(Effect *obj) {
 		obj->custom.argb = 0xFFFFFFFF;
 		obj->timer = 0;
 		obj->alpha = (int)(255 * 0.7f);
-		obj->state++;
+		obj->state=MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->custom.scaleX = obj->custom.scaleY -= 0.01f;							//縮小処理
 		if (obj->custom.scaleX<0) obj->custom.scaleX = obj->custom.scaleY = 0;	//
 		obj->alpha -= 8;						//透明処理
@@ -813,10 +983,10 @@ void Jet(Effect *obj) {
 		obj->pos.y += 2;
 
 		if (obj->timer++>12) { //指定時間経ったら
-			obj->state = 2; //消去処理へ
+			obj->state = CLEAR; //消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		//pEffect_Manager->searchSet(V2(pPlayer->pos.x, pPlayer->pos.y+40), V2(0, 0), Jet);
 		break;
@@ -829,26 +999,26 @@ void Jet(Effect *obj) {
 //プレイヤー後方エフェクト
 void P_particle(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->animeData = p_eff_data;
 		obj->data = &obj->animeData[0];
 		//obj->data = &p_eff_data[5];
 		obj->custom.argb = 0xFFFFFF55;
 		obj->timer = 0;
-		obj->alpha = (int)(255 * 0.5f);
-		obj->state++;
+		obj->alpha = (int)(255 * 0.6f);
+		obj->state = MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		if (obj->timer>6) {
-			obj->alpha -= 32;						//透明処理
+			obj->alpha -= 28;						//透明処理
 			if (obj->alpha<0) obj->alpha = 0;		//
 		}
 		obj->pos.y += 0.8f;
-		if (obj->timer++>10) { //指定時間経ったら
-			obj->state = 2; //消去処理へ
+		if (obj->timer++>15) { //指定時間経ったら
+			obj->state = CLEAR; //消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -860,20 +1030,20 @@ void P_particle(Effect* obj) {
 //フェードイン
 void fade_In(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &fade_in;
 		obj->custom.scaleMode = LEFTTOP;
 		obj->timer = 0;
-		obj->state++;
+		obj->state = MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->pos.x -= 24;
 
 		if (obj->timer++ > 120) { //指定時間経ったら
-			obj->state = 2; //消去処理へ
+			obj->state = CLEAR; //消去処理へ
 		}
 		break;
-	case 2:
+	case CLEAR:
 		obj->clear();
 		break;
 	default:
@@ -885,23 +1055,23 @@ void fade_In(Effect* obj) {
 //フェードアウト
 void fade_Out(Effect* obj) {
 	switch (obj->state) {
-	case 0:
+	case INIT:
 		obj->data = &fade_out;
 		obj->custom.scaleMode = LEFTTOP;
 		obj->timer = 0;
-		obj->state++;
+		obj->state = MOVE;
 		//break;
-	case 1:
+	case MOVE:
 		obj->pos.x -= 17;
 		if (obj->pos.x < -SCREEN_WIDTH) { //指定時間経ったら
-			obj->state = 2; //ループへ
+			obj->state = MOVE2; //ループへ
 			obj->pos.x = -SCREEN_WIDTH;
 		}
 		break;
-	case 2:
+	case MOVE2:
 		break;
 
-	case 3:
+	case CLEAR:
 		obj->clear();
 
 		break;
@@ -929,16 +1099,18 @@ void Shake(Effect* obj) {
 	switch (obj->state)
 	{
 	case 0:
+		SHAKE_MAX = (int)obj->pos.x;
+		SHAKE_MIN = (int)obj->pos.y;
 
 		obj->timer = obj->spd.x;
 		obj->state = obj->spd.y;
-		
-		SHAKE_MAX = (int)obj->pos.x;
-		SHAKE_MIN = (int)obj->pos.y;
 		break;
 	case 1:
 		//SHAKE_Y =  (int)((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
-		SHAKE_X = (int)(randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
+		//SHAKE_X = (int)(randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
+		//-100～100 -1～1 MIN～MAX
+
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = 3;
@@ -947,8 +1119,9 @@ void Shake(Effect* obj) {
 
 		break;
 	case 2:
-		SHAKE_X = (randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
+		//SHAKE_X = (randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
 		//SHAKE_Y = ((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = 3;

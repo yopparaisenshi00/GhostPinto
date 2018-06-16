@@ -4,6 +4,8 @@
 #include "Frame.h"
 #include "Player.h"
 #include "Sound.h"
+#include "sceneMain.h"
+
 enum {
 	pinto_s = spr_data::UI1,
 	pinto_a = spr_data::UI2,
@@ -87,7 +89,7 @@ void Frame::Update() {
 		flash_timer = 0;
 		flash_flg = false;
 
-
+		pinto_argb = 0xFFFFFFFF; //白
 
 		state = MOVE;
 		break;
@@ -126,10 +128,12 @@ void Frame::Update() {
 		///////////////////////////////////////////////////////////////////////////////////
 		//振動処理
 		if (pPlayer->s.old_nodamage == false && pPlayer->s.nodamage == true) { //プレイヤーがダメージを受けたら
-																			   //  Set(揺れ幅,時間)
-			Vib_Set(7, 1);
+			Vib_Set(7, 1); //(揺れ幅,時間)
 			//s.old_nodamage=true (Player.cppで処理)
 		}
+		//if (pScore->getCombo()>2) { //
+		//	Vib_Set(7, 1); //(揺れ幅,時間)
+		//}
 
 		pD_TEXT->set_Text(V2(600, 200), "PL_trg_t", lockPinto_trg == true, 0xFFFFFFFF);
 		pD_TEXT->set_Text(V2(600, 216), "PL_trg_f", lockPinto_trg == false, 0xFFFFFFFF);
@@ -147,6 +151,12 @@ void Frame::Update() {
 
 }
 
+//発光関数
+D3DCOLOR Light(D3DCOLOR color) {
+	if ( color>=0x11FFFFFF ) color -= 0x02000000;
+	else color = 0x00FFFFFF;
+	return color;
+}
 
 
 
@@ -159,6 +169,13 @@ void Frame::Render() {
 		//iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y - 40) + (200 - exorcise * 2)), 10, (int)(exorcise / 2), 0, argb, 0); //霊力ゲージ描画(プレイヤー右上)
 		//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 	}
+
+	if ( multifocus_flg ) {
+		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
+		light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
+	}
+	else light_argb = 0xDDFFFFFF;							//マルチフォーカスを使ったら発光
+
 	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
@@ -316,7 +333,11 @@ void Frame::exorcise_Update() {
 		old_exorcise != (exorcise-EXORCISE_AUTOHEEL)) flash_flg = true; //霊力ゲージがMAXではなく,自然回復以外の変化があれば
 
 	if (flash_flg == true) {
-		if (flash_timer++<60) { //指定秒数の間
+		if ( exorcise<(EXORCISE_MAX/3) && flash_timer++<60 ) {
+			if ((flash_timer % 14) <  7) argb = 0xFFff765e;	//点滅処理	赤色
+			if ((flash_timer % 14) >= 7) argb = 0xFFFFFF00;	//　		黄色
+		}
+		else if (flash_timer++<60) { //指定秒数の間
 			if ((flash_timer % 14) <  7) argb = 0xFFFFFFFF;	//点滅処理	白色
 			if ((flash_timer % 14) >= 7) argb = 0xFFFFFF00;	//　		黄色
 		}

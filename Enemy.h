@@ -128,6 +128,7 @@ public:
 	int damageMAX;	//撃退ゲージMAX
 	int alpha ;
 	int count;
+	int score; //スコア
 
 	float z;		//ピント座標
 	D3DCOLOR ui_argb; //UI_ARGB
@@ -139,6 +140,9 @@ public:
 	bool noHit_flg;
 	bool zlock_flg;
 
+
+	SPR_DATA**	Anime_Box;
+	int flash_timer;
 
 	float f_work[16]; //フリー
 	

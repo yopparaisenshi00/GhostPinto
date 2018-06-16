@@ -101,6 +101,7 @@ private:
 	D3DCOLOR out_argb;
 	int count;
 
+	D3DCOLOR light_argb; //”­Œõ—p
 
 	//////////////////////////////////////
 	//U“®

@@ -2,6 +2,7 @@
 #ifndef _EFFECT_H_
 #define _EFFECT_H_
 
+
 //#define EFF_MAX 256
 #define EFF_MAX 512
 class Effect : public OBJ2DEX
@@ -27,6 +28,10 @@ public:
 protected:
 
 };
+
+
+
+
 
 
 
@@ -66,10 +71,10 @@ private:
 #define pEffect_Manager (Effect_Manager::getInstance())
 
 
+
 void framerotate(Effect*);
 void Extinction(Effect*);
 void kemuri(Effect*);
-void CircleExt(Effect*);
 void TeleportExt(Effect*);
 void Just_pinto(Effect *obj);
 void pinto_lock(Effect *obj);
@@ -81,11 +86,14 @@ void fade_Out(Effect* obj);
 void Shake(Effect* obj);
 
 void Ext(Effect*);			//敵消滅エフェクト
-void CircleExt1(Effect*);	//丸エフェクト
-void CircleExt2(Effect*);	//丸エフェクト
+void CircleExt(Effect*);	//丸エフェクト
+void CircleExt_lightB(Effect*);	//丸エフェクト_水色
 void ParticleExt_c(Effect*);	//パーティクルエフェクト(散らばる●)
 void ParticleExt_k(Effect*);	//パーティクルエフェクト(散らばるキラキラ)
 void Lock(Effect*);			//Lockエフェクト
 void Combo(Effect*);			//Comboエフェクト
+void ComboText(Effect*);			//Comboテキストエフェクト
+void dust(Effect*);			//塵エフェクト
+void noAction(Effect*);			//スカエフェクト
 
 #endif // !_EFFECT_H_
