@@ -25,23 +25,24 @@ STAGE_DATA stage1_time[] = {
 	STAGE_DATA(0,		Rotation,	V2(500, 832),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(450, 752),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(450, 912),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(200, 912),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(280, 832),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(600, 452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(700, 372),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(1200,912),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(1300,832),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+
+	STAGE_DATA(0,		Normal	,	V2(200, 912),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(280, 832),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(600, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(1260, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(1600,912),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(1700,832),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 
 	//WAVE2 10匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
-	STAGE_DATA(900,		Normal	,	V2(700, 452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(900,		Normal	,	V2(860, 452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(900,		Normal	,	V2(1120,452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(900,		Normal	,	V2(1220,452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Normal	,	V2(700, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Normal	,	V2(860, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Normal	,	V2(1120,452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Normal	,	V2(1220,452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
-	STAGE_DATA(900,		Rotation,	V2(960, 782),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(900,		Rotation,	V2(960, 512),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Tombo,		V2(960, 782),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(900,		Tombo,		V2(960, 512),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 	STAGE_DATA(1200,	Teleport,	V2(1500,452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(1200,	Teleport,	V2(1600,452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -57,27 +58,27 @@ STAGE_DATA stage1_time[] = {
 STAGE_DATA stage1_kill[] = {
 	//全21匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
-	STAGE_DATA(15,		zMove,		V2(1260,762),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(15,		zMove,		V2(660, 762),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(15,		zMove,		V2(660, 512),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(15,		zMove,		V2(1260,512),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(15,		zMove,		V2(1260,762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(15,		zMove,		V2(660, 762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(15,		zMove,		V2(660, 512),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(15,		zMove,		V2(1260,512),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 	STAGE_DATA(20,		Tombo,		V2(700, 452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(20,		Tombo,		V2(800, 452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(20,		Tombo,		V2(1120,452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(20,		Tombo,		V2(1220,452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
-	STAGE_DATA(30,		Big,		V2(960, 512),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(30,		Big,		V2(1440,512),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(30,		Big,		V2(480, 512),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Big,		V2(960, 512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Big,		V2(1440,512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Big,		V2(480, 512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
-	STAGE_DATA(30,		Normal,		V2(600, 452),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(30,		Normal,		V2(700, 372),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(30,		Normal,		V2(1200,912),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(30,		Normal,		V2(1300,832),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Normal,		V2(600, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Normal,		V2(700, 372),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Normal,		V2(1200,912),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(30,		Normal,		V2(1300,832),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
-	STAGE_DATA(35,		zMove,		V2(1260,762),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(35,		zMove,		V2(660, 762),	V2(0.5f, 0.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(35,		zMove,		V2(1260,762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(35,		zMove,		V2(660, 762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 	STAGE_DATA(35,		Tombo,		V2(200, 352),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(35,		Tombo,		V2(500, 352),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
