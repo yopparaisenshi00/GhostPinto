@@ -395,10 +395,8 @@ void LAND_SCAPE_OBJ::Update() {
 		}
 		custom.argb = (custom.argb & 0x00FFFFFF) | (alpha << 24);
 	}
-
-
-
 }
+
 int check_behind_obj(OBJ2D* obj)
 {
 	if(Judge(obj, pPlayer)){ return TRUE; }

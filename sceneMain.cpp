@@ -104,9 +104,9 @@ bool sceneMain::Initialize()
 	count_down = 0;
 	scene_timer = 0;
 
-	pPlayer;
-	pFrame;
-	pNumber;
+	//pPlayer;
+	//pFrame;
+	//pNumber;
 
 	return true;
 }
@@ -218,11 +218,7 @@ void	sceneMain::Update()
 		pNumber->Update(timer);
 
 		pLandScape->Update();
-
-
-
-		//pNumber->Update();
-
+		
 		if (pPlayer->hp <= 0 /*|| KEY_Get(KEY_SPACE) == 3*/) {
 			//if ( scene_timer++>60 ) {
 			state = GAMEOVER;
@@ -271,7 +267,6 @@ void	sceneMain::Render()
 
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
 		pEnemy_Manager->UIRender();
-		//pFrame->Render();   
 		pScore->Render();
 	}
 
@@ -279,9 +274,7 @@ void	sceneMain::Render()
 
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
-
 		pMAP->MiniMapRender();
-
 		pPlayer->UIRender();
 	}
 	pNumber->Render();

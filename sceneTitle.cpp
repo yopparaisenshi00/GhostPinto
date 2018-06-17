@@ -6,12 +6,13 @@
 #include "Player.h"
 #include "MAP.h"
 #include "Effect.h"
+#include "Frame.h"
 #include "BGFG.h"
 #include "Sound.h"
 #include "sceneMain.h"
 #include "sceneTitle.h"
 
-
+#define PPSK_POS (V2(SCREEN_WIDTH,500))
 enum {
 	INIT,
 	READY,
@@ -21,16 +22,38 @@ enum {
 	TUTORIAL,
 };
 
+//ålŒö
+//0 * 540
+//560 * 473
+//
+//PressStartButton
+//0 * 1013
+//409 * 35
+//
+//ƒ^ƒCƒgƒ‹ƒƒS
+//560 * 540
+//376 * 312
+//
+//‘å—H—ì
+//560 * 852
+//254 * 193
+//
+//¬—H—ì
+//814 * 852
+//93 * 121
 
-SPR_DATA s_title =		{ 0,0,0,960,540,0,0 };
-SPR_DATA s_ppsk =		{ 0,0,576,419,31,-419 / 2,-31/2 ,459,40};
-SPR_DATA s_titleName =	{ 0,0,640,640,94 ,-640 / 2,-94 / 2 };
-SPR_DATA s_titleChar =	{ 0,640,576,331,380,-331/2,-380/2};
-SPR_DATA s_tutorial= { spr_data::BG2,0,0,960,540,0,0 };
+SPR_DATA s_title =		{ spr_data::BG1,0	,0	,960,540,0,0,90 };
+SPR_DATA s_titleChar =	{ spr_data::BG2,0	,0	,560,473,-560/2	,-473/2,60};
+SPR_DATA s_titleName =	{ spr_data::BG2,560	,0	,376,312,-376/2	,-312/2,0 };
+SPR_DATA s_ppsk =		{ spr_data::BG2,0	,474,474,35	,-474 /2,-35 /2,-30 };
+
+SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,0,0,0 };
 
 IMG_DATA img_title[] = {
 	{ spr_data::BG1,"DATA\\Scene\\title.png" },
-	{ spr_data::BG2,"DATA\\Scene\\tuto_kari.jpg"},
+	{ spr_data::BG2,"DATA\\Scene\\titleobj.png" },
+
+	{ spr_data::BG3,"DATA\\Scene\\tuto_kari.jpg"},
 
 //	{ 0,"DATA\\Scene\\.png" }, //pushEnter
 //	{ 0,"DATA\\Scene\\.png" }, //‚RD‚QD‚P@GOI
@@ -80,6 +103,8 @@ void sceneTitle::Update()
 		titleChar = &s_titleChar;
 		titleName = &s_titleName;
 		pEffect_Manager->Init();
+		pPlayer->Init();
+		pFrame->Init();
 		state = FADE_IN;
 
 		//break;
@@ -93,12 +118,11 @@ void sceneTitle::Update()
 			state = TUTORIAL;
 //			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
-			pPlayer->Init();
 			bg = &s_tutorial;
-			ppsk = titleChar =titleName = nullptr;
-
+			ppsk = titleChar = titleName = nullptr;
 		}
 		pEffect_Manager->Update();
+		pFrame->f_move();
 
 		break;
 	case TUTORIAL:
@@ -124,9 +148,26 @@ void sceneTitle::Update()
 void sceneTitle::Render()
 {
 	if (bg)			spr_data::Render(V2(0, 0),bg);
-	if (ppsk)		spr_data::Render(V2(640 , 460),ppsk);
-	if (titleChar)	spr_data::Render(V2(210, 330),titleChar);
-	if (titleName)	spr_data::Render(V2(500, 100),titleName);
+	/*if (titleChar) {
+		float sz = pFrame->get_sz((float)titleChar->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar, 0xFFFFFFFF,(float)0, shader2D, "depth");
+	}
+	*/
+	if (titleChar)spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
+
+	if (titleName) {
+		float sz = pFrame->get_sz((float)titleName->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
+	}
+	if (ppsk) {
+		float sz = pFrame->get_sz((float)ppsk->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		
+		spr_data::Render(V2(ppsk->ofsx,ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF,(float)0, shader2D, "depth");
+	}
+
 	if(state == TUTORIAL)pPlayer->Render();
 
 	pEffect_Manager->Render();
