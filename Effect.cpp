@@ -5,10 +5,6 @@
 #include "MAP.h"
 #include "Effect.h"
 
-
-
-
-
 enum {
 	INIT=0,		//初期設定
 	MOVE,		//移動処理
@@ -17,13 +13,6 @@ enum {
 	MOVE4,		//移動処理4
 	CLEAR,		//消去処理
 };
-
-
-
-
-
-
-// commit
 
 //※いらない素材
 static SPR_DATA Frame_data = SPR_DATA{ spr_data::UI1,0,0,240,160,-120,-80, };
@@ -476,6 +465,7 @@ void kemuri(Effect *obj)
 //}
 
 //******************************************************************************
+
 //敵消滅エフェクト
 void Ext(Effect *obj)
 {
@@ -705,7 +695,7 @@ void Lock(Effect* obj) {
 	}
 }
 
-
+#include "sceneMain.h"
 //コンボ
 void Combo(Effect* obj) {
 	switch (obj->state) {
@@ -724,11 +714,22 @@ void Combo(Effect* obj) {
 		obj->i_work[7] = obj->spd.x; //コンボ
 		obj->data = &combo_number[obj->i_work[7]]; //コンボ表示
 
-		obj->i_work[6] = obj->timer%3;
-		if (obj->i_work[6]==0) obj->custom.argb = 0xCCffab05;	//オレンジ色
-		else if (obj->i_work[6]==1) obj->custom.argb = 0xCCc577ef;	//紫色
-		else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
-
+		//色----------------------------------------------------------------------
+		if ( pScore->getCombo()<10 ) {
+			obj->i_work[6] = obj->timer%3;
+			if (obj->i_work[6]==0) obj->custom.argb = 0xFFffab05;	//オレンジ色
+			else if (obj->i_work[6]==1) obj->custom.argb = 0xFFc577ef;	//紫色
+			else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
+		}
+		else/* if ( pScore->getCombo()<20 )*/ {
+			obj->i_work[6] = obj->timer%6;
+			//if (obj->i_work[6]==0) obj->custom.argb = 0xFFd1cd12;	//色
+			//else if (obj->i_work[6]==1) obj->custom.argb = 0xFFe569a0;	//色
+			//else if (obj->i_work[6]==2) obj->custom.argb = 0xFFdd8768;	//色
+			if (obj->i_work[6]<=2) obj->custom.argb = 0xFFcbdb1c;	//色
+			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff6387;	//色
+		}
+		//ddef13;
 		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
 		else if (obj->timer++>10) obj->state = CLEAR; //消去
 		break;
@@ -755,10 +756,21 @@ void ComboText(Effect* obj) {
 		obj->state=MOVE;
 		//break;
 	case MOVE:
-		obj->i_work[6] = obj->timer%3;
-		if (obj->i_work[6]==0) obj->custom.argb = 0xCCffab05;	//オレンジ色
-		else if (obj->i_work[6]==1) obj->custom.argb = 0xCCc577ef;	//紫色
-		else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
+		//色----------------------------------------------------------------------
+		if ( pScore->getCombo()<10 ) {
+			obj->i_work[6] = obj->timer%3;
+			if (obj->i_work[6]==0) obj->custom.argb = 0xFFffab05;	//オレンジ色
+			else if (obj->i_work[6]==1) obj->custom.argb = 0xFFc577ef;	//紫色
+			else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
+		}
+		else/* if ( pScore->getCombo()<20 )*/ {
+			obj->i_work[6] = obj->timer%6;
+			//if (obj->i_work[6]==0) obj->custom.argb = 0xFFd1cd12;	//色
+			//else if (obj->i_work[6]==1) obj->custom.argb = 0xFFe569a0;	//色
+			//else if (obj->i_work[6]==2) obj->custom.argb = 0xFFdd8768;	//色
+			if (obj->i_work[6]<=2) obj->custom.argb = 0xFFcbdb1c;	//色
+			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff72b0;	//色
+		}
 
 		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
 		else if (obj->timer++>10) obj->state = CLEAR; //消去

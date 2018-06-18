@@ -34,10 +34,7 @@
 //
 //*****************************************************************************
 SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
-
-
-
-
+SPR_DATA clear = { spr_data::GAMECLEAR,192,192,768,128,0,0,600,100 };
 
 
 static IMG_DATA IMG_Main[] = {
@@ -71,6 +68,9 @@ static IMG_DATA IMG_Main[] = {
 	{ spr_data::FADE_OUT1,"DATA\\Public\\delta.png" },
 	{ spr_data::FADE_IN2 ,"DATA\\Public\\black.png" },
 	{ spr_data::FADE_OUT2,"DATA\\Public\\black.png" },
+
+	{ spr_data::GAMECLEAR,"DATA\\Scene\\GAME_CLEAR.png" },
+
 	{ -1,"" },
 };
 
@@ -224,18 +224,22 @@ void	sceneMain::Update()
 
 		//pNumber->Update();
 
-		if (pPlayer->hp <= 0 /*|| KEY_Get(KEY_SPACE) == 3*/) {
-			//if ( scene_timer++>60 ) {
-			state = GAMEOVER;
-			//}
+		if (pPlayer->hp <= 0) {
+			if ( scene_timer++>80 ) {
+				state = GAMEOVER;
+			}
 		}
-		else if (pScore->getKill_num() >= 50 || timer < 0 /*|| KEY_Get(KEY_ENTER) == 3*/) {
-			//if ( scene_timer++>60 ) {
-			state = GAMECLEAR;
-			//}
+		else if ((pScore->getKill_num() >= 50) || timer <= 0) {
+			if ( scene_timer++>100 ) {
+				state = GAMECLEAR;
+			}
 		}
+		if (KEY_Get(KEY_SPACE) == 3) state = GAMEOVER;
+		else if (KEY_Get(KEY_ENTER) == 3) state = GAMECLEAR;
+
 
 		timer--;
+		if ( timer<=0 )timer = 0;
 		break;
 	case GAMEOVER:
 		MainFrame->ChangeScene(new sceneOver());
@@ -270,7 +274,6 @@ void	sceneMain::Render()
 	pEffect_Manager->Render();
 	pPlayer->Render();
 
-
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
 		pEnemy_Manager->UIRender();
 		//pFrame->Render();   
@@ -292,7 +295,9 @@ void	sceneMain::Render()
 	switch (state)
 	{
 	case READY:
-		pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
+		pNumber->RenderFree(480 - 32, 270 - 96, count_down+1, 1, 64, 0xFFFFFFFF);
+		break;
+	case GAMECLEAR:
 		break;
 	default:
 		break;
@@ -300,6 +305,9 @@ void	sceneMain::Render()
 
 	pD_TEXT->Render();
 
+	if ( (pScore->getKill_num()>=50)||timer<=0 ) {
+		spr_data::Render(V2(200,100),&clear); //GAMECLEAR•¶Žš
+	}
 
 }
 

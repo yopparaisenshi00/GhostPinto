@@ -211,8 +211,7 @@ void Frash_white(Enemy* obj,int num) {
 
 	if ( (obj->flash_timer%(num*2))<=4 ) { //01234
 		obj->animeData = obj->Anime_Box[Damage];
-		obj->alpha -= 255/3;
-		//pScore->add_ClearlyScore(obj->score/200); //スコア加算
+		obj->alpha = 255*0.75f;
 	}
 	else if ( (obj->flash_timer%(num*2))<=9 ) { //56789
 		obj->animeData = obj->Anime_Box[normal];
@@ -220,8 +219,7 @@ void Frash_white(Enemy* obj,int num) {
 	}
 	else if ( (obj->flash_timer%(num*2))<=14 ) { //1011121314
 		obj->animeData = obj->Anime_Box[Damage];
-		obj->alpha -= 255/3;
-		//pScore->add_ClearlyScore(obj->score/200); //スコア加算
+		obj->alpha = 255*0.75f;
 	}
 	else {
 		obj->animeData = obj->Anime_Box[normal];
@@ -583,8 +581,7 @@ void Enemy_DeadEffect(Enemy*obj) {
 	pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt_lightB);	//丸エフェクト
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲ならエフェクト追加
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt);		//丸エフェクト
-		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(2.0f, 2.5f), CircleExt);		//丸エフェクト
-		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 3.5f), CircleExt);		//丸エフェクト
+		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 2.5f), CircleExt);		//丸エフェクト
 		for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_c);	//パーティクルエフェクト●
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Ext);				//敵消滅エフェクト
 		//pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動

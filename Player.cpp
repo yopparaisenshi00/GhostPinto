@@ -51,16 +51,6 @@ SPR_DATA p_work_d[] = { //下移動
 	{ spr_data::Player1, 64 * 1, 64 * 4,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 2, 64 * 4,	64,64,-32,-32 },
 };
-//SPR_DATA p_damage[] = { //ダメージ
-//	{ spr_data::Player1, 64 * 0, 64 * 10,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 1, 64 * 10,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 1, 64 * 11,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 2, 64 * 11,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
-//};
 SPR_DATA p_damage[] = { //ダメージ
 	{ spr_data::Player1, 64 * 0, 64 * 10,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 0, 64 * 10,	64,64,-32,-32 },
@@ -74,6 +64,15 @@ SPR_DATA p_over[] = { //ゲームオーバー
 	{ spr_data::Player1, 64 * 1, 64 * 11,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 2, 64 * 11,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
+};
+SPR_DATA p_clear[] = { //ゲームクリア
+	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
 };
 
 
@@ -196,10 +195,6 @@ void Player::move() {
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
 			pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
-			//pEffect_Manager->searchSet(pos, V2( 3, -3), noAction);
-			//pEffect_Manager->searchSet(pos, V2( 3,  3), noAction);
-			//pEffect_Manager->searchSet(pos, V2(-3, -3), noAction);
-			//pEffect_Manager->searchSet(pos, V2(-3,  3), noAction);
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
@@ -258,16 +253,27 @@ void Player::anime() {
 		}
 	}
 
+
+
 	//ゲームオーバー
 	if (hp <= 0) {
 		if (reflect) {
 			if (anime_no > 5)anime_no = 5;
-			data = &p_over[anime_no]; //左ダメージ
+			data = &p_over[anime_no];
 		}
 		else {
 			if (anime_no > 5)anime_no = 5;
-			data = &p_over[anime_no]; //右ダメージ
+			data = &p_over[anime_no];
 		}
+	}
+
+	//ゲームクリア
+	else if ((pScore->getKill_num() >= 5)/* || timer <= 0*/) {
+		if ( anime_no>6 )anime_no = 6;
+		data = &p_clear[anime_no];
+	}
+	if ( KEY_Get(KEY_DOWN)==3 ) {
+		pScore->kill_num++;
 	}
 
 	//ダメージ
@@ -381,6 +387,7 @@ void Player::judge() {//
 void Player::clear() {
 	OBJ2D::clear();
 	nodamage_timer = 0;
+	anime_no = 0;
 	anime_timer = 0;
 	dx = 0;
 	dy = 0;
@@ -415,10 +422,9 @@ void Player::Recoil(V2 enemy_pos, V2 enemy_spd) {
 	//y移動してたら
 	if (spd.y<-1 || spd.y>1) spd.y = -dist.y*10.0f;
 	//移動してなくて.enemyspdも0なら
-	//if ( spd.x==spd.y==enemy_spd.x==enemy_spd.y==0.0f ) spd = -dist*10.0f;
 	if (spd == enemy_spd == 0.0f) spd = -dist*10.0f;
 	//enemyspdに比例した反動
-	if (enemy_spd != 0)	spd -= enemy_spd*2.0f;
+	if (enemy_spd != 0)	spd -= enemy_spd*1.2f;
 }
 
 void Player::Y_move() {

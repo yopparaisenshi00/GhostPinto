@@ -710,6 +710,8 @@ public:
 		FADE_IN2,
 		FADE_OUT1,
 		FADE_OUT2,
+
+		GAMECLEAR,
 		
 		PLATE,
 	};

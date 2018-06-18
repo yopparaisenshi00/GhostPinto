@@ -14,12 +14,7 @@ private:
 	int state;
 	int timer;
 
-	//ƒ‰ƒ“ƒLƒ“ƒO-------------------------------
-	int ranks[5];
-	int ranks_update_info;
-	char ranksFileName[128];
-	//-----------------------------------------
-	
+	D3DCOLOR over_psb_argb;
 public:
 	~sceneOver();
 	bool Initialize();

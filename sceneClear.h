@@ -22,16 +22,17 @@ private:
 	V2 life_pos;
 	V2 comb_pos;
 	V2 time_pos;
-	D3DCOLOR psb_argb;
+	V2 totl_pos;
+	D3DCOLOR clear_psb_argb;
+	D3DCOLOR dim_argb;
 
-	int f,g,h,j,m,n;
+	float f,g,h,j,m,n;
 
 	//ƒ‰ƒ“ƒLƒ“ƒO-------------------------------
 	int ranks[5];
 	int ranks_update_info;
 	char ranksFileName[128];
 	//-----------------------------------------
-	void Under_result();
 
 public:
 	~sceneClear();
