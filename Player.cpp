@@ -65,15 +65,15 @@ SPR_DATA p_over[] = { //ゲームオーバー
 	{ spr_data::Player1, 64 * 2, 64 * 11,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
 };
-SPR_DATA p_clear[] = { //ゲームクリア
-	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
-};
+//SPR_DATA p_clear[] = { //ゲームクリア
+//	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
+//};
 
 
 
@@ -267,14 +267,14 @@ void Player::anime() {
 		}
 	}
 
-	//ゲームクリア
-	else if ((pScore->getKill_num() >= 5)/* || timer <= 0*/) {
-		if ( anime_no>6 )anime_no = 6;
-		data = &p_clear[anime_no];
-	}
-	if ( KEY_Get(KEY_DOWN)==3 ) {
-		pScore->kill_num++;
-	}
+	////ゲームクリア
+	//else if ((pScore->getKill_num() >= 5)/* || timer <= 0*/) {
+	//	if ( anime_no>6 )anime_no = 6;
+	//	data = &p_clear[anime_no];
+	//}
+	//if ( KEY_Get(KEY_DOWN)==3 ) {
+	//	pScore->kill_num++;
+	//}
 
 	//ダメージ
 	else if (s.old_nodamage == false && s.nodamage == true) {

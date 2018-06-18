@@ -234,11 +234,11 @@ void	sceneMain::Update()
 				state = GAMECLEAR;
 			}
 		}
+		else timer--;
+
 		if (KEY_Get(KEY_SPACE) == 3) state = GAMEOVER;
 		else if (KEY_Get(KEY_ENTER) == 3) state = GAMECLEAR;
 
-
-		timer--;
 		if ( timer<=0 )timer = 0;
 		break;
 	case GAMEOVER:
