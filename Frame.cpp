@@ -94,7 +94,7 @@ void Frame::Update() {
 		state = MOVE;
 		break;
 	case MOVE:
-
+		f_move();
 		exorcise_Update();
 
 		//マルチフォーカス処理
@@ -201,7 +201,7 @@ void Frame::R_Update() {
 		state = MOVE;
 		break;
 	case MOVE:
-		f_move();
+		//f_move();
 		exorcise_Update();
 		pintoSize = PINTOMODE_READY;
 

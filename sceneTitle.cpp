@@ -47,6 +47,8 @@ SPR_DATA s_titleChar =	{ spr_data::BG2,0	,0	,560,473,-560/2	,-473/2,60};
 SPR_DATA s_titleName =	{ spr_data::BG2,560	,0	,376,312,-376/2	,-312/2,0 };
 SPR_DATA s_ppsk =		{ spr_data::BG2,0	,474,474,35	,-474 /2,-35 /2,-30 };
 
+SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
+SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
 SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,0,0,0 };
 
 IMG_DATA img_title[] = {
@@ -161,10 +163,16 @@ void sceneTitle::Render()
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 		spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
-	if (ppsk) {
+
+	if (s_Enemy_b) {
 		float sz = pFrame->get_sz((float)ppsk->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		
+		spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
+	}
+
+	if (ppsk) {
+		float sz = pFrame->get_sz((float)ppsk->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);	
 		spr_data::Render(V2(ppsk->ofsx,ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF,(float)0, shader2D, "depth");
 	}
 
