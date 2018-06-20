@@ -31,7 +31,7 @@ SPR_DATA s_titleChar = { 0,0,608,624,536,-624 / 2,-536 / 2 };
 SPR_DATA s_ppsk = { 0,0,1120,474,98,-474 / 2,-98 / 2 };
 //0, 1013, 409, 35
 //ƒ^ƒCƒgƒ‹ƒƒS
-SPR_DATA s_titleName = { 0,0,1216,440,376 ,-440 / 2,-376 / 2 };
+SPR_DATA s_titleName = { 0,0,1216,440,400 ,-440 / 2,-400 / 2 };
 //‘å—H—ì
 SPR_DATA big_ghost = { 0,608,800,318,258 ,-318 / 2,-258 / 2 };
 //¬—H—ì
@@ -64,7 +64,7 @@ SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 };
 //
 //SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
 //SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
-SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,0,0,0 };
+SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,960/2,540/2,0 };
 
 IMG_DATA img_title[] = {
 	{ spr_data::BG1,"DATA\\Scene\\title.png" },
@@ -80,7 +80,6 @@ IMG_DATA img_title[] = {
 	{ spr_data::Player_eff,"DATA\\Public\\Player_effect.png" },
 	{ spr_data::EdgeCircle,"DATA\\UI\\pint_s2.png" },
 	{ spr_data::Player1,"DATA\\CHR\\player\\Player.png" },
-
 
 	{-1,""},
 };
@@ -175,6 +174,12 @@ void sceneTitle::Render()
 		float sz = pFrame->get_sz((float)titleName->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 		spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
+		float z = sz > 90 ? (180 - sz) / 90 : sz / 90;
+		if(z > 0.5)z -= 0.5f;
+		float Reduced = z/0.5;
+		pD_TEXT->set_Text(V2(200,200),"Reduced ", Reduced,0xFFFF0000);
+		pD_TEXT->set_Text(V2(200, 220), "    z   ",z, 0xFFFF0000);
+
 	}
 
 	if (s_Enemy_b) {
@@ -193,4 +198,5 @@ void sceneTitle::Render()
 
 	pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
+	pD_TEXT->Render();
 }

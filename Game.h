@@ -91,7 +91,7 @@ public:
 	void Render() {
 		for (int i = 0; i < text_max;i++) {
 			if (text_box[i].color == 0)continue;
-			IEX_DrawText(text_box[i].text, (int)text_box[i].pos.x, (int)text_box[i].pos.y,128, 16, (int)text_box[i].color);
+			IEX_DrawText(text_box[i].text, (int)text_box[i].pos.x, (int)text_box[i].pos.y,256, 16, (int)text_box[i].color);
 		}
 	}
 
