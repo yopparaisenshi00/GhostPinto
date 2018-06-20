@@ -39,7 +39,7 @@ public:
 	void SetSize(int size);
 	void SetNum(int num, int digit_max);
 	//void Update(int digit_max);
-	void AddScale();	//スコア加算の拡大表示
+	void AddScale(int n, float scale);	//スコア加算の拡大表示
 	void Render(int x, int y, int digit_max); //指定分描画
 	void Render2(int x, int y, int num);		//桁数分だけ描画
 	void Render3(int x, int y, int digit_max, D3DCOLOR argb);

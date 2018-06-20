@@ -58,22 +58,22 @@ SPR_DATA p_damage[] = { //ダメージ
 	{ spr_data::Player1, 64 * 1, 64 * 10,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 1, 64 * 10,	64,64,-32,-32 },
 };
-SPR_DATA p_over[] = { //ゲームオーバー
-	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 1, 64 * 11,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 2, 64 * 11,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
-};
-//SPR_DATA p_clear[] = { //ゲームクリア
-//	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
-//	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
+//SPR_DATA p_over[] = { //ゲームオーバー
+//	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 0, 64 * 11,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 1, 64 * 11,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 2, 64 * 11,	64,64,-32,-32 },
+//	{ spr_data::Player1, 64 * 3, 64 * 11,	64,64,-32,-32 },
 //};
+SPR_DATA p_clear[] = { //ゲームクリア
+	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
+	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
+};
 
 
 
@@ -178,10 +178,10 @@ void Player::move() {
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
+			//pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
-			//最大,最小,時間
 			pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
 		}
 
@@ -254,37 +254,37 @@ void Player::anime() {
 	}
 
 
-
-	//ゲームオーバー
-	if (hp <= 0) {
-		if (reflect) {
-			if (anime_no > 5)anime_no = 5;
-			data = &p_over[anime_no];
-		}
-		else {
-			if (anime_no > 5)anime_no = 5;
-			data = &p_over[anime_no];
-		}
+	////ゲームオーバー
+	//if (hp <= 0) {
+	//	if (anime_no >=5) anime_no = 0;
+	//	data = &p_over[anime_no];
+	//}
+	//ゲームクリア
+	if ((pScore->getKill_num() >= 50)/* || timer <= 0*/) {
+		if ( anime_no>=7 )anime_no = 7;
+		data = &p_clear[anime_no];
 	}
-
-	////ゲームクリア
-	//else if ((pScore->getKill_num() >= 5)/* || timer <= 0*/) {
-	//	if ( anime_no>6 )anime_no = 6;
-	//	data = &p_clear[anime_no];
-	//}
-	//if ( KEY_Get(KEY_DOWN)==3 ) {
-	//	pScore->kill_num++;
-	//}
 
 	//ダメージ
 	else if (s.old_nodamage == false && s.nodamage == true) {
-		if ( anime_no==1 )IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
+		if ( anime_no==1 ) IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
+		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+
 		if (reflect) {
-			if (anime_no > 5) s.old_nodamage = true;
+			if ( anime_no>=5 ) {
+				s.old_nodamage = true;
+				anime_no = 0;
+			}
 			data = &p_damage[anime_no]; //左ダメージ
 		}
 		else {
-			if (anime_no > 5) s.old_nodamage = true;
+			if ( anime_no>=5 ) {
+				s.old_nodamage = true;
+				anime_no = 0;
+			}
 			data = &p_damage[anime_no]; //右ダメージ
 		}
 	}
@@ -292,11 +292,11 @@ void Player::anime() {
 	//待機
 	else if ((spd.x == 0) && (spd.y == 0)) {
 		if (reflect) {
-			if (anime_no > 4)anime_no = 0;
+			if (anime_no >=5)anime_no = 0;
 			data = &p_wait[anime_no]; //待機
 		}
 		else {
-			if (anime_no > 4)anime_no = 0;
+			if (anime_no >=5)anime_no = 0;
 			data = &p_wait[anime_no]; //待機
 		}
 	}
@@ -304,11 +304,11 @@ void Player::anime() {
 	//上移動		     ※spd.xが絶対値2未満
 	else if ((spd.y != 0) && (spd.x>-2 && spd.x<2)) {
 		if (spd.y<0) {
-			if (anime_no > 2)anime_no = 0;
+			if (anime_no >=3)anime_no = 0;
 			data = &p_work_u[anime_no]; //上移動
 		}
 		else {
-			if (anime_no > 2)anime_no = 0;
+			if (anime_no >=3)anime_no = 0;
 			data = &p_work_d[anime_no]; //下移動
 		}
 	}
@@ -316,11 +316,11 @@ void Player::anime() {
 	//横移動,ななめ移動
 	else {
 		if (reflect) {
-			if (anime_no > 2)anime_no = 0;
+			if (anime_no >=3)anime_no = 0;
 			data = &p_work_l[anime_no]; //左移動
 		}
 		else {
-			if (anime_no > 2)anime_no = 0;
+			if (anime_no >=3)anime_no = 0;
 			data = &p_work_r[anime_no]; //右移動
 		}
 	}

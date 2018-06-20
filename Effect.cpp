@@ -121,6 +121,8 @@ static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2
 static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,-9/2 };
 //static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,1*6,6,6,-6/2,-6/2 };
 
+//マルチフォーカス使用時エフェクト
+static SPR_DATA multi_data = SPR_DATA{spr_data::Player1,64*5,0,64,64,-32,-32};
 
 
 //static SPR_DATA p_eff_data[] = {
@@ -878,6 +880,54 @@ void noAction(Effect *obj) {
 //	}
 //}
 
+
+//プレイヤーダメージエフェクト
+void P_damage(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+			obj->data = &EdgeCircle_ext_data;
+			obj->custom.scaleMode = CENTER;
+			obj->custom.scaleX = obj->custom.scaleY = 0.2f;
+			obj->custom.argb = 0xFF47dde5;
+			obj->state=MOVE;
+			//break;
+		case MOVE:
+			if ( obj->timer++>10 ) obj->state = CLEAR;
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
+
+//マルチフォーカス使用時エフェクト
+void Multifocus(Effect*obj) {
+	switch ( obj->state ) {
+		case INIT:
+			obj->data = &multi_data;
+			obj->custom.scaleMode = CENTER;
+			obj->custom.scaleX = obj->custom.scaleY = 0.2f;
+			//obj->custom.argb = 0xFFfff056;
+			obj->alpha = 180;
+			obj->state = MOVE;
+			//break;
+		case MOVE:
+			obj->custom.scaleX = obj->custom.scaleY += 0.6f;
+			if ( obj->custom.scaleX>=6.0f ) obj->alpha -= 255/16;
+			if ( obj->alpha<=0 ) {
+				obj->alpha = 0;
+				obj->state = CLEAR;
+			}
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
 
 //テレポートエフェクト
 void TeleportExt(Effect *obj)

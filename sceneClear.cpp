@@ -20,7 +20,7 @@ SPR_DATA clear_enemy_pink   = { 2,64*0,64*2,64,64,-32,-32}; //enemy_ピンク
 SPR_DATA clear_enemy_blue   = { 2,64*0,64*3,64,64,-32,-32}; //enemy_青
 SPR_DATA clear_enemy_white  = { 2,64*0,64*4,64,64,-32,-32}; //enemy_白
 SPR_DATA clear_enemy_kari = { 4,0,0,64,64,-32,-32 };		//enemy_kari
-SPR_DATA clear_ranking = { 5,0,254,270,360,0,0 };	//ランキング文字
+SPR_DATA clear_ranking = { 5,0,254,270,360,0,0 };	//ランキング文字6
 SPR_DATA clear_result = { 1,0,380,295,68,-295/2,-68/2 };	//RESULT
 SPR_DATA clear_LIFE = { 1,0,64*9,64+20,36,0,0 };		//LIFE
 SPR_DATA clear_MAXCOMBO = { 1,0,64*7,64*3-12,36,0,0 };	//MAXCOMBO
@@ -192,7 +192,7 @@ void sceneClear::Render()
 			if (timer>0) spr_data::Render(V2(390+f,490+g),&clear_TOTAL);
 			if ( timer>220 ) Scene::Render2(totl_pos, &clear_number[0], newscore);
 
-			//TOTAL換算+拡大
+			//TOTAL換算
 			if ( timer==280 ) {
 				hp *= 100*2;
 				maxcombo *= 100*2;
@@ -236,6 +236,12 @@ void sceneClear::Render()
 				if ( KEY_Get(KEY_SPACE)==3 ) newscore = score+hp+maxcombo+gametimer;
 			}
 
+
+			//スキップ--------------------------------------
+			if ( KEY_Get(KEY_SPACE)==3 && timer<280) {
+				timer = 279; //TOTAL換算前までスキップ
+			}
+
 			timer++;
 			break;
 		case 4:
@@ -253,7 +259,7 @@ void sceneClear::Render()
 				else clear_psb_argb = 0x0000000;
 				spr_data::Render(V2(480,500),&clear_psb,clear_psb_argb,0);
 				//-----------------------------------------------------------------------------
-				if (KEY_Get(KEY_SPACE) == 3 || timer>60*10 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+				if (KEY_Get(KEY_SPACE) == 3 || timer>60*20 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
 			}
 			timer++;
 			break;

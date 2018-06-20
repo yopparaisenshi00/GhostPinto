@@ -64,7 +64,7 @@ void sceneOver::Render()
 				spr_data::Render(V2(480,500),&over_psb,over_psb_argb,0);
 			}
 			//-------------------------------------------------------------------
-			if ( KEY_Get(KEY_SPACE)==3 || timer>60*10 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+			if ( KEY_Get(KEY_SPACE)==3 || timer>60*20 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
 			timer++;
 			break;
 		default:

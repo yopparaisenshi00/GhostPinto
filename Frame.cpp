@@ -22,13 +22,17 @@ enum {
 
 
 
-SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
+//SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
+SPR_DATA spr_flame_out = { flame_out,0,0,1024,540,-512,-270 };
 SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 
 
 
 //SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 SPR_DATA spr_pinto_a2 = { pinto_a,0,0,128,128,-64,-64 };
+
+SPR_DATA spr_exorcise_frame= { flame_out,1000,540,14,44,0,0 };
+
 
 //SPR_DATA spr_Frame[] = {
 //};
@@ -153,7 +157,7 @@ void Frame::Update() {
 
 //発光関数
 D3DCOLOR Light(D3DCOLOR color) {
-	if ( color>=0x11FFFFFF ) color -= 0x02000000;
+	if ( color>=0x11FFFFFF ) color -= 0x03000000;
 	else color = 0x00FFFFFF;
 	return color;
 }
@@ -166,6 +170,7 @@ void Frame::Render() {
 	//iexPolygon::Rect(20,180,30,exorcise*2,0,0xFFFFFF00,0); //霊力ゲージ描画(縦 ※sceneMain変更)
 	if (!pFrame->exorciseDwon_flg) {
 		iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y-40) + (50-exorcise/2)), 10, (int)(exorcise/2), 0, argb, 0); //霊力ゲージ描画(プレイヤー右上)
+		//spr_data::Render(V2((int)(pPlayer->pos.x + 30),(int)(pPlayer->pos.y-40)), &spr_exorcise_frame); //霊力ゲージ枠
 		//iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y - 40) + (200 - exorcise * 2)), 10, (int)(exorcise / 2), 0, argb, 0); //霊力ゲージ描画(プレイヤー右上)
 		//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 	}
@@ -174,7 +179,7 @@ void Frame::Render() {
 		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
 		light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
 	}
-	else light_argb = 0xDDFFFFFF;							//マルチフォーカスを使ったら発光
+	else light_argb = 0xCCFFFFFF;							//マルチフォーカスを使ったら発光
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 

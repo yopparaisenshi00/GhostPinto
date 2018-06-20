@@ -26,6 +26,7 @@ int saveData(char *filename, int _score)
 				break;
 			}
 		}
+		//rank[RANKS_MAX+1] = _score; //今回のスコア
 	}
 	else
 	{
@@ -79,15 +80,10 @@ int loadData(char *filename, int rank[])
 
 void drawRankings(int _x, int _y, int ranks[], int _rank_update_info, SPR_DATA* data)
 {
-	//_x -= 70;	//
-	//_y -= 65;	//
 
 	/////////////////////////////////////////////////////////
-	////文字描画
-	//if (_ranksImageData)
-	//{
-	//	_ranksImageData->draw(Vector3(_x+70,_y+65,0));
-	//}
+	//文字描画
+	//
 	/////////////////////////////////////////////////////////
 
 
@@ -96,15 +92,10 @@ void drawRankings(int _x, int _y, int ranks[], int _rank_update_info, SPR_DATA* 
 	for (int i = 0; i < RANKS_MAX; i++) //5thまで繰り返し
 	{
 		//描画(新しくランクインしたスコアは赤く光る)
-		if (_rank_update_info == i){
-			//Render3(V2(_x, _y+i*64-34), &data[0], ranks[i]);
-			Render3(V2(_x,_y+i*64-34),&data[0],ranks[i],0xFFFF0000); //赤
-		}
-		else{
-			//Render3(V2(_x, _y+i*64-34), &data[0], ranks[i]);
-			Render3(V2(_x,_y+i*64-34),&data[0],ranks[i],0xFFFFFFFF); //白
-		}
+		if (_rank_update_info == i) Render3(V2(_x,_y+i*64-34),&data[0],ranks[i],0xFFFF0000); //赤
+		else Render3(V2(_x,_y+i*64-34),&data[0],ranks[i],0xFFFFFFFF); //白
 	}
+	//Render3(V2(_x,_y+(RANKS_MAX+1)*64-34),&data[0],ranks[RANKS_MAX+1],0xFFFF0000); //赤
 	////////////////////////////////////////////////////////////////////////////////////
 }
 

@@ -13,7 +13,6 @@
 
 
 Number score;		//スコア
-Number combo;		//コンボ
 Number gametimer;	//ゲームタイマー
 Number gametimer2;	//ゲームタイマー2
 Number crushnum;	//撃破数
@@ -24,8 +23,7 @@ Number exorcisetimer; //霊力タイマー
 
 SPR_DATA ui_data[] = {
 { spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
-{ spr_data::UI6,  0,125,  120,40,  0,0 },//COMBO
-{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA　※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA
 };
 
 
@@ -45,35 +43,33 @@ SPR_DATA ui_data[] = {
 
 
 Number::Number() {
-//score.data = &anime_Number_data[0];
-score.numImage = new iex2DObj("DATA\\Public\\number.png");
-combo.numImage = new iex2DObj("DATA\\Public\\number.png");
-gametimer.numImage = new iex2DObj("DATA\\Public\\number.png");
-gametimer2.numImage = new iex2DObj("DATA\\Public\\number.png");
-crushnum.numImage = new iex2DObj("DATA\\Public\\number.png");
-crushnum2.numImage = new iex2DObj("DATA\\Public\\number.png");
-exorcisetimer.numImage = new iex2DObj("DATA\\Public\\number.png");
-numImage = new iex2DObj("DATA\\Public\\number.png");
-
-score.SetSize(32);			//スコア文字サイズ設定
-combo.SetSize(32);			//コンボ文字サイズ設定
-gametimer.SetSize(64);		//ゲームタイマー (上2ケタ)文字サイズ設定
-gametimer2.SetSize((int)(64 * 0.6f));	//ゲームタイマー2(下2ケタ)文字サイズ設定
-crushnum.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
-crushnum2.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
-exorcisetimer.SetSize((int)(64 * 0.6f));	//霊力タイマーサイズ設定
-
-//score.custom.clear();
-//gametimer.custom.clear();
-//gametimer2.custom.clear();
-
-//score.custom.scaleMode = CENTER;
-//gametimer.custom.scaleMode = CENTER;
-//gametimer2.custom.scaleMode = CENTER;
-
-//score.custom.scaleY = score.custom.scaleX = 1;
-//gametimer.custom.scaleY = gametimer.custom.scaleX = 1;
-//gametimer.custom.scaleX = gametimer.custom.scaleY = 1;
+	//score.data = &anime_Number_data[0];
+	score.numImage = new iex2DObj("DATA\\Public\\number.png");
+	gametimer.numImage = new iex2DObj("DATA\\Public\\number.png");
+	gametimer2.numImage = new iex2DObj("DATA\\Public\\number.png");
+	crushnum.numImage = new iex2DObj("DATA\\Public\\number.png");
+	crushnum2.numImage = new iex2DObj("DATA\\Public\\number.png");
+	exorcisetimer.numImage = new iex2DObj("DATA\\Public\\number.png");
+	numImage = new iex2DObj("DATA\\Public\\number.png");
+	
+	score.SetSize(32);			//スコア文字サイズ設定
+	gametimer.SetSize(64);		//ゲームタイマー (上2ケタ)文字サイズ設定
+	gametimer2.SetSize((int)(64 * 0.6f));	//ゲームタイマー2(下2ケタ)文字サイズ設定
+	crushnum.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
+	crushnum2.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
+	exorcisetimer.SetSize((int)(64 * 0.6f));	//霊力タイマーサイズ設定
+	
+	//score.custom.clear();
+	//gametimer.custom.clear();
+	//gametimer2.custom.clear();
+	
+	//score.custom.scaleMode = CENTER;
+	//gametimer.custom.scaleMode = CENTER;
+	//gametimer2.custom.scaleMode = CENTER;
+	
+	//score.custom.scaleY = score.custom.scaleX = 1;
+	//gametimer.custom.scaleY = gametimer.custom.scaleX = 1;
+	//gametimer.custom.scaleX = gametimer.custom.scaleY = 1;
 
 }
 
@@ -86,38 +82,35 @@ void Number::Init() {
 }
 
 void Number::Update(int timer) {
-score.SetNum(pScore->getScore(), 5);			//スコア処理
-combo.SetNum(pScore->getCombo(), 5);			//コンボ処理
-combo.AddScale();							//コンボ加算時の拡大表示
-if ((timer / 60)>10) gametimer_argb = 0xFFFFFFFF; //白
-else gametimer_argb = 0xFFFF0000; //10秒未満なら赤
-gametimer.SetNum(timer / 60, 2);				//ゲームタイマー (上2ケタ)処理
-gametimer2.SetNum(timer % 60, 2);			//ゲームタイマー2(下2ケタ)処理
-crushnum.SetNum(pScore->getKill_num(), 2);	//撃破数処理
-crushnum2.SetNum(50, 2);	//撃破数処理
-//				 ↑ステージに応じて変更
-exorcisetimer.SetNum(pFrame->exorciseDwon_timer / 60 + 1, 1);	//霊力タイマー処理
-n_timer = timer;
+	//score.AddScale(pScore->getScore(),1.25f);
+	score.SetNum(pScore->getScore(), 5);		//スコア処理
+	if ((timer / 60)>10) gametimer_argb = 0xFFFFFFFF;	//白
+	else gametimer_argb = 0xFFFF0000;					//10秒未満なら赤
+	//gametimer.AddScale((int)(timer/60),1.5f);
+	//gametimer2.AddScale((int)(timer/60),1.5f);
+	gametimer.SetNum(timer / 60, 2);			//ゲームタイマー (上2ケタ)処理
+	gametimer2.SetNum(timer % 60, 2);			//ゲームタイマー2(下2ケタ)処理
+	crushnum.AddScale(pScore->getKill_num(),1.7f);	//撃破数加算時の拡大表示
+	crushnum.SetNum(pScore->getKill_num(), 2);	//撃破数処理
+	crushnum2.SetNum(50, 2);					//撃破数処理
+	//				 ↑ステージに応じて変更
+	exorcisetimer.SetNum(pFrame->exorciseDwon_timer / 60 + 1, 1);	//霊力タイマー処理
+	n_timer = timer;
 }
 
-#include "Enemy.h"
 
 void Number::Render() {
-score.Render(790, 60, 5);								//スコア描画
-//	combo.Render2(580, 130, pScore->getCombo());			//コンボ描画
-//	combo.Render(pPlayer->pos.x+20,pPlayer->pos.y-70, 2);	//コンボ描画
-gametimer.Render3(400, 15, 2, gametimer_argb);			//ゲームタイマー (上2ケタ)描画
-gametimer2.Render3(400 + 125, 39, 2, gametimer_argb);	//ゲームタイマー2(下2ケタ)描画
-gametimer.Render(400, 15, 2);						//ゲームタイマー (上2ケタ)描画
-gametimer2.Render(400 + 125, 39, 2);						//ゲームタイマー2(下2ケタ)描画
-crushnum.Render(775, 150, 2);								//撃破数描画
-crushnum2.Render(875, 150, 2);							//撃破数描画
-if (pFrame->exorciseDwon_timer>0) {					//霊力タイマー
-exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画
-}
-spr_data::Render(V2(750, 20), &ui_data[0]);	//　SCORE
-//	spr_data::Render(V2(550,100),&ui_data[1]);	//　COMBO
-spr_data::Render(V2(750, 100), &ui_data[2]);	//　撃破数
+	//score.Render(780, 35, 5);								//スコア描画
+	score.Render(790, 60, 5);								//スコア描画
+	gametimer.Render3(400, 15, 2, gametimer_argb);			//ゲームタイマー (上2ケタ)描画
+	gametimer2.Render3(400 + 125, 39, 2, gametimer_argb);	//ゲームタイマー2(下2ケタ)描画
+	crushnum.Render(770, 124, 2);							//撃破数描画
+	crushnum2.Render(875, 150, 2);							//撃破数描画
+	if (pFrame->exorciseDwon_timer>0) {						//霊力タイマー
+		exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画
+	}
+	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
+	spr_data::Render(V2(750, 100), &ui_data[1]);	//撃破数
 }
 
 
@@ -154,18 +147,18 @@ void  Number::SetNum(int num, int digit_max)
 
 
 //加算時の拡大表示
-void Number::AddScale() {
-after = pScore->getCombo(); //今のコンボ数
-if (after>front) { //コンボが入ったら
-custom.scaleMode = CENTER;
-//custom.scaleY = custom.scaleX = rand() % 40/100.0f + 1; //　1＋(0.0～0.4)倍
-custom.scaleY = custom.scaleX = 1.8f; //　1.4倍
-}
-else { //コンボが入っていなかったら
-custom.scaleMode = CENTER;
-custom.scaleY = custom.scaleX = 1.0f;
-}
-front = after; //今のコンボ数を前のコンボ数として保存
+void Number::AddScale(int n, float scale) {
+	after = n; //今の数
+	if (after>front) { //前の数と比べて増えたら
+		custom.scaleMode = BOTTOMCENTER;
+		custom.scaleX = custom.scaleY = scale; //拡大
+	}
+	else { //変わってなかったら
+		custom.scaleMode = BOTTOMCENTER;
+		if ( custom.scaleX>1.0f ) custom.scaleY = custom.scaleX -= 0.2f;
+		else custom.scaleY = custom.scaleX = 1.0f;
+	}
+	front = after; //今の数を前の数として保存
 
 }
 

@@ -584,7 +584,7 @@ void Enemy_DeadEffect(Enemy*obj) {
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 2.5f), CircleExt);		//丸エフェクト
 		for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_c);	//パーティクルエフェクト●
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Ext);				//敵消滅エフェクト
-		//pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
+		//pEffect_Manager->searchSet(V2(2, 1), V2(10, 1), Shake); //振動
 	}
 }
 

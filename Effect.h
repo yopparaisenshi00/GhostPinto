@@ -81,6 +81,8 @@ void pinto_lock(Effect *obj);
 
 void Jet(Effect *obj);
 void P_particle(Effect *obj);
+void P_damage(Effect *obj);
+void Multifocus(Effect *obj);
 void fade_In(Effect* obj);
 void fade_Out(Effect* obj);
 void Shake(Effect* obj);
