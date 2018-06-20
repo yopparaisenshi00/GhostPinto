@@ -163,19 +163,11 @@ public:
 	void RenderBG();
 	void RenderFG();
 	void add_RenderObj(LAND_SCAPE_OBJ* obj, int z); 
-	//{
-	//	if (z > -1) { //0à»è„Ç»ÇÁîwåiÅAà»â∫Ç»ÇÁëOåi
-	//		BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
-	//	}
-	//	else {
-	//		z *= -1;
-	//		z -= 1;
-	//		FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
-	//	}
-	//}
+
 private:
 
-	struct ReducedObj {
+	class ReducedObj {
+	public:
 		float bot;
 		V2 pos;
 		void Init(float);

@@ -144,6 +144,7 @@
     <ClCompile Include="system\System.cpp" />
     <ClCompile Include="system\WinMain.cpp" />
     <ClCompile Include="Trigger.cpp" />
+    <ClCompile Include="tutorialstage_data.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +167,7 @@
     <ClInclude Include="sceneTutorial.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="spr_data.h" />
+    <ClInclude Include="stagetuto.h" />
     <ClInclude Include="Stage_1.h" />
     <ClInclude Include="stage_data.h" />
     <ClInclude Include="system\Framework.h" />

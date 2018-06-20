@@ -33,12 +33,6 @@
 //										ì¬Ò:
 //
 //*****************************************************************************
-SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
-
-
-
-
-
 
 static IMG_DATA IMG_Main[] = {
 	{ spr_data::BG1,"DATA\\BG\\bg.png" },
@@ -151,7 +145,7 @@ void	sceneMain::Update()
 		state = INIT;
 	case INIT:
 		//break;
-		stage_no = 0;
+		stage_no = stage1;
 		pPlayer->Init();
 		pFrame->Init();
 		pScore->Init();
@@ -160,7 +154,7 @@ void	sceneMain::Update()
 		//‰Šúİ’è
 		pMAP->Init(&st1_bg);
 		pLandScape->Init(stage_no);
-		pLandScape->setMainBG(&main, MainBG);
+		//pLandScape->setMainBG(&main, MainBG);
 
 		//((BG*)bg)->Init();
 		//bg->data(&main)
@@ -257,21 +251,18 @@ void	sceneMain::Update()
 //	ƒƒCƒ“•`‰æˆ—
 void	sceneMain::Render()
 {
-	//bg->Render();
+
 	pLandScape->RenderBG();
 	pMAP->Render();
 	pEnemy_Manager->Render();
 	pEffect_Manager->Render();
 	pPlayer->Render();
 
-
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
 		pEnemy_Manager->UIRender();
 		pScore->Render();
 	}
-
 	pLandScape->RenderFG();
-
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
 		pMAP->MiniMapRender();
@@ -280,16 +271,28 @@ void	sceneMain::Render()
 	pNumber->Render();
 	pUI->Render();
 
+	pD_TEXT->Render();
+
+
 	switch (state)
 	{
+	case LOAD:
+	case INIT:
+	case BIGEN:
+		break;
+	case FADE_IN:
+		break;
 	case READY:
 		pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
 		break;
-	default:
+	case MAIN:
+	case FADE_OUT:
+	case GAMEOVER:
+	case GAMECLEAR:
+default:
 		break;
 	}
-
-	pD_TEXT->Render();
+	//bg->Render();
 
 }
 

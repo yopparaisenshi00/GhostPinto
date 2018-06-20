@@ -22,6 +22,21 @@ enum {
 	TUTORIAL,
 };
 
+
+//”wŒi
+SPR_DATA s_title = { 0,0,0,1024,604,-512,-302,90};
+//ŽålŒö
+SPR_DATA s_titleChar = { 0,0,608,624,536,-624 / 2,-536 / 2 };
+//PressStartButton
+SPR_DATA s_ppsk = { 0,0,1120,474,98,-474 / 2,-98 / 2 };
+//0, 1013, 409, 35
+//ƒ^ƒCƒgƒ‹ƒƒS
+SPR_DATA s_titleName = { 0,0,1216,440,376 ,-440 / 2,-376 / 2 };
+//‘å—H—ì
+SPR_DATA big_ghost = { 0,608,800,318,258 ,-318 / 2,-258 / 2 };
+//¬—H—ì
+SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 };
+
 //ŽålŒö
 //0 * 540
 //560 * 473
@@ -42,18 +57,18 @@ enum {
 //814 * 852
 //93 * 121
 
-SPR_DATA s_title =		{ spr_data::BG1,0	,0	,960,540,0,0,90 };
-SPR_DATA s_titleChar =	{ spr_data::BG2,0	,0	,560,473,-560/2	,-473/2,60};
-SPR_DATA s_titleName =	{ spr_data::BG2,560	,0	,376,312,-376/2	,-312/2,0 };
-SPR_DATA s_ppsk =		{ spr_data::BG2,0	,474,474,35	,-474 /2,-35 /2,-30 };
-
-SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
-SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
+//SPR_DATA s_title =		{ spr_data::BG1,0	,0	,960,540,0,0,90 };
+//SPR_DATA s_titleChar =	{ spr_data::BG2,0	,0	,560,473,-560/2	,-473/2,60};
+//SPR_DATA s_titleName =	{ spr_data::BG2,560	,0	,376,312,-376/2	,-312/2,0 };
+//SPR_DATA s_ppsk =		{ spr_data::BG2,0	,474,474,35	,-474 /2,-35 /2,-30 };
+//
+//SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
+//SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
 SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,0,0,0 };
 
 IMG_DATA img_title[] = {
 	{ spr_data::BG1,"DATA\\Scene\\title.png" },
-	{ spr_data::BG2,"DATA\\Scene\\titleobj.png" },
+	//{ spr_data::BG2,"DATA\\Scene\\titleobj.png" },
 
 	{ spr_data::BG3,"DATA\\Scene\\tuto_kari.jpg"},
 
@@ -149,13 +164,11 @@ void sceneTitle::Update()
 //•`‰æ
 void sceneTitle::Render()
 {
-	if (bg)			spr_data::Render(V2(0, 0),bg);
-	/*if (titleChar) {
-		float sz = pFrame->get_sz((float)titleChar->frameNum);
+	if (bg) {
+		float sz = pFrame->get_sz((float)bg->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar, 0xFFFFFFFF,(float)0, shader2D, "depth");
+		spr_data::Render(V2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bg, 0xFFFFFFFF, (float)0, shader2D, "depth");	
 	}
-	*/
 	if (titleChar)spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
 
 	if (titleName) {

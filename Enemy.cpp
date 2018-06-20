@@ -329,12 +329,14 @@ void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Ene
 }
 
 STAGE_DATA* stageSetData_time[] = {
+	tutorial_time,
 	stage1_time,
 	//stage2_setData,
 	//stage3_setData,
 };
 
 STAGE_DATA* stageSetData_kill[] = {
+	tutorial_time,
 	stage1_kill,
 };
 
@@ -392,7 +394,6 @@ void Enemy_Manager::stageUpdate()
 	while (data->appearTime <= timer)
 	{
 		if (data->appearTime<0) {
-			data++;
 			break;
 		}
 		if (data->moveType == nullptr) break;

@@ -8,8 +8,7 @@
 
 
 //時間による出現データ
-//時間による出現データ
-STAGE_DATA stage1_time[] = {
+STAGE_DATA tutorial_time[] = {
 	//WAVE1(初期配置) 19匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
 	STAGE_DATA(0,		Rotation,	V2(1620,512),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -55,7 +54,7 @@ STAGE_DATA stage1_time[] = {
 
 
 //キル数による出現データ
-STAGE_DATA stage1_kill[] = {
+STAGE_DATA tutorial_kill[] = {
 	//全21匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
 	STAGE_DATA(15,		zMove,		V2(1260,762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -90,7 +89,7 @@ STAGE_DATA stage1_kill[] = {
 	STAGE_DATA(-1,		nullptr,	V2(600, 250),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 };
 
-LAND_SCAPE_DATA stage1_bg_effect[] = {
+LAND_SCAPE_DATA tutorial_bg_effect[] = {
 
 	{ LSD::BOT	 ,0,BG_Mini_capsule_l,V2(1000,1024),V2(0,0),V2(0,0),V2(0,0),0 },
 

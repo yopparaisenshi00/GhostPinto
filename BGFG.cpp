@@ -48,7 +48,9 @@ SPR_DATA spr_container[] = {
 	SPR_DATA{ BG_PC,0,256,248,157 ,-128,-157 ,0},
 	SPR_DATA{ -1,    0,     0,	 0, 0,  0,  0,1 }
 };
- 
+//メイン背景 
+SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
+
 //地上大カプセル
 SPR_DATA spr_Capsule_l = { Capsule_l,0,  0,	177,512,-89,-512 };
 SPR_DATA spr_Capsule_d = { Capsule_d,256,0,	177,512,-89,-512 };
@@ -82,6 +84,11 @@ SPR_DATA spr_Display_b = { Display_b,1408,384,128,75,-128 / 2,-75 / 2 };
 SPR_DATA spr_Display_c = { Display_c,1536,384,128,97,-128 / 2,-97 / 2 };
 SPR_DATA spr_Display_d = { Display_d,  1664,384,128,97,-128 / 2,-97 / 2 };
 
+LAND_SCAPE_DATA* bg_effect[] = {
+	{ tutorial_bg_effect },
+	{ stage1_bg_effect },
+};
+
 enum {
 	INIT = 0,	//初期設定
 	BEGIN,	//
@@ -106,12 +113,13 @@ float FG_REDUCED_DATA[] = {
 void LandScape::Init(int stage_no) {
 	
 	bg.clear();
+	setMainBG(&main,MainBG);
 	for (int i = 0; i < LANDSCAPE_MAX;i++) {
 		if (!LandScapeObjs[i])continue;
 		LandScapeObjs[i]->clear();
 	}
 	timer = 0;
-	data = &stage1_bg_effct[stage_no];
+	data = (bg_effect[stage_no]);
 
 	for (int i = 0; i < BG_REDUCED_LV_MAX;i++) {
 		BG_RenderBox[i].Init(BG_REDUCED_DATA[i]);
@@ -125,8 +133,14 @@ void LandScape::Init(int stage_no) {
 
 void LandScape::Update() {
 	stage_update();
-
 	//bg.Update();
+	for (int i = 0; i < BG_REDUCED_LV_MAX; i++) {
+		BG_RenderBox[i].count = 0;
+	}
+	for (int i = 0; i < FG_REDUCED_LV_MAX; i++) {
+		FG_RenderBox[i].count = 0;
+	}
+
 	for (int i = 0; i < LANDSCAPE_MAX; i++) {
 		if (!LandScapeObjs[i])break;
 		if(!LandScapeObjs[i]->init_fg)continue;
@@ -166,39 +180,36 @@ void LandScape::stage_update() {
 	//timerで管理
 	while (data->appearTime <= timer)
 	{
-		if (data->appearTime < 0) {
-			data++;
-			break;
-		}
-		if (data->moveType == nullptr) break;
+		if (data->appearTime < 0)	   { break;}
+		if (data->moveType == nullptr) { break;}
 		searchSet(data->type,data->pos, data->speed,data->moveType,nullptr,data->z);
 		data++;
 	}
 }
 
 void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
-	ReducedObj* data;
+	ReducedObj* Box;
 	if (z > -1) { //0以上なら背景、以下なら前景
 		//エラーチェック// 配列サイズに収まっているか
-		if (z < 0 || z < FG_REDUCED_LV_MAX) {
+		if (z < 0 || z > BG_REDUCED_LV_MAX) {
 			z = (BG_REDUCED_LV_MAX-1);
 		}
-		BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
-		data = &BG_RenderBox[z];
-
+		Box = &BG_RenderBox[z];
 	}
 	else {
 		z *= -1;
-		z -= 1;
+		z--;
 		//エラーチェック// 配列サイズに収まっているか
 		if (z < 0 || z < FG_REDUCED_LV_MAX) {
 			z = (FG_REDUCED_LV_MAX - 1);
 		}
-		FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
-		data = &FG_RenderBox[z];
+		Box = &FG_RenderBox[z];
 	}
-	obj->custom.scaleX = 1 / data->Reduced_level;
-	obj->custom.scaleY = 1 / data->Reduced_level;
+
+	Box->data[Box->count] = obj;
+	Box->count++;
+	obj->custom.scaleX = 1 / Box->Reduced_level;
+	obj->custom.scaleY = 1 / Box->Reduced_level;
 
 }
 
@@ -245,7 +256,8 @@ void LandScape::ReducedObj::Render() {
 	for (int i = 0; i < count; i++) {
 		data[i]->Render();
 	}
-	count = 0;
+
+
 #ifdef _DEBUG_REDUCEDLINE_RENDER_
 
 #ifdef _DEBUG_REDUCEDLINE_TOP_
