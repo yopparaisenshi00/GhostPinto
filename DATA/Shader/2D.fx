@@ -282,7 +282,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 
 		//COLOR1
 		{
-			int Reduced = 1000 * (1.2 - z);
+			int Reduced = 1000 * (1.1 - z);
 
 			Color2 = tex2D(DecaleSamp, In.Tex);
 			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
@@ -362,7 +362,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 		
 		//COLOR2
 		{
-			int Reduced = 1000 * (1.2 - z);
+			int Reduced = 1000 * (1.1 - z);
 
 			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
 			temp0 = tex2D(DecaleSamp, tpos);
@@ -380,7 +380,6 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 			temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			//	èc	14t
-
 			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
 			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
 			temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
