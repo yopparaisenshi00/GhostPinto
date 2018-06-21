@@ -175,7 +175,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 
 	float z = FPower;
 	float mz = FSize;
-
+	z = trunc(z * 50) / 50;
 
 	if (0.05 > z) {
 		Color = tex2D(DecaleSamp, In.Tex);
@@ -362,7 +362,8 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 		
 		//COLOR2
 		{
-			int Reduced = 1000 * (1.1 - z);
+			
+			int Reduced = 1000 * z;
 
 			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
 			temp0 = tex2D(DecaleSamp, tpos);
@@ -440,7 +441,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 		}
 
 		z = (z - 0.5)/0.5;
-		z = trunc(z * 10) / 10;
+		//z = trunc(z * 10) / 10;
 		Color *= (1 - z);
 		Color2 *= (z);
 
