@@ -451,7 +451,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 		//Color /= (((int)(z * 10)) + ((int)((1 - z) * 10)));
 		
 	}
-	return (Color /** In.Color*/);
+	return (Color * In.Color);
 }
 
 //float4 PS_pass4(VS_OUTPUT_G In) : COLOR
