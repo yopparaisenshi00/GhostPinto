@@ -33,7 +33,7 @@
 //										ì¬ŽÒ:
 //
 //*****************************************************************************
-SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
+//SPR_DATA main = SPR_DATA{ 0,0,0,1960,540,0,0,1960,540 };
 SPR_DATA clear = { spr_data::GAMECLEAR,192,192,768,128,0,0,600,100 };
 
 
@@ -296,8 +296,6 @@ void	sceneMain::Render()
 		break;
 	case READY:
 		pNumber->RenderFree(480 - 32, 270 - 96, count_down+1, 1, 64, 0xFFFFFFFF);
-		break;
-	case GAMECLEAR:
 		break;
 	case MAIN:
 	case FADE_OUT:
