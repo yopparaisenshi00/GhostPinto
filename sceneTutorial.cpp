@@ -163,10 +163,9 @@ void	sceneTutorial::Update()
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		count_down = 4;
+		count_down = 2;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
-		timer = 80 * 60;
 		scene_timer = 0;
 
 		//	KEY_Vibration(200,200);
@@ -191,7 +190,6 @@ void	sceneTutorial::Update()
 		pEffect_Manager->Update();
 		pScore->Update();
 		pMAP->Update();
-		pNumber->Update(timer);
 		pLandScape->Update();
 
 		break;

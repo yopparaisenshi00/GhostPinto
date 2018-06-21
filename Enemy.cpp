@@ -4,9 +4,10 @@
 #include "Map.h"
 #include "Player.h"
 #include "Frame.h"
-#include "Number.h"
 #include "Enemy.h"
 #include "Effect.h"
+#include "Number.h"
+
 #include "stage_data.h"
 #include "sceneMain.h"
 #include "Sound.h"
