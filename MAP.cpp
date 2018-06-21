@@ -56,7 +56,7 @@ MAP::MAP() : pData(0), limitL(0), limitR(0)
 //==============================================================================
 
 // 初期設定
-void MAP::init(BG_DATA* p)
+void MAP::Init(BG_DATA* p)
 {
 	clear();
 	pData = p;
@@ -103,7 +103,7 @@ void MAP::clear()
 //******************************************************************************
 
 // 更新処理
-void MAP::update()
+void MAP::Update()
 {
 	//塵エフェクト
 	if ( dust_timer++>200 ) {

@@ -110,9 +110,9 @@ public:
 
 
 		
-	void init(BG_DATA* p);
+	void Init(BG_DATA* p);
 	void clear();
-	void update();
+	void Update();
 	void Render();
 	inline void MAP::RenderMapChip();
 

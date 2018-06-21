@@ -17,6 +17,8 @@ private:
 	SPR_DATA* ppsk;
 	SPR_DATA* titleName;
 	SPR_DATA* titleChar;
+	SPR_DATA* s_Enemy_b;
+	SPR_DATA* s_Enemy_s;
 public:
 	~sceneTitle();
 	bool Initialize();

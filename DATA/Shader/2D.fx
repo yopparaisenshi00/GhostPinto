@@ -157,52 +157,111 @@ float4 PS_pass3(VS_OUTPUT_G In) : COLOR
 float FPower;
 float FSize;
 
-
 float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 {
 	float4 Color = 0;
 	float4 Color2 = 0;
-	float4 temp;
+	float4 temp0;
+	float4 temp1;
+	float4 temp2;
+	float4 temp3;
+	float4 temp4;
+	float4 temp5;
+	float4 temp6;
+	float4 temp7;
+	float4 temp8;
+	float2 tpos;
+	float2 tpos2;
+
 	float z = FPower;
 	float mz = FSize;
+	z = trunc(z * 50) / 50;
 
-	if (0.1 > z) {
+	if (0.05 > z) {
 		Color = tex2D(DecaleSamp, In.Tex);
 	} 
 	else if(0.5 > z){
+		//sample
+		//tpos = float2(round((In.Tex.x) * 1000) / 1000, round((In.Tex.y) * 1000) / 1000);
+		//tpos2 = float2(round((In.Tex.x) * 1000) / 1000, round((In.Tex.y) * 1000) / 1000);
+		int Reduced = 1000 * (1 - z);
+
+		Color2 = tex2D(DecaleSamp, In.Tex);
+		tpos = float2(round(In.Tex.x * Reduced )/ Reduced ,round(In.Tex.y * Reduced )/Reduced );
+		temp0 = tex2D(DecaleSamp, tpos);
 		
-		temp = Color2 = tex2D(DecaleSamp, In.Tex);
-		Color += temp * 8;//8
-						   //	‰¡	14t
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.004f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.004f, 0));
-		Color += temp * 4;//16
-
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.012f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.01f, 0));
-		Color += temp * 4;//24
-
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.02f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.016f, 0));
-		Color += temp * 4;//32
+		tpos = float2(round((In.Tex.x + 0.002f) * Reduced ) / Reduced ,round(In.Tex.y * Reduced ) / Reduced );
+		tpos2= float2(round((In.Tex.x - 0.002f) * Reduced ) / Reduced , round(In.Tex.y * Reduced ) / Reduced );
+		temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+		
+		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+		
+		tpos = float2(round((In.Tex.x + 0.008f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 		//	c	14t
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.004f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.004f));
-		Color += temp * 8;//48
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.012f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.01f));
-		Color += temp * 8;//64
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.02f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.016f));
-		Color += temp * 8;//80
+		
+		tpos = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y +  0.002f) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y - 0.002f) * Reduced ) / Reduced );
+		temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+		tpos = float2(round((In.Tex.x ) * Reduced) / Reduced, round((In.Tex.y +   0.004) * Reduced) / Reduced);
+		tpos2 = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y - 0.004) * Reduced ) / Reduced );
+		temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+
+		tpos = float2(round((In.Tex.x )* Reduced ) / Reduced , round((In.Tex.y +  0.008f) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x) * Reduced ) / Reduced , round((In.Tex.y - 0.008f) * Reduced ) / Reduced );
+		temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 		//	ã‰¡	8t	
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.004f, -0.004f)) + tex2D(DecaleSamp, In.Tex + float2(-0.004f, -0.004f));
-		Color += temp * 2;     //84
+		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y  + 0.004f) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y + 0.004f) * Reduced ) / Reduced );
+		temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+		//Color += temp[] * 2;     //84
 		//	‰º‰¡	8t
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.004f, +0.004f)) + tex2D(DecaleSamp, In.Tex + float2(-0.004f, +0.004f));
-		Color += temp*2;//88
-		//Color /= 88;
-		Color *= 0.0113636364;
+		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y - 0.004f) * Reduced ) / Reduced );
+		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y - 0.004f) * Reduced ) / Reduced );
+		temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+		int count = 0 ;
+
+		if (temp0.a > 0) {
+			Color += temp0 * 4; count += 4;
+		}
+		if (temp1.a > 0) {
+			Color += temp1 * 2; count += 4;
+		}
+		if (temp2.a > 0) {
+			Color += temp2 * 2; count += 4;
+		}
+		if (temp3.a > 0) {
+			Color += temp3 * 2; count += 4;
+		}
+		if (temp4.a > 0) {
+			Color += temp4 * 2; count += 4;
+		}
+		if (temp5.a > 0) {
+			Color += temp5 * 2; count += 4;
+		}
+		if (temp6.a > 0) {
+			Color += temp6 * 2; count += 4;
+		}
+		if (temp7.a > 0) {
+			Color += temp7; count += 2;
+		}
+		if (temp8.a > 0) {
+			Color += temp8; count += 2;
+		}
+
+		float alpha = Color.a / 42;
+		Color /= count;
+		Color.a = alpha;
+
+		z /= 0.5; 
 		
-
-		z *= 2;
-
 		Color *= (int)(z * 10);
 		Color2 *= (int)((1 - z) * 10);
 
@@ -219,66 +278,386 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 	//	//Color += Color2;
 	//	//Color /= 2;
 	}
-	else{ 
+	else {
+
+		//COLOR1
+		{
+			int Reduced = 1000 * (1.1 - z);
+
+			Color2 = tex2D(DecaleSamp, In.Tex);
+			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			temp0 = tex2D(DecaleSamp, tpos);
+
+			tpos = float2(round((In.Tex.x +  0.002f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.002f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			tpos = float2(round((In.Tex.x + 0.004f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			tpos = float2(round((In.Tex.x +  0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			//	c	14t
+
+			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y +  0.002f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.002f) * Reduced) / Reduced);
+			temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y +	0.004) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.004) * Reduced) / Reduced);
+			temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+
+			tpos = float2(round((In.Tex.x)* Reduced) / Reduced, round((In.Tex.y +   0.008f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			//	ã‰¡	8t	
+			tpos = float2(round((In.Tex.x +  0.004f) * Reduced) / Reduced, round((In.Tex.y + 0.004f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y + 0.004f) * Reduced) / Reduced);
+			temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+			//Color += temp[] * 2;     //84
+			//	‰º‰¡	8t
+			tpos = float2(round((In.Tex.x + 0.004f) * Reduced) / Reduced, round((In.Tex.y - 0.004f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y - 0.004f) * Reduced) / Reduced);
+			temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+			int count = 0;
+
+			if (temp0.a > 0) {
+				Color += temp0 * 4; count += 4;
+			}
+			if (temp1.a > 0) {
+				Color += temp1 * 2; count += 4;
+			}
+			if (temp2.a > 0) {
+				Color += temp2 * 2; count += 4;
+			}
+			if (temp3.a > 0) {
+				Color += temp3 * 2; count += 4;
+			}
+			if (temp4.a > 0) {
+				Color += temp4 * 2; count += 4;
+			}
+			if (temp5.a > 0) {
+				Color += temp5 * 2; count += 4;
+			}
+			if (temp6.a > 0) {
+				Color += temp6 * 2; count += 4;
+			}
+			if (temp7.a > 0) {
+				Color += temp7; count += 2;
+			}
+			if (temp8.a > 0) {
+				Color += temp8; count += 2;
+			}
+
+			float alpha = Color.a / 32;
+			Color /= count;
+			Color.a = alpha;
+		}
 		// 4 8 8 8 16 16 16 4 4
-		temp = tex2D(DecaleSamp, In.Tex);
 		
-		Color += temp * 4;//4
-		Color2 += temp * 8;//8 
-		//‰¡	14t
+		//COLOR2
+		{
+			
+			int Reduced = 1000 * z;
 
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.004f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.004f, 0));
-		Color += temp * 4;//16
-		Color2 += temp * 8;//16
+			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			temp0 = tex2D(DecaleSamp, tpos);
 
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.012f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.01f, 0));
-		Color += temp * 4;//24
-		Color2 += temp * 8;//32
+			tpos = float2(round((In.Tex.x +	0.008f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.02f, 0)) + tex2D(DecaleSamp, In.Tex + float2(-0.016f, 0));
-		Color += temp * 4;//32
-		Color2 += temp * 8;//48
+			tpos = float2(round((In.Tex.x + 0.012f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.012f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		//	c	14t
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.004f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.004f));
-		Color += temp * 8;//40
-		Color2 += temp * 4;//56
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.012f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.01f));
-		Color += temp * 8;//48
-		Color2 += temp * 4;//64
-		temp = tex2D(DecaleSamp, In.Tex + float2(0, +0.02f)) + tex2D(DecaleSamp, In.Tex + float2(0, -0.016f));
-		Color += temp * 8;//64
-		Color2 += temp * 4;//72
+			tpos = float2(round((In.Tex.x + 0.016f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.016f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		//	ã‰¡	8t	
-		temp = tex2D(DecaleSamp, In.Tex + float2(+0.016f, -0.0016f)) + tex2D(DecaleSamp, In.Tex + float2(-0.016f, -0.016f));
-		Color += temp * 2;//80
-		Color2 += temp * 8;//88
-		//	‰º‰¡	8t
-		temp = tex2D(DecaleSamp,In.Tex + float2(+0.016f, +0.016f)) + tex2D(DecaleSamp, In.Tex + float2(-0.016f, +0.016f));
-		Color += temp * 2;//92
-		Color2 += temp * 8;//104
-		//Color /= 84;
-		Color *= 0.0119047619;
-		Color2 *= 0.00961538461;
+			//	c	14t
+			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		
-		z *= 2;
+			tpos = float2(round((In.Tex.x + 0.012f) * Reduced) / Reduced, round((In.Tex.y + 0.012) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.012f) * Reduced) / Reduced, round((In.Tex.y - 0.012) * Reduced) / Reduced);
+			temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		Color *= (int)(z * 10);
-		Color2 *= (int)((1 - z) * 10);
+
+			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y + 0.016f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.016f) * Reduced) / Reduced);
+			temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			//	ã‰¡	8t	
+			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
+			temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+			//Color += temp[] * 2;     //84
+			//	‰º‰¡	8t
+			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
+
+			int count2 = 0;
+
+			if (temp0.a > 0) {
+				Color2 += temp0 * 2; count2 += 2;
+			}
+			if (temp1.a > 0) {
+				Color2 += temp1 * 2; count2 += 4;
+			}
+			if (temp2.a > 0) {
+				Color2 += temp2 * 2; count2 += 4;
+			}
+			if (temp3.a > 0) {
+				Color2 += temp3 * 2; count2 += 4;
+			}
+			if (temp4.a > 0) {
+				Color2 += temp4 * 2; count2 += 4;
+			}
+			if (temp5.a > 0) {
+				Color2 += temp5 * 2; count2 += 4;
+			}
+			if (temp6.a > 0) {
+				Color2 += temp6 * 2; count2 += 4;
+			}
+			if (temp7.a > 0) {
+				Color2 += temp7 * 4; count2 += 8;
+			}
+			if (temp8.a > 0) {
+				Color2 += temp8 * 4; count2 += 8;
+			}
+
+			float alpha = Color2.a / 42;
+			Color2 /= count2;
+			Color2.a = alpha;
+			//z *= 2;
+		}
+
+		z = (z - 0.5)/0.5;
+		//z = trunc(z * 10) / 10;
+		Color *= (1 - z);
+		Color2 *= (z);
 
 
 		Color += Color2;
 
-		Color /= (((int)(z * 10)) + ((int)((1 - z) * 10)));
-
-
-	
+		//Color /= (((int)(z * 10)) + ((int)((1 - z) * 10)));
+		
 	}
-	return (Color * In.Color);
+	return (Color /** In.Color*/);
 }
 
+//float4 PS_pass4(VS_OUTPUT_G In) : COLOR
+//{
+//	float4 Color = 0;
+//	float4 Color2 = 0;
+//	float4 temp0;
+//	float4 temp1;
+//	float4 temp2;
+//	float4 temp3;
+//	float4 temp4;
+//	float4 temp5;
+//	float4 temp6;
+//	float4 temp7;
+//	float4 temp8;
+//	float2 tpos;
+//	float z = FPower;
+//	float mz = FSize;
+//
+//	if (0.1 > z) {
+//		Color = tex2D(DecaleSamp, In.Tex);
+//	}
+//	else if (0.6 > z) {
+//
+//
+//		Color2 = temp0 = tex2D(DecaleSamp, In.Tex);
+//
+//		//	‰¡	14t
+//		temp1 = tex2D(DecaleSamp2, In.Tex + float2(+0.004f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.004f, 0));
+//		//Color += temp[] * 4;//16
+//
+//		temp2 = tex2D(DecaleSamp2, In.Tex + float2(+0.012f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.01f, 0));
+//		//Color += temp[] * 4;//24
+//
+//		temp3 = tex2D(DecaleSamp2, In.Tex + float2(+0.02f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.016f, 0));
+//		//Color += temp[] * 4;//32
+//
+//		//	c	14t
+//		temp4 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.004f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.004f));
+//		//Color += temp[] * 8;//48
+//		temp5 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.012f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.01f));
+//		//Color += temp[] * 8;//64
+//		temp6 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.02f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.016f));
+//		//Color += temp[] * 8;//80
+//
+//		//	ã‰¡	8t	
+//		temp7 = tex2D(DecaleSamp2, In.Tex + float2(+0.004f, -0.004f)) + tex2D(DecaleSamp2, In.Tex + float2(-0.004f, -0.004f));
+//		//Color += temp[] * 2;     //84
+//		//	‰º‰¡	8t
+//		temp8 = tex2D(DecaleSamp2, In.Tex + float2(+0.004f, +0.004f)) + tex2D(DecaleSamp2, In.Tex + float2(-0.004f, +0.004f));
+//		int count = 0;
+//
+//		if (temp0.a > 0) {
+//			Color += temp0 * 4; count += 4;
+//		}
+//		if (temp1.a > 0) {
+//			Color += temp1 * 2; count += 4;
+//		}
+//		if (temp2.a > 0) {
+//			Color += temp2 * 2; count += 4;
+//		}
+//		if (temp3.a > 0) {
+//			Color += temp3 * 2; count += 4;
+//		}
+//		if (temp4.a > 0) {
+//			Color += temp4 * 4; count += 8;
+//		}
+//		if (temp5.a > 0) {
+//			Color += temp5 * 4; count += 8;
+//		}
+//		if (temp6.a > 0) {
+//			Color += temp6 * 4; count += 8;
+//		}
+//		if (temp7.a > 0) {
+//			Color += temp7; count += 2;
+//		}
+//		if (temp8.a > 0) {
+//			Color += temp8; count += 2;
+//		}
+//
+//		float alpha = Color.a / 42;
+//		Color /= count;
+//		Color.a = alpha;
+//
+//		z /= 1;
+//
+//		Color *= (int)(z * 10);
+//		Color2 *= (int)((1 - z) * 10);
+//
+//
+//		Color += Color2;
+//
+//		Color /= (((int)(z * 10)) + ((int)((1 - z) * 10)));
+//
+//
+//		//	Color /= ((int)(z * 10)) + ((int)((1 - z) * 10));
+//		//	//Color * xx;
+//		//	//Color * xx;
+//
+//		//	//Color += Color2;
+//		//	//Color /= 2;
+//	}
+//	else {
+//		// 4 8 8 8 16 16 16 4 4
+//		temp0 = tex2D(DecaleSamp2, In.Tex);
+//		//Color += temp[] * 4;//4
+//		//Color2 += temp[] * 4;//4
+//		//‰¡	14t
+//
+//		temp1 = tex2D(DecaleSamp2, In.Tex + float2(+0.004f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.004f, 0));
+//		//Color += temp[] * 2;//8
+//		//Color2 += temp[] * 4;//12
+//
+//		temp2 = tex2D(DecaleSamp2, In.Tex + float2(+0.012f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.01f, 0));
+//		//Color += temp[] * 2;//12
+//		//Color2 += temp[] * 4;//20
+//
+//		temp3 = tex2D(DecaleSamp2, In.Tex + float2(+0.02f, 0)) + tex2D(DecaleSamp2, In.Tex + float2(-0.016f, 0));
+//		//Color += temp[] * 2;//16
+//		//Color2 += temp[] * 4;//28
+//
+//		//	c	14t
+//		temp4 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.004f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.004f));
+//		//Color += temp[] * 4;//24
+//		//Color2 += temp[] * 2;//32
+//
+//		temp5 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.012f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.01f));
+//		//Color += temp[] * 4;//32
+//		//Color2 += temp[] * 2;//36
+//
+//		temp6 = tex2D(DecaleSamp2, In.Tex + float2(0, +0.02f)) + tex2D(DecaleSamp2, In.Tex + float2(0, -0.016f));
+//		//Color += temp[] * 4;//40
+//		//Color2 += temp[] * 2;//40
+//
+//		//	ã‰¡	8t	
+//		temp7 = tex2D(DecaleSamp2, In.Tex + float2(+0.016f, -0.0016f)) + tex2D(DecaleSamp2, In.Tex + float2(-0.016f, -0.016f));
+//		//Color += temp[];//80
+//		//Color2 += temp[] * 4;//48
+//
+//		//	‰º‰¡	8t
+//		temp8 = tex2D(DecaleSamp2, In.Tex + float2(+0.016f, +0.016f)) + tex2D(DecaleSamp2, In.Tex + float2(-0.016f, +0.016f));
+//
+//		//Color += temp[];//92
+//		//Color2 += temp[] * 4;//56
+//
+//		int count = 0;
+//		int count2 = 0;
+//
+//		if (temp0.a > 0) {
+//			Color += temp0 * 4; count += 4;
+//			Color2 += temp0 * 4; count2 += 4;
+//		}
+//		if (temp1.a > 0) {
+//			Color += temp1 * 2; count += 4;
+//			Color2 += temp1 * 4; count2 += 8;
+//		}
+//		if (temp2.a > 0) {
+//			Color += temp2 * 2; count += 4;
+//			Color2 += temp2 * 4; count2 += 8;
+//		}
+//		if (temp3.a > 0) {
+//			Color += temp3 * 2; count += 4;
+//			Color2 += temp3 * 4; count2 += 8;
+//		}
+//		if (temp4.a > 0) {
+//			Color += temp4 * 4; count += 8;
+//			Color2 += temp4 * 2; count2 += 4;
+//		}
+//		if (temp5.a > 0) {
+//			Color += temp5 * 4; count += 8;
+//			Color2 += temp5 * 2; count2 += 4;
+//		}
+//		if (temp6.a > 0) {
+//			Color += temp6 * 4; count += 8;
+//			Color2 += temp6 * 2; count2 += 4;
+//		}
+//		if (temp7.a > 0) {
+//			Color += temp7; count += 2;
+//			Color2 += temp7 * 4; count2 += 8;
+//		}
+//		if (temp8.a > 0) {
+//			Color += temp8; count += 2;
+//			Color2 += temp8 * 4; count2 += 8;
+//		}
+//
+//		float alpha = Color.a / 42;
+//		Color /= count;
+//		Color.a = alpha;
+//
+//		alpha = Color2.a / 56;
+//		Color2 /= count2;
+//		Color2.a = alpha;
+//
+//		//z *= 2;
+//		z *= 0.5;
+//		Color *= (int)(z * 10);
+//		Color2 *= (int)((1 - z) * 10);
+//
+//
+//		Color += Color2;
+//
+//		Color /= (((int)(z * 10)) + ((int)((1 - z) * 10)));
+//
+//	}
+//	return (Color * In.Color);
+//}
 
 
 

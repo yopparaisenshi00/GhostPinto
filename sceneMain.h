@@ -3,8 +3,8 @@
 //		ÉÅÉCÉìÉVÅ[Éì
 //
 //*****************************************************************************************************************************
-#ifndef _SCENEM_MAIN_H_
-#define _SCENEM_MAIN_H_
+#ifndef _SCENE_MAIN_H_
+#define _SCENE_MAIN_H_
 #include "system\\Scene.h"
 
 
@@ -18,7 +18,6 @@ private:
 	int count_down;
 	int scene_timer;
 	int stage_no;
-
 public:
 
 	//MAP*		map;
@@ -123,7 +122,7 @@ public:
 
 #define pScore (Score::getInstance())
 
-#endif //_SCENEM_MAIN_H_
+#endif //_SCENE_MAIN_H_
 
 
 

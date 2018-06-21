@@ -327,12 +327,14 @@ void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Ene
 }
 
 STAGE_DATA* stageSetData_time[] = {
+	tutorial_time,
 	stage1_time,
 	//stage2_setData,
 	//stage3_setData,
 };
 
 STAGE_DATA* stageSetData_kill[] = {
+	tutorial_time,
 	stage1_kill,
 };
 
@@ -380,6 +382,7 @@ void Enemy::UIUpdate() {
 		ui_argb = 0xDD5BE1FF; //¦…F
 		count = 0;
 	}
+	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
 }
 void Enemy_Manager::stageUpdate()
 {
@@ -389,7 +392,6 @@ void Enemy_Manager::stageUpdate()
 	while (data->appearTime <= timer)
 	{
 		if (data->appearTime<0) {
-			data++;
 			break;
 		}
 		if (data->moveType == nullptr) break;

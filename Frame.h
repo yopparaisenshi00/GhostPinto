@@ -81,6 +81,7 @@ public:
 	void add_Exorcise(float);
 	void use_Multifocus(int);
 	void use_lockPinto();
+	float get_sz(float z);
 private:
 	float act;
 	float exorcise;				//—ì—Í”’l@1 ` 100

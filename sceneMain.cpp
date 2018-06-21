@@ -104,9 +104,9 @@ bool sceneMain::Initialize()
 	count_down = 0;
 	scene_timer = 0;
 
-	pPlayer;
-	pFrame;
-	pNumber;
+	//pPlayer;
+	//pFrame;
+	//pNumber;
 
 	return true;
 }
@@ -151,16 +151,16 @@ void	sceneMain::Update()
 		state = INIT;
 	case INIT:
 		//break;
-		stage_no = 0;
+		stage_no = stage1;
 		pPlayer->Init();
 		pFrame->Init();
 		pScore->Init();
 		state = BIGEN;
 	case BIGEN:
 		//‰ŠúÝ’è
-		pMAP->init(&st1_bg);
+		pMAP->Init(&st1_bg);
 		pLandScape->Init(stage_no);
-		pLandScape->setMainBG(&main, MainBG);
+		//pLandScape->setMainBG(&main, MainBG);
 
 		//((BG*)bg)->Init();
 		//bg->data(&main)
@@ -194,15 +194,15 @@ void	sceneMain::Update()
 			count_down_timer = 0;
 		}
 		if (count_down < 0)state = MAIN;
+		//pPlayer->R_Update();
+		//pFrame->R_Update();
 		pPlayer->R_Update();
 		pFrame->R_Update();
 		pEnemy_Manager->Update();
 		pEnemy_Manager->UIUpdate();
 		pEffect_Manager->Update();
 		pScore->Update();
-		pMAP->update();
-		//bg->Update();
-		//fg->Update();
+		pMAP->Update();
 		pNumber->Update(timer);
 		pLandScape->Update();
 
@@ -213,9 +213,8 @@ void	sceneMain::Update()
 		pEnemy_Manager->Update();
 		pEnemy_Manager->UIUpdate();
 		pEffect_Manager->Update();
-		pLandScape->Update();
 		pScore->Update();
-		pMAP->update();
+		pMAP->Update();
 		pNumber->Update(timer);
 
 		pLandScape->Update();
@@ -265,7 +264,6 @@ void	sceneMain::Update()
 void	sceneMain::Render()
 {
 
-	//bg->Render();
 	pLandScape->RenderBG();
 	pMAP->Render();
 	pEnemy_Manager->Render();
@@ -274,30 +272,38 @@ void	sceneMain::Render()
 
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
 		pEnemy_Manager->UIRender();
-		//pFrame->Render();   
 		pScore->Render();
 	}
-
 	pLandScape->RenderFG();
-
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //—ì—Í‚ª‚ ‚ê‚Î•`‰æ
-
 		pMAP->MiniMapRender();
-
 		pPlayer->UIRender();
 	}
 	pNumber->Render();
 	pUI->Render();
 
+	pD_TEXT->Render();
+
+
 	switch (state)
 	{
+	case LOAD:
+	case INIT:
+	case BIGEN:
+		break;
+	case FADE_IN:
+		break;
 	case READY:
 		pNumber->RenderFree(480 - 32, 270 - 96, count_down+1, 1, 64, 0xFFFFFFFF);
 		break;
 	case GAMECLEAR:
 		break;
-	default:
+	case MAIN:
+	case FADE_OUT:
+	case GAMEOVER:
+	case GAMECLEAR:
+default:
 		break;
 	}
 

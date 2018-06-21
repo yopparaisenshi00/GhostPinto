@@ -1,8 +1,16 @@
 #ifndef _LAND_SCAPE_H_
 #define _LAND_SCAPE_H_
 
+#define BEHIND_OBJ_ALPHA (0x55) //前景透過限度
+#define ALPHA_ACT (0x11)		//前景透過速度
 
 
+
+//#define _DEBUG_REDUCEDLINE_RENDER_ //縮尺サイズのライン描画 (大元)
+
+#define _DEBUG_REDUCEDLINE_TOP_ //縮尺サイズのライン描画TOP
+#define _DEBUG_REDUCEDLINE_BOT_ //縮尺サイズのライン描画BOT
+#define _DEBUG_REDUCEDLINE_CENTER_ //縮尺サイズのライン描画CENTER
 
 
 class LAND_SCAPE_OBJ;
@@ -60,6 +68,7 @@ public:
 	bool init_fg;
 	float sz;
 	float z;
+	
 
 
 	void clear() {
@@ -153,19 +162,12 @@ public:
 	void Update();
 	void RenderBG();
 	void RenderFG();
-	void add_RenderObj(LAND_SCAPE_OBJ* obj,int z) {
-		if (z > -1) { //0以上なら背景、以下なら前景
-			BG_RenderBox[z].data[(BG_RenderBox[z].count++)] = obj;
-		}
-		else {
-			z *= -1;
-			z -= 1;
-			FG_RenderBox[z].data[FG_RenderBox[z].count++] = obj;
-		}
-	}
+	void add_RenderObj(LAND_SCAPE_OBJ* obj, int z); 
+
 private:
 
-	struct ReducedObj {
+	class ReducedObj {
+	public:
 		float bot;
 		V2 pos;
 		void Init(float);

@@ -222,8 +222,8 @@ void iexInput::Vibration( u32 gain, float period )
 //		キー設定
 //*****************************************************************************
 
-//                  左X軸   左Y軸   右X軸    右Y軸    A  B  X  Y   LB LT L3   R1 R2 R3   St Sel
-PADSET	iexInput::ps101   = { AXIS_X, AXIS_Y, AXIS_Z,  AXIS_RZ, 2, 3, 1, 4,   7, 5,11,   8, 6,12,   9,10 };	// ELECOM JS-PS101USV
+//--------------------------左X軸  ---左Y軸----右X軸----右Y軸---A  B  X  Y----LB LT L3---R1 R2 R3---St Sel
+PADSET	iexInput::ps101   = { AXIS_X, AXIS_Y, AXIS_Z,  AXIS_RZ, 2, 3, 1, 4,   7, 5,11,   8, 6,12,  10 ,9 };	// ELECOM JS-PS101USV
 PADSET	iexInput::sixaxis = { AXIS_X, AXIS_Y, AXIS_Z,  AXIS_RZ, 2, 3, 1, 4,   7, 5,10,   8, 6,11,  12, 9 };	// SixAxis	
 PADSET	iexInput::xbox360 = { AXIS_X, AXIS_Y, AXIS_RX, AXIS_RY, 1, 2, 3, 4,   5,11, 9,   6,12,10,   7, 8 };	// XBOX360 Controller
 
@@ -363,12 +363,12 @@ void iexInput::SetInfo()
 	}
 
 	//	キーによる軸設定
-	if( GetAsyncKeyState(VK_NUMPAD8) < 0 ) PadAxisY2 = -1000;
-	if( GetAsyncKeyState(VK_NUMPAD2) < 0 ) PadAxisY2 = 1000;
-	if( GetAsyncKeyState(VK_NUMPAD4) < 0 ) PadAxisX2 = -1000;
-	if( GetAsyncKeyState(VK_NUMPAD6) < 0 ) PadAxisX2 = 1000;
+	if( GetAsyncKeyState('S') < 0 ) PadAxisY2 = -1000;
+	if( GetAsyncKeyState('W') < 0 ) PadAxisY2 = 1000;
+	if( GetAsyncKeyState('A') < 0 ) PadAxisX2 = -1000;
+	if( GetAsyncKeyState('D') < 0 ) PadAxisX2 = 1000;
 	//	軸正規化
-	work = PadAxisX2*PadAxisX2 + PadAxisY2*PadAxisY2;
+	work = PadAxisX2 * PadAxisX2 + PadAxisY2*PadAxisY2;
 	if( work > 1000*1000 )
 	{
 		work = (int)sqrtf((float)work);

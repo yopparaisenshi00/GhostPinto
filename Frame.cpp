@@ -98,7 +98,6 @@ void Frame::Update() {
 		state = MOVE;
 		break;
 	case MOVE:
-
 		f_move();
 		exorcise_Update();
 
@@ -139,10 +138,10 @@ void Frame::Update() {
 		//	Vib_Set(7, 1); //(—h‚ê•,ŽžŠÔ)
 		//}
 
-		pD_TEXT->set_Text(V2(600, 200), "PL_trg_t", lockPinto_trg == true, 0xFFFFFFFF);
-		pD_TEXT->set_Text(V2(600, 216), "PL_trg_f", lockPinto_trg == false, 0xFFFFFFFF);
-		pD_TEXT->set_Text(V2(600, 232), "PL_trg_02", lockPinto_trg == 0x02, 0xFFFFFFFF);
-		pD_TEXT->set_Text(V2(600, 248), "PL_trg_01", lockPinto_trg == 0x01, 0xFFFFFFFF);
+		//pD_TEXT->set_Text(V2(600, 200), "PL_trg_t", lockPinto_trg == true, 0xFFFFFFFF);
+		//pD_TEXT->set_Text(V2(600, 216), "PL_trg_f", lockPinto_trg == false, 0xFFFFFFFF);
+		//pD_TEXT->set_Text(V2(600, 232), "PL_trg_02", lockPinto_trg == 0x02, 0xFFFFFFFF);
+		//pD_TEXT->set_Text(V2(600, 248), "PL_trg_01", lockPinto_trg == 0x01, 0xFFFFFFFF);
 
 
 		Vib_Update();
@@ -207,7 +206,7 @@ void Frame::R_Update() {
 		state = MOVE;
 		break;
 	case MOVE:
-		f_move();
+		//f_move();
 		exorcise_Update();
 		pintoSize = PINTOMODE_READY;
 
@@ -459,3 +458,17 @@ void Frame::Vib_Update() {
 
 }
 
+float Frame::get_sz(float z) {
+	float sz = 0;
+	float ez = z;
+	float fz = pFrame->Get_f_z();
+
+	if (fz > ez) {
+		sz = (fz + 90) - (ez + 90);
+	}
+	else {
+		sz = (ez + 90) - (fz + 90);
+	}
+
+	return sz;
+}

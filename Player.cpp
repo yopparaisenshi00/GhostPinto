@@ -117,6 +117,7 @@ void Player::Update() {
 	judge();
 }
 void Player::R_Update() {
+//	move();
 	anime();//アニメーション
 	judge();
 }
@@ -365,16 +366,9 @@ void Player::UIRender() {
 		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],&g.custom,g.argb); //白
 		g.pos += V2(0, 45);
 	}
-	iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
+	//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 
-
-	////横
-	//iexPolygon::Rect((int)(pos.x - size.x), (int)(pos.y + size.y), (int)(size.x * 2), 1, 0, 0xFFFF0000);
-	//iexPolygon::Rect((int)(pos.x - size.x), (int)(pos.y - size.y), (int)(size.x * 2), 1, 0, 0xFFFF0000);
-
-	//////縦
-	//iexPolygon::Rect((int)(pos.x + size.x), (int)(pos.y - size.y), 1, (int)size.y * 2, 0, 0xFFFF0000);
-	//iexPolygon::Rect((int)(pos.x - size.x), (int)(pos.y - size.y), 1, (int)size.y * 2, 0, 0xFFFF0000);
+	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
 
 }
 
