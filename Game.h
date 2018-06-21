@@ -77,7 +77,18 @@ public:
 			text_box[i].pos = pos;
 			break;
 		}
-	}		
+	}
+
+	void set_Text(V2 pos, char* text, V2 data, DWORD color = 0xFFFFFFFF) {
+		for (int i = 0; i < text_max; i++) {
+			if (text_box[i].color != 0)continue;
+			sprintf_s(text_box[i].text, 128, "%s:%.2f,%.2f", text, data.x, data.y);
+			text_box[i].color = color;
+			text_box[i].pos = pos;
+			break;
+		}
+	}
+
 	void set_Text(V2 pos, char* text, int data, DWORD color = 0xFFFFFFFF) {
 		for (int i = 0; i < text_max; i++) {
 			if (text_box[i].color != 0)continue;

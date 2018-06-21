@@ -12,7 +12,7 @@
 #include "sceneMain.h"
 #include "sceneTitle.h"
 
-#define PPSK_POS (V2(SCREEN_WIDTH,500))
+
 enum {
 	INIT,
 	READY,
@@ -26,16 +26,16 @@ enum {
 //背景
 SPR_DATA s_title = { 0,0,0,1024,604,-512,-302,90};
 //主人公
-SPR_DATA s_titleChar = { 0,0,608,624,536,-624 / 2,-536 / 2 };
+SPR_DATA s_titleChar = { 0,0,608,624,536,-624 / 2,-536 / 2};
 //PressStartButton
-SPR_DATA s_ppsk = { 0,0,1120,474,98,-474 / 2,-98 / 2 };
+SPR_DATA s_ppsk = { 0,0,1120,474,98,-474 / 2,-98 / 2 ,0};
 //0, 1013, 409, 35
 //タイトルロゴ
-SPR_DATA s_titleName = { 0,0,1216,440,400 ,-440 / 2,-400 / 2 };
+SPR_DATA s_titleName = { 0,0,1216,440,400 ,-440 / 2,-400 / 2,0 };
 //大幽霊
-SPR_DATA big_ghost = { 0,608,800,318,258 ,-318 / 2,-258 / 2 };
+SPR_DATA big_ghost = { 0,608,800,318,258 ,-318 / 2,-258 / 2, 30};
 //小幽霊
-SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 };
+SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 ,60};
 
 //主人公
 //0 * 540
@@ -64,7 +64,7 @@ SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 };
 //
 //SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
 //SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
-SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,960/2,540/2,0 };
+SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,-960/2,-540/2,0 };
 
 IMG_DATA img_title[] = {
 	{ spr_data::BG1,"DATA\\Scene\\title.png" },
@@ -92,10 +92,10 @@ bool sceneTitle::Initialize()
 	state = 0;
 	iexLight::SetFog(800, 1000, 0);
 	spr_data::Load(img_title);
-	bg = nullptr;
-	ppsk = nullptr;
-	titleChar = nullptr;
-	titleName = nullptr;
+	bg.clear();
+	ppsk.clear();
+	titleChar.clear();
+	titleName.clear();
 	IEX_StopSound(BGM_MAIN);
 	IEX_PlaySound(BGM_TITLE, TRUE); //BGM
 
@@ -108,24 +108,57 @@ sceneTitle::~sceneTitle()
 	spr_data::Release();
 }
 
+#define PPSK_POS (V2(SCREEN_WIDTH/2,500))
+#define TNAME_POS (V2(686,142))
+#define EMIN_POS (V2(386,108))
+#define EBIG_POS (V2(806,406))
+#define TCHR_POS (V2(292,282))
+
+
 //更新
 void sceneTitle::Update()
 {
 	switch (state)
 	{
-	case INIT:
-		bg		 =	&s_title;
-		ppsk =		&s_ppsk;
-		titleChar = &s_titleChar;
-		titleName = &s_titleName;
+	case INIT://初期設定
+		//メイン背景設定
+		bg.data =	&s_title;
+		bg.pos = V2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+		
+		//スタートロゴ設定
+		ppsk.data =	&s_ppsk;
+		ppsk.pos = PPSK_POS;
+		
+		//キャラ画像ロゴ設定
+		titleChar.data = &s_titleChar;
+		titleChar.pos = TCHR_POS;
+
+		//ゲームタイトル画像設定
+		titleName.data = &s_titleName;
+		titleName.pos = TNAME_POS;
+
+		//エネミーBIG画像設定
+		s_Enemy_b.data = &big_ghost;
+		s_Enemy_b.pos = EBIG_POS;
+		
+		//エネミーMIN画像設定
+		s_Enemy_s.data = &min_ghost;
+		s_Enemy_s.pos = EMIN_POS;
+		//エフェクト初期化
 		pEffect_Manager->Init();
+		//プレイヤー初期化
 		pPlayer->Init();
+		//フレーム初期化
 		pFrame->Init();
+
+		//フェードイン処理へ
 		state = FADE_IN;
 
 		//break;
 	case FADE_IN:
 //		pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
+		
+		// メイン処理へ
 		state = MAIN;
 		//break;
 	case MAIN:
@@ -134,8 +167,29 @@ void sceneTitle::Update()
 			state = TUTORIAL;
 //			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
-			bg = &s_tutorial;
-			ppsk = titleChar = titleName = nullptr;
+			bg.data = &s_tutorial;
+			ppsk.clear();
+			titleChar.clear();
+			titleName.clear();
+		}
+
+		{
+			static int moveobj_data_no = 0;
+			OBJ2D* moveObj;
+			if (KEY_Get(KEY_C) == 3) {
+				moveobj_data_no++;
+				if (moveobj_data_no > 5)moveobj_data_no = 0;
+			}
+			moveObj = moveobj_data[moveobj_data_no];
+
+			if (moveObj)
+			{
+				if (KEY_Get(KEY_UP))moveObj->pos.y += 2;
+				if (KEY_Get(KEY_DOWN))moveObj->pos.y -= 2;
+				if (KEY_Get(KEY_LEFT))moveObj->pos.x += 2;
+				if (KEY_Get(KEY_RIGHT))moveObj->pos.x -= 2;
+			}
+			pD_TEXT->set_Text(moveObj->pos, "pos", moveObj->pos, 0xFFFFFFFF);
 		}
 		pEffect_Manager->Update();
 		pFrame->f_move();
@@ -163,35 +217,46 @@ void sceneTitle::Update()
 //描画
 void sceneTitle::Render()
 {
-	if (bg) {
-		float sz = pFrame->get_sz((float)bg->frameNum);
+	if (bg.data) {
+		float sz = pFrame->get_sz((float)bg.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		spr_data::Render(V2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bg, 0xFFFFFFFF, (float)0, shader2D, "depth");	
+		bg.Render("depth");
 	}
-	if (titleChar)spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
+	//	spr_data::Render(V2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bg, 0xFFFFFFFF, (float)0, shader2D, "depth");	
+	//spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
 
-	if (titleName) {
-		float sz = pFrame->get_sz((float)titleName->frameNum);
+	if (titleChar.data) {
+		float sz = pFrame->get_sz(titleChar.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
-		float z = sz > 90 ? (180 - sz) / 90 : sz / 90;
-		if(z > 0.5)z -= 0.5f;
-		float Reduced = z/0.5;
-		pD_TEXT->set_Text(V2(200,200),"Reduced ", Reduced,0xFFFF0000);
-		pD_TEXT->set_Text(V2(200, 220), "    z   ",z, 0xFFFF0000);
-
+		titleChar.Render();
 	}
 
-	if (s_Enemy_b) {
-		float sz = pFrame->get_sz((float)ppsk->frameNum);
+	if (titleName.data) {
+		float sz = pFrame->get_sz(titleName.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
+		titleName.Render("depth");
 	}
 
-	if (ppsk) {
-		float sz = pFrame->get_sz((float)ppsk->frameNum);
-		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);	
-		spr_data::Render(V2(ppsk->ofsx,ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF,(float)0, shader2D, "depth");
+	//spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
+	
+
+	if (s_Enemy_b.data) {
+		float sz = pFrame->get_sz((float)s_Enemy_b.data->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		s_Enemy_b.Render("depth");
+		//spr_data::Render(V2(s_Enemy_b->ofsx, s_Enemy_b->ofsy) + EMIN_POS, s_Enemy_b, 0xFFFFFFFF, (float)0, shader2D, "depth");
+	}
+	if (s_Enemy_s.data ) {
+		float sz = pFrame->get_sz((float)s_Enemy_s.data->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		s_Enemy_s.Render("depth");
+		//spr_data::Render(V2(s_Enemy_s->ofsx, s_Enemy_s.->ofsy) + EMIN_POS, s_Enemy_s, 0xFFFFFFFF, (float)0, shader2D, "depth");
+	}
+	if (ppsk.data) {
+		float sz = pFrame->get_sz((float)ppsk.data->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		ppsk.Render("depth");
+		//spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
 
 	if(state == TUTORIAL)pPlayer->Render();
@@ -200,3 +265,36 @@ void sceneTitle::Render()
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
 	pD_TEXT->Render();
 }
+
+//タイトル
+void Base(OBJ2D* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		obj->Init();
+		break;
+	case 1: //死亡処理
+		break;
+	default:
+		break;
+	}
+}
+void Sin(OBJ2D* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		break;
+	case 1: //死亡処理
+		obj->key++;
+		while (obj->key > 360) {
+			obj->key -= 360;
+		}
+		sinf(obj->key);
+		obj->key /= 0.01745;
+		break;
+	default:
+		break;
+	}
+}
+
+
