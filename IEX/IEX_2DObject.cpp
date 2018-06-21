@@ -277,8 +277,8 @@ void iex2DObj::customRender(float DstX, float DstY, float DstW, float DstH, floa
 	v[0].sz = v[1].sz = v[2].sz = v[3].sz = z;
 	v[0].rhw = v[1].rhw = v[2].rhw = v[3].rhw = 1.0f;
 
-	if (shader)	iexPolygon::Render2D(v, 2, this, shader, tech);
-	else		iexPolygon::Render2D(v,2,this,dwFlags);
+	if (!shader || !tech )iexPolygon::Render2D(v, 2, this, dwFlags);
+	else iexPolygon::Render2D(v, 2, this, shader, tech);
 }
 
 //void iex2DObj::Render( int DstX, int DstY, int DstW, int DstH, int SrcX, int SrcY, int width, int height, iexShader* shader, char* tech, DWORD color, float z )

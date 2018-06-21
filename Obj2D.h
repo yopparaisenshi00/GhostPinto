@@ -47,7 +47,7 @@ public:
 	virtual void Init();
 	virtual void Update();			// 移動
 	virtual void Render();			// 描画
-
+	void OBJ2D::Render(char* teah);//シェーダー使用描画用
 	spr_data::CUSTOM custom;
 
 

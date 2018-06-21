@@ -8,7 +8,6 @@
 
 
 //時間による出現データ
-//時間による出現データ
 STAGE_DATA stage1_time[] = {
 	//WAVE1(初期配置) 19匹
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
@@ -16,7 +15,7 @@ STAGE_DATA stage1_time[] = {
 	STAGE_DATA(0,		Rotation,	V2(1520,512),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1570,452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(600, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Rotation,	V2(700, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO + 30),
+	STAGE_DATA(0,		Rotation,	V2(700, 452),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(650, 372),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1320,832),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Rotation,	V2(1220,832),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),

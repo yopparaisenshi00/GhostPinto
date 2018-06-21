@@ -12,7 +12,11 @@ void OBJ2D::Update() {
 
 void OBJ2D::Render() {
 	//spr_data::obj[data->no]->Render(pos.x,pos.y,data->dx,data->dy,data->sx,data->sy, data->ofsx, data->ofsy,0,0xFFFFFFFF,(0.0f));
-	spr_data::Render(pos, data);
+	spr_data::Render(pos, data,&custom,custom.argb,nullptr,nullptr);	
+}
+void OBJ2D::Render(char* teah) {
+	//spr_data::obj[data->no]->Render(pos.x,pos.y,data->dx,data->dy,data->sx,data->sy, data->ofsx, data->ofsy,0,0xFFFFFFFF,(0.0f));
+	spr_data::Render(pos, data, &custom, custom.argb,shader2D, teah);
 }
 
 void OBJ2D::clear() {

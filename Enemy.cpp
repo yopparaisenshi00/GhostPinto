@@ -4,9 +4,10 @@
 #include "Map.h"
 #include "Player.h"
 #include "Frame.h"
-#include "Number.h"
 #include "Enemy.h"
 #include "Effect.h"
+#include "Number.h"
+
 #include "stage_data.h"
 #include "sceneMain.h"
 #include "Sound.h"
@@ -319,7 +320,7 @@ void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Ene
 		enemy[i]->pos = pos;
 		enemy[i]->spd = spd;
 		enemy[i]->move = move;
-		enemy[i]->z = _z;
+		(_z == rand_PINTO) ? enemy[i]->z = ((rand() % (PINTO_MAX * 2)) - PINTO_MAX) : enemy[i]->z = _z;
 		enemy[i]->init_fg = true;
 		if (parent)enemy[i]->parent = parent;
 		break;

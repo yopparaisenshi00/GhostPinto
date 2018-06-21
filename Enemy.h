@@ -4,7 +4,11 @@
 #define ENEMY_MAX (256)
 #define DAMAGE_MAX (700) //
 #define DAMAGE_LINE (3.6) 
+#ifndef PINTO_MAX
 
+	#define PINTO_MAX (90)
+
+#endif // !PINTO_MAX
 #define INIT_ANGLE		(180.0f*D3DX_PI/180.0f)		//最初の角度(ラジアン)
 
 #define DRAGIN_SCALE (192)//ジャストピント巻き込みサイズ
@@ -13,7 +17,8 @@
 #define N_scale		1.5f		//通常敵の大きさ
 #define B_scale		2.5f		//デカイ敵の大きさ
 
-#define rand_PINTO		((rand()%(PINTO_MAX*2)) -PINTO_MAX)	//敵のZ値ランダム
+#define rand_PINTO		(10000)//敵のZ値ランダム
+//#define rand_PINTO		((rand()%(PINTO_MAX*2)) -PINTO_MAX)	//敵のZ値ランダム
 #define DAMAGE (6)
 #define JUSTPINTO_SIZE (2)
 
@@ -235,7 +240,7 @@ public:
 			enemy[i]->spd = _spd;
 			enemy[i]->spdAcc = _spdAcc;
 			enemy[i]->spdMax = _spdMax;
-			enemy[i]->z = _z;
+			(_z == rand_PINTO) ? enemy[i]->z = ((rand() % (PINTO_MAX * 2)) - PINTO_MAX): enemy[i]->z = _z;
 			enemy[i]->init_fg = true;
 			return;
 		}
