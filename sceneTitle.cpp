@@ -97,7 +97,7 @@ bool sceneTitle::Initialize()
 	titleChar = nullptr;
 	titleName = nullptr;
 	IEX_StopSound(BGM_MAIN);
-	IEX_PlaySound(BGM_TITLE, TRUE); //BGM
+	//IEX_PlaySound(BGM_TITLE, TRUE); //BGM
 
 	return TRUE;
 }

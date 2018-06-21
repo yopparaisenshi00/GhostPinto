@@ -87,15 +87,18 @@ void fade_In(Effect* obj);
 void fade_Out(Effect* obj);
 void Shake(Effect* obj);
 
-void Ext(Effect*);			//敵消滅エフェクト
-void CircleExt(Effect*);	//丸エフェクト
+void Ext(Effect*);				//敵消滅エフェクト
+void CircleExt(Effect*);		//丸エフェクト
 void CircleExt_lightB(Effect*);	//丸エフェクト_水色
 void ParticleExt_c(Effect*);	//パーティクルエフェクト(散らばる●)
 void ParticleExt_k(Effect*);	//パーティクルエフェクト(散らばるキラキラ)
-void Lock(Effect*);			//Lockエフェクト
+void Lock(Effect*);				//Lockエフェクト
 void Combo(Effect*);			//Comboエフェクト
-void ComboText(Effect*);			//Comboテキストエフェクト
-void dust(Effect*);			//塵エフェクト
+void ComboText(Effect*);		//Comboテキストエフェクト
+void dust(Effect*);				//塵エフェクト
 void noAction(Effect*);			//スカエフェクト
+void gameclear(Effect*);		//ゲームクリア時エフェクト
+void gameclear_a(Effect*);		//ゲームクリア時エフェクト
+void gameclear_aggre(Effect*);	//ゲームクリア時エフェクト_集合
 
 #endif // !_EFFECT_H_

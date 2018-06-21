@@ -117,8 +117,8 @@ static SPR_DATA combo_text = SPR_DATA{ spr_data::UI6,0,125,120,40,-60,-20  };
 //塵エフェクト
 static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2 };
 
-//スカエフェクト
-static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,-9/2 };
+//ゲームクリア時エフェクト
+static SPR_DATA gameclear_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,-9/2 };
 //static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,1*6,6,6,-6/2,-6/2 };
 
 //マルチフォーカス使用時エフェクト
@@ -851,34 +851,90 @@ void noAction(Effect *obj) {
 			break;
 	}
 }
-//void noAction(Effect* obj) {
-//	switch ( obj->state ) {
-//		case INIT:
-//			obj->data = &noAction_data;
-//			obj->alpha = 0;
-//			obj->timer = 0;
-//			obj->custom.scaleMode = CENTER;
-//			obj->state = MOVE;
-//			//break;
-//		case MOVE:
-//			if ( obj->timer==7 ) obj->alpha = 255-30;										//出現
-//			if ( obj->timer<=10 ) obj->pos += obj->spd;										//移動
-//			if ( obj->timer>=10 )obj->custom.scaleX = obj->custom.scaleY += 0.3f;			//拡大
-//			if ( obj->custom.scaleX>=1.6f ) obj->custom.scaleX = obj->custom.scaleY = 4.0f;	//拡大限度
-//			if ( obj->timer>=16 ) obj->alpha -= 255/6;										//透明
-//			if ( obj->alpha<0 ) {	//透明になったら
-//				obj->alpha = 0;
-//				obj->state = CLEAR;	//消去へ
-//			}
-//			obj->timer++;
-//			break;
-//		case CLEAR:
-//			obj->clear();
-//			break;
-//		default:
-//			break;
-//	}
-//}
+
+
+//ゲームクリア時エフェクト　集合
+void gameclear_aggre(Effect*obj) {
+	switch ( obj->state ) {
+		case INIT:
+		case MOVE:
+			if ( obj->timer==0 ) {
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,   obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  -obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,   obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  -obj->spd.y), gameclear); //ななめ
+			}
+			if ( obj->timer==5 ) {
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), gameclear); //ななめ
+			}
+			if ( obj->timer==10 ) {
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
+				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), gameclear); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2( 6,	 0), ParticleExt_k); //右
+				pEffect_Manager->searchSet(obj->pos, V2(-6,	 0), ParticleExt_k); //左
+				pEffect_Manager->searchSet(obj->pos, V2( 0,  6), ParticleExt_k); //上
+				pEffect_Manager->searchSet(obj->pos, V2( 0,  6), ParticleExt_k); //下
+				pEffect_Manager->searchSet(obj->pos, V2( 6,  6), ParticleExt_k); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2( 6, -6), ParticleExt_k); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-6,  6), ParticleExt_k); //ななめ
+				pEffect_Manager->searchSet(obj->pos, V2(-6, -6), ParticleExt_k); //ななめ
+			}
+			obj->timer++;
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
+
+void gameclear_a(Effect* obj) {
+
+}
+
+//ゲームクリア時エフェクト
+void gameclear(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+			obj->data = &gameclear_data;
+			obj->alpha = 0; //透明
+			obj->timer = 0;
+			obj->custom.scaleMode = CENTER;
+			obj->custom.argb = 0xFFffa8da;
+			obj->state = MOVE;
+			//break;
+		case MOVE:
+			obj->pos += obj->spd;
+			if ( obj->timer==7 ) obj->alpha = 255;
+			if ( obj->timer>=18 ) obj->state = CLEAR;
+			obj->timer++;
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
+
 
 
 //プレイヤーダメージエフェクト
@@ -892,7 +948,7 @@ void P_damage(Effect* obj) {
 			obj->state=MOVE;
 			//break;
 		case MOVE:
-			if ( obj->timer++>10 ) obj->state = CLEAR;
+			if ( obj->timer++>14 ) obj->state = CLEAR;
 			break;
 		case CLEAR:
 			obj->clear();
@@ -947,9 +1003,6 @@ void TeleportExt(Effect *obj)
 		if (obj->timer++>16) {
 			obj->state = CLEAR; //消去処理へ
 		}
-		//if ( obj->data->texNum < 0 ) { //アニメーションが最後なら
-		//	obj->state = 2;					//消去処理へ
-		//}
 		break;
 	case CLEAR:
 		obj->clear();

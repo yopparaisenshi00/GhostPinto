@@ -107,6 +107,8 @@ public:
 
 	int old_mlt;
 
+	bool damage_se_flg;
+
 	struct gage { //ÉQÅ[ÉWóp
 		V2 pos;
 		D3DCOLOR argb;
