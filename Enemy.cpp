@@ -526,6 +526,7 @@ void Enemy::Render() {
 	custom.argb = (alpha << 24 | custom.argb << 8 >> 8);
 	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
+	//spr_data::Render(V2(pos.x+custom.ef_ofsX,pos.y), data, &custom, custom.argb, shader2D, "depth");
 }
 
 void Enemy::UIRender() {
@@ -598,7 +599,7 @@ void Enemy_DeadEffect(Enemy*obj) {
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 2.5f), CircleExt);		//丸エフェクト
 		for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_c);	//パーティクルエフェクト●
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Ext);				//敵消滅エフェクト
-		//pEffect_Manager->searchSet(V2(2, 1), V2(10, 1), Shake); //振動
+		pEffect_Manager->searchSet(V2(6, 2), V2(15, 1), Shake); //振動
 	}
 }
 

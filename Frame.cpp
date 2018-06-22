@@ -182,9 +182,9 @@ void Frame::Render() {
 	}
 	else light_argb = 0xCCFFFFFF;							//マルチフォーカスを使ったら発光
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
 	if (pFrame->exorciseDwon_flg) {
 		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0x3F000000, 0);
 	}

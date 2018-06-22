@@ -205,14 +205,7 @@ void Player::move() {
 		//-----------------------------------------------------------
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
-			//pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
-			//pEffect_Manager->searchSet(pos, V2( 4, -4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2( 4,  4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2(-4, -4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2(-4,  4), gameclear);
-
-			//pEffect_Manager->searchSet(pos, V2(0, 0), gameclear_aggre);
-			//for (int i = 0; i<4; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%12-6),(float)(rand()%12-6)), ParticleExt_k);	//パーティクルエフェクトキラキラ
+			IEX_PlaySound(SE_LOCK, FALSE);	//LOCKのSE
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
@@ -393,8 +386,9 @@ void Player::judge() {//
 	if (s.nodamage)return;
 	Enemy** enemy = pEnemy_Manager->enemy;
 	for (int i = 0; i < ENEMY_MAX; i++) {
-		//存在チェック
-		if (!enemy[i] || !enemy[i]->init_fg)continue;
+		//存在チェック & 出現直後当たり判定なし
+		//									   enemy[i]->state == APPEARANCE
+		if (!enemy[i] || !enemy[i]->init_fg ||(enemy[i]->state == 2))continue;
 		//判定処理
 		if ((enemy[i]->noHit_flg) && Judge(this, enemy[i])) {
 			suffer_damage();
