@@ -76,6 +76,12 @@ static SPR_DATA numbers[10] = {
 	{ spr_data::Number ,64 * 4,64,64,64,-32,-32,64,64 },
 
 };
+
+//*****************************************************************************
+//プロトタイプ宣言
+//*****************************************************************************
+void center_move(OBJ2D* obj);
+
 //*****************************************************************************
 //
 //			初期化
@@ -141,29 +147,28 @@ void	sceneTutorial::Update()
 	case INIT:
 		//break;
 		stage_no = tutorial;
-		pPlayer->Init();
+		pPlayer->Init(V2(SCREEN_WIDTH, SCREEN_HEIGHT));
 		pFrame->Init();
 		pScore->Init();
 		state = BIGEN;
 	case BIGEN:
 		//初期設定
+		center.Init();
+		center.move = &center_move;
+		center.move(&center);
 		pMAP->Init(&tutorial_bg);
 		pLandScape->Init(stage_no);
 
-		//((BG*)bg)->Init();
-		//bg->data(&main)
-		//		fg->Init();
 		pEffect_Manager->Init();
-		//pEnemy_Manager->Init();
-		//stageNo = SCENE_TITLE->bgNum;
-		//pEnemy_Manager->Init(stage_no);
+		
+		pEnemy_Manager->Init(stage_no);
 		pEnemy_Kill->Init();
-		pMAP->SetCenter((OBJ2D*)pPlayer);
+		pMAP->SetCenter(&center);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		count_down = 2;
+		count_down = COUNT_DOWN_TIME;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		scene_timer = 0;
@@ -205,17 +210,7 @@ void	sceneTutorial::Update()
 
 		pLandScape->Update();
 
-		if (pPlayer->hp <= 0 /*|| KEY_Get(KEY_SPACE) == 3*/) {
-			//if ( scene_timer++>60 ) {
-			state = GAMEOVER;
-			//}
-		}
-		else if (pScore->getKill_num() >= 50 || timer < 0 /*|| KEY_Get(KEY_ENTER) == 3*/) {
-			//if ( scene_timer++>60 ) {
-			state = GAMECLEAR;
-			//}
-		}
-
+		
 		timer--;
 		break;
 	case GAMEOVER:
@@ -262,7 +257,7 @@ void	sceneTutorial::Render()
 		pMAP->MiniMapRender();
 		pPlayer->UIRender();
 	}
-	pNumber->Render();
+	//pNumber->Render();
 	pUI->Render();
 
 	switch (state)
@@ -278,3 +273,19 @@ void	sceneTutorial::Render()
 
 }
 
+
+void center_move(OBJ2D* obj) {
+	switch (obj->state)
+	{
+	case 0:
+		obj->pos = V2(SCREEN_WIDTH, SCREEN_HEIGHT);
+		obj->sc_w = SCROLL_RIGHT / 2;
+		obj->sc_h = SCREEN_HEIGHT / 2;
+		obj->state++;
+	case 1:
+
+	default:
+		break;
+	}
+
+}

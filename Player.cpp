@@ -102,11 +102,17 @@ void Player::Init() {
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
-	g.pos = D3DXVECTOR2(960-30, 420);
+	g.pos = pos + D3DXVECTOR2(-30,0);
 
 	state++;
 	//fearstd = ((float)192 / (float)FERE_MAX);
 }
+
+void Player::Init(V2 _pos) {
+	Init();
+	pos = _pos;
+}
+
 void Player::Update() {
 	move();//移動、操作切り替え等
 	anime();//アニメーション
@@ -157,7 +163,6 @@ void Player::move() {
 	{
 	case 0:
 		hp = 3;
-		pos = D3DXVECTOR2(960, 270);
 		size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 		fear_flg = false;
 

@@ -178,12 +178,14 @@ void LandScape::RenderFG() {
 void LandScape::stage_update() {
 	timer++;
 	//timer‚ÅŠÇ—
-	while (data->appearTime <= timer)
-	{
-		if (data->appearTime < 0)	   { break;}
-		if (data->moveType == nullptr) { break;}
-		searchSet(data->type,data->pos, data->speed,data->moveType,nullptr,data->z);
-		data++;
+	if (data) {
+		while (data->appearTime <= timer)
+		{
+			if (data->appearTime < 0) { break; }
+			if (data->moveType == nullptr) { break; }
+			searchSet(data->type, data->pos, data->speed, data->moveType, nullptr, data->z);
+			data++;
+		}
 	}
 }
 

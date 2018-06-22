@@ -396,27 +396,29 @@ void Enemy::UIUpdate() {
 void Enemy_Manager::stageUpdate()
 {
 	timer++;
-
-	//timer‚ÅŠÇ—
-	while (data->appearTime <= timer)
-	{
-		if (data->appearTime<0) {
-			break;
+	if (data) {
+		//timer‚ÅŠÇ—
+		while (data->appearTime <= timer)
+		{
+			if (data->appearTime < 0) {
+				break;
+			}
+			if (data->moveType == nullptr) break;
+			pEnemy_Manager->searchSet(data->moveType, data->pos - V2(pMAP->getScrollX(), pMAP->getScrollY()), data->speed, data->speedAcc, data->speedMax, (float)data->z);
+			data++;
 		}
-		if (data->moveType == nullptr) break;
-		pEnemy_Manager->searchSet(data->moveType, data->pos - V2(pMAP->getScrollX(), pMAP->getScrollY()), data->speed, data->speedAcc, data->speedMax, (float)data->z);
-		data++;
 	}
-
-	//Œ‚”j”‚ÅŠÇ—
-	while (data2->appearTime <= pScore->getKill_num()) {
-		if (data2->appearTime == 0) {
+	if (data2) {
+		//Œ‚”j”‚ÅŠÇ—
+		while (data2->appearTime <= pScore->getKill_num()) {
+			if (data2->appearTime == 0) {
+				data2++;
+				break;
+			}
+			if (data2->moveType == nullptr) break;
+			pEnemy_Manager->searchSet(data2->moveType, data2->pos - V2(pMAP->getScrollX(), pMAP->getScrollY()), data2->speed, data2->speedAcc, data2->speedMax, (float)data2->z);
 			data2++;
-			break;
 		}
-		if (data2->moveType == nullptr) break;
-		pEnemy_Manager->searchSet(data2->moveType, data2->pos - V2(pMAP->getScrollX(), pMAP->getScrollY()), data2->speed, data2->speedAcc, data2->speedMax, (float)data2->z);
-		data2++;
 	}
 }
 

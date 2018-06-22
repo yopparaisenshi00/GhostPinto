@@ -119,6 +119,7 @@ public:
 	virtual void clear();		// メンバ変数のクリア
 	
 	virtual void Init();
+	virtual void Init(V2 pos);//初期座標変更用
 	virtual void Update();		// 移動
 	virtual void Render();		// 描画
 	void UIRender();

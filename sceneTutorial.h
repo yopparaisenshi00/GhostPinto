@@ -18,6 +18,7 @@ private:
 	int count_down;
 	int scene_timer;
 	int stage_no;
+	OBJ2D center;
 
 public:
 
