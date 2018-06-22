@@ -25,10 +25,10 @@ void Sound_Load() {
 	IEX_SetWAV(SE_MULCH_FIRE,	"DATA\\Sound\\SE\\mulch_fire.wav"); 
 	IEX_SetWAV(SE_MULCH_STOCK,"DATA\\Sound\\SE\\mulch_stock.wav"); 
 
-	//IEX_SetWAV(SE_JUSTPINTO,		"DATA\\Sound\\SE\\Camera0024.wav"); 
+	IEX_SetWAV(SE_LOCK, "DATA\\Sound\\SE\\Camera0024.wav");
 	//IEX_SetWAV(SE_JUSTPINTO,		"DATA\\Sound\\SE\\Cosmo0007.wav"); 
-	IEX_SetWAV(SE_JUSTPINTO,		"DATA\\Sound\\SE\\Decision0101.wav"); 
-	//IEX_SetWAV(SE_JUSTPINTO,		"DATA\\Sound\\SE\\Fairytail0001.wav"); 
+	//IEX_SetWAV(SE_JUSTPINTO,		"DATA\\Sound\\SE\\Decision0101.wav"); 
+	IEX_SetWAV(SE_JUSTPINTO, "DATA\\Sound\\SE\\item02.wav");
 }
 
 
