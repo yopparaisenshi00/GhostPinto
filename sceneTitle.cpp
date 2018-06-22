@@ -99,7 +99,7 @@ bool sceneTitle::Initialize()
 	titleChar.clear();
 	titleName.clear();
 	IEX_StopSound(BGM_MAIN);
-	//IEX_PlaySound(BGM_TITLE, TRUE); //BGM
+	IEX_PlaySound(BGM_TITLE, TRUE); //BGM
 
 	return TRUE;
 }
@@ -294,7 +294,7 @@ void sceneTitle::Render()
 
 	if(state == TUTORIAL)pPlayer->Render();
 
-	pEffect_Manager->Render();
+	if ( state==MAIN ) pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
 	pD_TEXT->Render();
 }

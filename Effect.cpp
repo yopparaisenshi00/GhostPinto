@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "MAP.h"
+#include "Frame.h"
 #include "Effect.h"
 
 enum {
@@ -221,31 +222,9 @@ void Effect_Manager::Update() {
 	if ((shift_objects_trg == true) || (shift_all_trg == true)) {
 
 		Player* p = pPlayer;
-		p->custom.ef_ofsX = shift_objects.x;
+		//p->custom.ef_ofsX = shift_objects.x;
 		p->custom.ef_ofsY = shift_objects.y;
 		
-		Enemy** e = pEnemy_Manager->enemy;
-
-		for (int i = 0; i < ENEMY_MAX; i++) {
-			if (!e[i])continue;
-			//e[i]->custom.ef_ofsX = shift_objects.x;
-			e[i]->custom.ef_ofsY = shift_objects.y;
-		}
-
-		Effect** f = pEffect_Manager->effect;
-		for (int i = 0; i < EFF_MAX; i++) {
-			if (!f[i])continue;
-			//f[i]->custom.ef_ofsX += shift_objects.x;
-			f[i]->custom.ef_ofsY += shift_objects.y;
-		}
-
-
-	}
-	if ((shift_all_trg == true)) {
-		Player* p = pPlayer;
-		p->custom.ef_ofsX = shift_objects.x;
-		p->custom.ef_ofsY = shift_objects.y;
-
 		Enemy** e = pEnemy_Manager->enemy;
 
 		for (int i = 0; i < ENEMY_MAX; i++) {
@@ -257,9 +236,32 @@ void Effect_Manager::Update() {
 		Effect** f = pEffect_Manager->effect;
 		for (int i = 0; i < EFF_MAX; i++) {
 			if (!f[i])continue;
-			f[i]->custom.ef_ofsX += shift_objects.x;
+			//f[i]->custom.ef_ofsX += shift_objects.x;
 			f[i]->custom.ef_ofsY += shift_objects.y;
 		}
+
+		Frame* r = pFrame;
+		r->custom.ef_ofsX = shift_objects.x;
+	}
+	if ((shift_all_trg == true)) {
+		//Player* p = pPlayer;
+		//p->custom.ef_ofsX = shift_objects.x;
+		//p->custom.ef_ofsY = shift_objects.y;
+
+		//Enemy** e = pEnemy_Manager->enemy;
+
+		//for (int i = 0; i < ENEMY_MAX; i++) {
+		//	if (!e[i])continue;
+		//	e[i]->custom.ef_ofsX = shift_objects.x;
+		//	e[i]->custom.ef_ofsY = shift_objects.y;
+		//}
+
+		//Effect** f = pEffect_Manager->effect;
+		//for (int i = 0; i < EFF_MAX; i++) {
+		//	if (!f[i])continue;
+		//	f[i]->custom.ef_ofsX += shift_objects.x;
+		//	f[i]->custom.ef_ofsY += shift_objects.y;
+		//}
 	}
 
 	if ((shift_objects_trg == 0x02) || (shift_all_trg == 0x02)) {
