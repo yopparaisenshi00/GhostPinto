@@ -11,6 +11,7 @@
 #include "Sound.h"
 #include "sceneMain.h"
 #include "sceneTitle.h"
+#include "sceneTutorial.h"
 
 
 enum {
@@ -122,13 +123,13 @@ void sceneTitle::Update()
 	{
 	case INIT://初期設定
 		//メイン背景設定
-		bg.data =	&s_title;
-		bg.pos = V2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-		
+		bg.data = &s_title;
+		bg.pos = V2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
 		//スタートロゴ設定
-		ppsk.data =	&s_ppsk;
+		ppsk.data = &s_ppsk;
 		ppsk.pos = PPSK_POS;
-		
+
 		//キャラ画像ロゴ設定
 		titleChar.data = &s_titleChar;
 		titleChar.pos = TCHR_POS;
@@ -140,7 +141,7 @@ void sceneTitle::Update()
 		//エネミーBIG画像設定
 		s_Enemy_b.data = &big_ghost;
 		s_Enemy_b.pos = EBIG_POS;
-		
+
 		//エネミーMIN画像設定
 		s_Enemy_s.data = &min_ghost;
 		s_Enemy_s.pos = EMIN_POS;
@@ -156,16 +157,16 @@ void sceneTitle::Update()
 
 		//break;
 	case FADE_IN:
-//		pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
-		
-		// メイン処理へ
+		//		pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
+
+				// メイン処理へ
 		state = MAIN;
 		//break;
 	case MAIN:
-		
+
 		if (KEY_Get(KEY_SPACE) == 3) {
 			state = TUTORIAL;
-//			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
+			//			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
 			bg.data = &s_tutorial;
 			ppsk.clear();
@@ -173,31 +174,36 @@ void sceneTitle::Update()
 			titleName.clear();
 		}
 
-		{
-			static int moveobj_data_no = 0;
-			OBJ2D* moveObj;
-			if (KEY_Get(KEY_C) == 3) {
-				moveobj_data_no++;
-				if (moveobj_data_no > 5)moveobj_data_no = 0;
-			}
-			moveObj = moveobj_data[moveobj_data_no];
+		//{
+		//	static int moveobj_data_no = 0;
+		//	OBJ2D* moveObj;
+		//	if (KEY_Get(KEY_C) == 3) {
+		//		moveobj_data_no++;
+		//		if (moveobj_data_no > 5)moveobj_data_no = 0;
+		//	}
+		//	moveObj = moveobj_data[moveobj_data_no];
 
-			if (moveObj)
-			{
-				if (KEY_Get(KEY_UP))moveObj->pos.y += 2;
-				if (KEY_Get(KEY_DOWN))moveObj->pos.y -= 2;
-				if (KEY_Get(KEY_LEFT))moveObj->pos.x += 2;
-				if (KEY_Get(KEY_RIGHT))moveObj->pos.x -= 2;
-			}
-			pD_TEXT->set_Text(moveObj->pos, "pos", moveObj->pos, 0xFFFFFFFF);
-		}
+		//	if (moveObj)
+		//	{
+		//		if (KEY_Get(KEY_UP))moveObj->pos.y += 2;
+		//		if (KEY_Get(KEY_DOWN))moveObj->pos.y -= 2;
+		//		if (KEY_Get(KEY_LEFT))moveObj->pos.x += 2;
+		//		if (KEY_Get(KEY_RIGHT))moveObj->pos.x -= 2;
+		//	}
+		//	pD_TEXT->set_Text(moveObj->pos, "pos", moveObj->pos, 0xFFFFFFFF);
+		//}
+
 		pEffect_Manager->Update();
 		pFrame->f_move();
 
 		break;
 	case TUTORIAL:
-		if (KEY_Get(KEY_SPACE) == 3)
-		MainFrame->ChangeScene(new sceneMain);
+		if (KEY_Get(KEY_SPACE) == 3){
+			MainFrame->ChangeScene(new sceneMain);
+		}
+		if (KEY_Get(KEY_START) == 3) {
+			MainFrame->ChangeScene(new sceneTutorial);
+		}
 
 		pPlayer->Update();
 		break;

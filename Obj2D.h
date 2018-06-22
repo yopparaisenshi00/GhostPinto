@@ -36,10 +36,9 @@ public:
 	int anime_timer;
 	int anime_no;
 	//	iex2DObj* tex;
-	
+	void(*move)(OBJ2D*);
 	OBJ2D* parent;
-
-	
+		
 	bool reflect;
 
 	virtual void clear();			// ƒƒ“ƒo•Ï”‚ÌƒNƒŠƒA
