@@ -72,7 +72,7 @@ public:
 //-----------------------------------------------------
 	void f_move();
 	void exorcise_Update();
-
+	void Frame::clear();
 	bool move_flg;//‰ñ“]“Ç‚ÝŽæ‚è
 	int exorciseDwon_timer;
 	float Get_f_z();

@@ -136,7 +136,12 @@ public:
 	int score; //スコア
 
 	float z;		//ピント座標
-	D3DCOLOR ui_argb; //UI_ARGB
+
+	struct ui {
+		D3DCOLOR argb; //UI_ARGB
+		spr_data::CUSTOM custom;
+	};
+	ui u;
 
 	bool damageflg; //撃退ゲージフラグ
 	bool rangeflg;	//範囲判定フラグ

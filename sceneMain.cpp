@@ -173,7 +173,7 @@ void	sceneMain::Update()
 		pMAP->SetCenter((OBJ2D*)pPlayer);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		//IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
 		count_down = 2;
 		count_down_timer = 0;
@@ -229,7 +229,7 @@ void	sceneMain::Update()
 			}
 		}
 		else if ((pScore->getKill_num() >= 50) || timer <= 0) {
-			if ( scene_timer++>100 ) {
+			if ( scene_timer++>110 ) {
 				state = GAMECLEAR;
 			}
 		}

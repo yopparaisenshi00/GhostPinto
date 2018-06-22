@@ -370,17 +370,25 @@ void Enemy_Manager::Update() {
 
 void Enemy::UIUpdate() {
 	if (sz < JUSTPINTO_SIZE) { //ジャストピントなら
-		ui_argb = Frash_Color(count, 7, ui_argb, 0x33D68D8D, 0xDDE2E268);	//点滅(赤,黄)
+		u.argb = Frash_Color(count, 7, u.argb, 0x33D68D8D, 0xDDE2E268);	//点滅(赤,黄)
+		//拡大--------------------------
+		custom.scaleMode = CENTER;
+		u.custom.scaleX = u.custom.scaleY = 1.2f;
 //		if (count == 1)IEX_PlaySound(SE_JUSTPINTO, FALSE);	//ジャストピントが合ったときのSE
 		count++;
 	}
 	else if (damageflg == true) { //ダメージを受けているとき
-		ui_argb = Frash_Color(count, 15, ui_argb, 0x22FFFFFF, 0xDDE26868);	//点滅(白,赤)
+		u.argb = Frash_Color(count, 15, u.argb, 0x22FFFFFF, 0xDDE26868);	//点滅(白,赤)
+		//拡大--------------------------
+		custom.scaleMode = CENTER;
+		u.custom.scaleX = u.custom.scaleY = 1.2f;
 		if (count == 1)IEX_PlaySound(SE_PINTO, FALSE);	//ピントが合ったときのSE
 		count++;
 	}
 	else { //ダメージを受けていないとき
-		ui_argb = 0xDD5BE1FF; //※水色
+		u.argb = 0xDD5BE1FF; //※水色
+		custom.scaleMode = CENTER;
+		u.custom.scaleX = u.custom.scaleY = 1.0f;
 		count = 0;
 	}
 	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
@@ -457,7 +465,7 @@ void Enemy::clear() {
 	rangeflg = false;
 	alpha = 255;
 	count = 0;
-	ui_argb = 0xFFFFFFFF;
+	u.argb = 0xFFFFFFFF;
 
 	dx = 0;
 	dy = 0;
@@ -524,7 +532,8 @@ void Enemy::UIRender() {
 	if (data) {
 		if (E_lenge(this, pFrame, FRAME_SIZE / 2)) {
 			if ( state!=APPEARANCE ) {
-				spr_data::Render(pos, &spr_pinto_s, ui_argb, 0);
+				spr_data::Render(pos, &spr_pinto_s, u.argb, 0);
+				//spr_data::Render(pos, &spr_pinto_s, &u.custom, u.argb);
 				spr_data::Render(pos, &spr_pinto_a, 0xFFFFFFFF, /*z + pFrame->Get_f_z()   */z > pFrame->Get_f_z() ? sz : -sz);
 				//iexPolygon::Rect((SCREEN_WIDTH / 2) + z - DAMAGE_SIZE, PINTO_POSY, DAMAGE_SIZE + DAMAGE_SIZE, 20, 0, 0xFF00FFFF);// Z
 			}
@@ -712,7 +721,6 @@ void Teleport(Enemy* obj) {
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
 		obj->damageMAX = 400;
-		obj->f_work[1] = obj->pos.x;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
@@ -724,14 +732,14 @@ void Teleport(Enemy* obj) {
 		Enemy_appearance(obj);
 		break;
 	case BEGIN:
-		obj->rangeflg = E_lenge(obj, pPlayer, 300); //距離判定
+		obj->rangeflg = E_lenge(obj, pPlayer, 400); //距離判定
 		if (obj->rangeflg == true) { //範囲内なら
 			obj->state = STOP;
 		}
 		break;
 	case STOP: //停止処理
 		Enemy_Update(obj);
-		if (obj->timer++>150) {
+		if (obj->timer++>100) {
 			obj->timer = 0;
 			obj->state = EFFECT;
 		}
@@ -743,10 +751,16 @@ void Teleport(Enemy* obj) {
 		break;
 	case BEGIN2: //座標移動
 		Enemy_Update(obj);
-		//obj->pos.x = ((rand() % 1000) + obj->f_work[1]);
-		//obj->pos.y = ((rand() % 400) + 0);
-		obj->pos.x = (float)(rand() % 1000);
-		obj->pos.y = (float)(rand() % 400+0);
+		//---------------------------------------------------------------------
+		//obj->pos.x += ( (rand()%3-1)*200 );
+		//obj->pos.y += ( (rand()%3-1)*200 );
+		obj->pos.x += ( (float)(rand()%201-100)*0.01f*200.0f );
+		obj->pos.y += ( (float)(rand()%201-100)*0.01f*200.0f );
+		if ( obj->pos.x<100 ) obj->pos.x += 200;
+		if ( (SCREEN_WIDTH*2-100)<obj->pos.x ) obj->pos.x -= 200;
+		if ( obj->pos.y<100 ) obj->pos.y += 200;
+		if ( (SCREEN_HEIGHT-100)<obj->pos.y ) obj->pos.y -= 200;
+		//---------------------------------------------------------------------
 		obj->state = FLASHING;
 		break;
 	case FLASHING: //点滅処理
@@ -1044,7 +1058,7 @@ void Aggre(Enemy* obj) {
 		}
 		break;
 	case DEAD: //死亡処理
-			   //Enemy_Dead(obj);
+		//Enemy_Dead(obj);
 		obj->clear();
 		break;
 	default:

@@ -11,7 +11,7 @@
 
 SPR_DATA over = { 0,192,192,640,128,0,0,600,90 }; //GAMEOVER文字
 SPR_DATA over_back = { 8,0,0,960,540,0,0 }; //ゲームオーバー画面
-SPR_DATA over_psb = { 7,0,576,419,31,-419/2,-31/2}; //PushStartButton
+SPR_DATA over_psb = { 7,0,1120,474,98,-474/2,-98/2}; //PushStartButton
 
 IMG_DATA img_over[] = {
 	{ 0,"DATA\\Scene\\GAME_OVER.png" }, //GAMEOVER文字

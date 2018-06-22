@@ -73,10 +73,6 @@ SPR_DATA p_clear[] = { //ゲームクリア
 	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 0, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 1, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 2, 64 * 12,	64,64,-32,-32 },
-	{ spr_data::Player1, 64 * 3, 64 * 12,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 4, 64 * 12,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 5, 64 * 12,	64,64,-32,-32 },
 	{ spr_data::Player1, 64 * 6, 64 * 12,	64,64,-32,-32 },
@@ -193,7 +189,7 @@ void Player::move() {
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			//pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
@@ -209,7 +205,14 @@ void Player::move() {
 		//-----------------------------------------------------------
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
-			pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
+			//pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
+			//pEffect_Manager->searchSet(pos, V2( 4, -4), gameclear);
+			//pEffect_Manager->searchSet(pos, V2( 4,  4), gameclear);
+			//pEffect_Manager->searchSet(pos, V2(-4, -4), gameclear);
+			//pEffect_Manager->searchSet(pos, V2(-4,  4), gameclear);
+
+			//pEffect_Manager->searchSet(pos, V2(0, 0), gameclear_aggre);
+			//for (int i = 0; i<4; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%12-6),(float)(rand()%12-6)), ParticleExt_k);	//パーティクルエフェクトキラキラ
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
@@ -275,14 +278,21 @@ void Player::anime() {
 		data = &p_over[anime_no];
 	}
 	//ゲームクリア
-	else if ((pScore->getKill_num() >= 50)/* || timer <= 0*/) {
-		if ( anime_no>=14 )anime_no = 14;
+	else if ((pScore->getKill_num() >= 50)/* || timer == 0*/) {
+		if ( (anime_no==9)&&(anime_timer==1) ) {
+			pEffect_Manager->searchSet(pos, V2(5, 5), gameclear_aggre);
+			for (int i = 0; i<5; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%8-4),(float)(rand()%8-4)), ParticleExt_k);	//パーティクルエフェクトキラキラ
+		}
+		if ( anime_no>=10 )anime_no = 10;
 		data = &p_clear[anime_no];
 	}
 
 	//ダメージ
 	else if (s.old_nodamage == false && s.nodamage == true) {
-		if ( anime_no==1 ) IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
+		if ( damage_se_flg==false ) {
+			IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
+			damage_se_flg = true;
+		}
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
@@ -292,6 +302,7 @@ void Player::anime() {
 			if ( anime_no>=5 ) {
 				s.old_nodamage = true;
 				anime_no = 0;
+				damage_se_flg = false;
 			}
 			data = &p_damage[anime_no]; //左ダメージ
 		}
@@ -299,6 +310,7 @@ void Player::anime() {
 			if ( anime_no>=5 ) {
 				s.old_nodamage = true;
 				anime_no = 0;
+				damage_se_flg = false;
 			}
 			data = &p_damage[anime_no]; //右ダメージ
 		}
