@@ -228,7 +228,7 @@ void	sceneMain::Update()
 				state = GAMEOVER;
 			}
 		}
-		else if ((pScore->getKill_num() >= 5) || timer <= 0) {
+		else if ((pScore->getKill_num() >= 50) || timer <= 0) {
 			if ( scene_timer++>110 ) {
 				state = GAMECLEAR;
 			}

@@ -64,7 +64,7 @@ SPR_DATA min_ghost = { 0,608,608,158,186 ,-158 / 2,-186 / 2 ,60};
 //
 //SPR_DATA s_Enemy_b = { spr_data::BG2,561,310,256,200,256/2,200/2,20 };
 //SPR_DATA s_Enemy_s = { spr_data::BG2,561 + 256,310,256,200,256 / 2,200 / 2,20 ,60};
-SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,-960/2,-540/2,0 };
+SPR_DATA s_tutorial=	{ spr_data::BG3,0	,0	,960,540,-960/2,-540/2,0};
 
 IMG_DATA img_title[] = {
 	{ spr_data::BG1,"DATA\\Scene\\title.png" },
@@ -90,6 +90,8 @@ bool sceneTitle::Initialize()
 	
 	timer = 0;
 	state = 0;
+	dust_timer = 150;
+	key_flg = false;
 	iexLight::SetFog(800, 1000, 0);
 	spr_data::Load(img_title);
 	bg.clear();
@@ -112,7 +114,8 @@ sceneTitle::~sceneTitle()
 #define TNAME_POS (V2(686,142))
 #define EMIN_POS (V2(386,108))
 #define EBIG_POS (V2(806,406))
-#define TCHR_POS (V2(292,282))
+//#define TCHR_POS (V2(292,282))
+#define TCHR_POS (V2(292,252))
 
 
 //更新
@@ -128,7 +131,7 @@ void sceneTitle::Update()
 		//スタートロゴ設定
 		ppsk.data =	&s_ppsk;
 		ppsk.pos = PPSK_POS;
-		
+
 		//キャラ画像ロゴ設定
 		titleChar.data = &s_titleChar;
 		titleChar.pos = TCHR_POS;
@@ -162,15 +165,42 @@ void sceneTitle::Update()
 		state = MAIN;
 		//break;
 	case MAIN:
-		
-		if (KEY_Get(KEY_SPACE) == 3) {
+
+		//塵エフェクト
+		if ( dust_timer++>=150 ) {
+			for ( int i = 0; i<4; i++ ){
+				pEffect_Manager->searchSet(
+					V2(250*i+(rand()%50+100), SCREEN_HEIGHT-(rand()%200)),				//x=400*i-600*i,y=440-540
+					V2((float)(rand()%2)/100.0f+0.02f, -(float)(rand()%2+1)), dust);	//x=0.04f-0.07f,y=-(1-3)
+			}
+			dust_timer = 0;
+		}
+
+		//キャラクター上下(ふわふわ)
+		titleChar.pos.y += sinf(titleChar.timer++*0.05f)*0.3f;
+
+		//PSB点滅
+		if(0<timer && timer<30) Frash_Color(&ppsk,3,0xFFFFFFFF,0x00000000); //早
+		else if ( 30<=timer && timer<50 ) ppsk.custom.argb = 0xFFFFFFFF;
+		else Frash_Color(&ppsk,45,0x00000000,0xFFFFFFFF); //遅
+
+
+
+		if ( KEY_Get(KEY_SPACE)==3 ) key_flg = true;
+		if ( key_flg ) timer++;
+
+		if ( timer>=50 ) {
 			state = TUTORIAL;
 //			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
+			
 			bg.data = &s_tutorial;
 			ppsk.clear();
 			titleChar.clear();
 			titleName.clear();
+			s_Enemy_s.clear();
+			s_Enemy_b.clear();
+			pFrame->clear();
 		}
 
 		{
@@ -195,6 +225,9 @@ void sceneTitle::Update()
 		pFrame->f_move();
 
 		break;
+
+
+
 	case TUTORIAL:
 		if (KEY_Get(KEY_SPACE) == 3)
 		MainFrame->ChangeScene(new sceneMain);
@@ -296,5 +329,3 @@ void Sin(OBJ2D* obj) {
 		break;
 	}
 }
-
-

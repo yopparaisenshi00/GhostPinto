@@ -15,6 +15,7 @@ public:
 	bool init_fg;
 	int alpha;
 	int i_work[16];
+	float f_work[16];
 	void(*move)(Effect*);
 	virtual void Init();
 	virtual void Update();
@@ -97,8 +98,9 @@ void Combo(Effect*);			//Comboエフェクト
 void ComboText(Effect*);		//Comboテキストエフェクト
 void dust(Effect*);				//塵エフェクト
 void noAction(Effect*);			//スカエフェクト
-void gameclear(Effect*);		//ゲームクリア時エフェクト
-void gameclear_a(Effect*);		//ゲームクリア時エフェクト
-void gameclear_aggre(Effect*);	//ゲームクリア時エフェクト_集合
+void gameclear_aggre(Effect*);		//ゲームクリア時エフェクト_集合
+void gameclear_kirakira(Effect*);	//ゲームクリア時エフェクトキラキラ
+void gameclear_eight(Effect*);		//ゲームクリア時エフェクト8方向
+void gameclear(Effect*);			//ゲームクリア時エフェクト
 
 #endif // !_EFFECT_H_

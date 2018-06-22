@@ -47,9 +47,7 @@ SPR_DATA spr_exorcise_frame= { flame_out,1000,540,14,44,0,0 };
 //
 //}
 
-
-void Frame::Init() {
-
+void Frame::clear() {
 	OBJ2D::clear();
 	f_z = 0;
 	lock_flg = false;
@@ -72,6 +70,10 @@ void Frame::Init() {
 	multi_flg = false;
 	out_argb = 0xFF000000; //çï
 	count = 0;
+
+}
+void Frame::Init() {
+	clear();
 }
 
 void Frame::Update() {

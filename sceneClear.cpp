@@ -26,7 +26,7 @@ SPR_DATA clear_LIFE = { 1,0,64*9,64+20,36,0,0 };		//LIFE
 SPR_DATA clear_MAXCOMBO = { 1,0,64*7,64*3-12,36,0,0 };	//MAXCOMBO
 SPR_DATA clear_TIME = { 1,0,64*8,86,36,0,0 };		//TIME
 SPR_DATA clear_TOTAL = { 1,0,64*10,64*2,36,0,0 };		//TOTAL
-SPR_DATA clear_psb = { 9,0,1120,474,98,-474/2,-98/2}; //PushStartButton
+SPR_DATA clear_psb = { 7,0,1120,474,98,-474/2,-98/2}; //PushStartButton
 SPR_DATA clear_back = { 8,0,0,960,540,0,0 }; //ÉQÅ[ÉÄÉNÉäÉAâÊñ 
 SPR_DATA clear_number[10] = {
 	{ 3,64*0,64*0,64,64,-32,-32,64/2,64/2 }, //0
@@ -51,7 +51,6 @@ IMG_DATA img_clear[] = {
 	{ 6,"DATA\\Public\\black.png" }, //îwåi
 	{ 7,"DATA\\Scene\\title.png" },
 	{ 8,"DATA\\Scene\\crear.png" },
-	{ 9,"DATA\\Scene\\title.png" },
 	{-1,""},
 };
 

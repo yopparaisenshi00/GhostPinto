@@ -29,12 +29,21 @@ private:
 		&s_Enemy_s,
 	};
 
+	int dust_timer;
+	bool key_flg;
+
 public:
 	~sceneTitle();
 	bool Initialize();
 	void Update();
 	void Render();
+	void Frash_Color(OBJ2D* obj,int num,D3DCOLOR argb1, D3DCOLOR argb2) {
+		obj->timer++;
+		if ((obj->timer % (num * 2)) <  num) obj->custom.argb = argb1;
+		if ((obj->timer % (num * 2)) >= num) obj->custom.argb = argb2;
+	}
 };
+
 
 //*****************************************************************************
 #endif

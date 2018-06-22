@@ -708,7 +708,7 @@ void Combo(Effect* obj) {
 		obj->timer = 0;
 		obj->i_work[6] = 0; //色変更ランダム用
 		obj->i_work[7] = 0; //コンボ用
-		obj->i_work[8] = obj->pos.y; //座標保存用
+		obj->f_work[8] = obj->pos.y; //座標保存用
 		obj->spd.y = -4;
 		obj->state=MOVE;
 		//break;
@@ -732,7 +732,7 @@ void Combo(Effect* obj) {
 			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff6387;	//色
 		}
 		//ddef13;
-		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
+		if ((obj->f_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
 		else if (obj->timer++>10) obj->state = CLEAR; //消去
 		break;
 	case CLEAR:
@@ -753,7 +753,7 @@ void ComboText(Effect* obj) {
 		obj->custom.scaleX = obj->custom.scaleY =0.6f;
 		obj->timer = 0;
 		obj->i_work[6] = 0; //色変更ランダム用
-		obj->i_work[8] = obj->pos.y; //座標保存用
+		obj->f_work[8] = obj->pos.y; //座標保存用
 		obj->spd.y = -4;
 		obj->state=MOVE;
 		//break;
@@ -774,7 +774,7 @@ void ComboText(Effect* obj) {
 			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff72b0;	//色
 		}
 
-		if ((obj->i_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
+		if ((obj->f_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
 		else if (obj->timer++>10) obj->state = CLEAR; //消去
 		break;
 	case CLEAR:
@@ -800,6 +800,7 @@ void dust(Effect* obj) {
 			obj->timer++;
 			//移動----------------------------------------------
 			//obj->pos.x += cosf(obj->timer*0.03f);
+			if ( obj->timer>360 )obj->timer = 0;
 			obj->pos.x += cosf(obj->timer*obj->spd.x);
 			obj->pos.y += obj->spd.y;
 
@@ -807,7 +808,7 @@ void dust(Effect* obj) {
 			if ( obj->timer>(rand()%100) ) obj->alpha += 25;
 			if ( obj->alpha>255 ) obj->alpha = 255;
 
-			if ( obj->pos.y<200 ) {
+			if ( obj->pos.y<150 ) {
 				//透明処理------------------------------------------
 				obj->alpha -= 25;
 				if ( obj->alpha<0 ) obj->alpha = 0;
@@ -853,49 +854,19 @@ void noAction(Effect *obj) {
 }
 
 
-//ゲームクリア時エフェクト　集合
+
+//ゲームクリア時エフェクト集合
 void gameclear_aggre(Effect*obj) {
 	switch ( obj->state ) {
 		case INIT:
 		case MOVE:
-			if ( obj->timer==0 ) {
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,   obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  -obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,   obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  -obj->spd.y), gameclear); //ななめ
-			}
-			if ( obj->timer==5 ) {
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), gameclear); //ななめ
-			}
+			if ( obj->timer==0 ) pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
+			if ( obj->timer==5 ) pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
 			if ( obj->timer==10 ) {
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
-				pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), gameclear); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2( 6,	 0), ParticleExt_k); //右
-				pEffect_Manager->searchSet(obj->pos, V2(-6,	 0), ParticleExt_k); //左
-				pEffect_Manager->searchSet(obj->pos, V2( 0,  6), ParticleExt_k); //上
-				pEffect_Manager->searchSet(obj->pos, V2( 0,  6), ParticleExt_k); //下
-				pEffect_Manager->searchSet(obj->pos, V2( 6,  6), ParticleExt_k); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2( 6, -6), ParticleExt_k); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-6,  6), ParticleExt_k); //ななめ
-				pEffect_Manager->searchSet(obj->pos, V2(-6, -6), ParticleExt_k); //ななめ
+				pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
+				pEffect_Manager->searchSet(obj->pos, V2(6,6), gameclear_kirakira); //キラキラ
 			}
+			if ( obj->timer>10 ) obj->state = CLEAR;
 			obj->timer++;
 			break;
 		case CLEAR:
@@ -906,8 +877,46 @@ void gameclear_aggre(Effect*obj) {
 	}
 }
 
-void gameclear_a(Effect* obj) {
+//ゲームクリア時エフェクトキラキラ
+void gameclear_kirakira(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+		case MOVE:
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,		   0), ParticleExt_k); //右
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,		   0), ParticleExt_k); //左
+			pEffect_Manager->searchSet(obj->pos, V2(		  0,  obj->spd.y), ParticleExt_k); //上
+			pEffect_Manager->searchSet(obj->pos, V2(		  0,  obj->spd.y), ParticleExt_k); //下
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), ParticleExt_k); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), ParticleExt_k); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), ParticleExt_k); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), ParticleExt_k); //ななめ
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
 
+//ゲームクリア時エフェクト8方向
+void gameclear_eight(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+		case MOVE:
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x+2,			  0), gameclear); //右
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x-2,			  0), gameclear); //左
+			pEffect_Manager->searchSet(obj->pos, V2(		  0,   obj->spd.x+2), gameclear); //上
+			pEffect_Manager->searchSet(obj->pos, V2(		  0,  -obj->spd.x-2), gameclear); //下
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x,  obj->spd.y), gameclear); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2( obj->spd.x, -obj->spd.y), gameclear); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x,  obj->spd.y), gameclear); //ななめ
+			pEffect_Manager->searchSet(obj->pos, V2(-obj->spd.x, -obj->spd.y), gameclear); //ななめ
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
 }
 
 //ゲームクリア時エフェクト
@@ -1217,26 +1226,26 @@ void Shake(Effect* obj) {
 		SHAKE_MAX = (int)obj->pos.x;
 		SHAKE_MIN = (int)obj->pos.y;
 
-		obj->timer = obj->spd.x;
-		obj->state = obj->spd.y;
+		obj->timer = (int)obj->spd.x;
+		obj->state = (int)obj->spd.y;
 		break;
 	case 1:
 		//SHAKE_Y =  (int)((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
 		//SHAKE_X = (int)(randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
-		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
+		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
 		//-100～100 -1～1 MIN～MAX
 
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = 3;
 		}
-		pEffect_Manager->add_object(V2(SHAKE_X, SHAKE_Y));
+		pEffect_Manager->add_object(V2((float)SHAKE_X, (float)SHAKE_Y));
 
 		break;
 	case 2:
 		//SHAKE_X = (randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
 		//SHAKE_Y = ((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
-		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
+		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = 3;
