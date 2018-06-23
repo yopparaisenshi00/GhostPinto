@@ -46,6 +46,9 @@ public:
 	//bool shift_all_flg;
 	TRG shift_objects_trg;
 	TRG shift_all_trg;
+	TRG shift_multierror_trg;
+	TRG shift_jast_trg;
+
 
 	V2 get_shift_objects() {
 		return shift_objects;
@@ -56,6 +59,8 @@ public:
 
 	void add_all(V2);
 	void add_object(V2);
+	void add_multierror(V2);
+	void add_jast(V2);
 
 	void Init();
 	void Update();
@@ -66,6 +71,8 @@ private:
 
 	V2 shift_objects;
 	V2 shift_all;
+	V2 shift_multierror;
+	V2 shift_jast;
 };
 
 

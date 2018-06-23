@@ -1661,7 +1661,7 @@ private:
 };
 
 typedef iexTRIGGER TRG;
-
+#define TRG_RELEASE (0x02)
 
 
 #endif

@@ -193,6 +193,8 @@ void Effect_Manager::Init() {
 
 	shift_objects = V2(0,0);
 	shift_all = V2(0, 0);
+	shift_multierror = V2(0,0);
+	shift_jast = V2(0, 0);
 
 	for (int i = 0; i < EFF_MAX; i++) {
 		if (!effect[i])continue;
@@ -201,12 +203,16 @@ void Effect_Manager::Init() {
 
 	shift_objects_trg = false;
 	shift_all_trg = false;
+	shift_multierror_trg = false;
+	shift_jast_trg = false;
 
 }
 void Effect_Manager::Update() {
 
-	shift_objects = V2(0, 0);
+	shift_objects = V2(0,0);
 	shift_all = V2(0, 0);
+	shift_multierror = V2(0,0);
+	shift_jast = V2(0, 0);
 
 	for (int i = 0; i < EFF_MAX; i++) {
 		if (effect[i] && effect[i]->move) {
@@ -221,35 +227,11 @@ void Effect_Manager::Update() {
 	
 	if ((shift_objects_trg == true) || (shift_all_trg == true)) {
 
-		Player* p = pPlayer;
-		//p->custom.ef_ofsX = shift_objects.x;
-		p->custom.ef_ofsY = shift_objects.y;
-		
-		Enemy** e = pEnemy_Manager->enemy;
-
-		for (int i = 0; i < ENEMY_MAX; i++) {
-			if (!e[i])continue;
-			e[i]->custom.ef_ofsX = shift_objects.x;
-			e[i]->custom.ef_ofsY = shift_objects.y;
-		}
-
-		Effect** f = pEffect_Manager->effect;
-		for (int i = 0; i < EFF_MAX; i++) {
-			if (!f[i])continue;
-			//f[i]->custom.ef_ofsX += shift_objects.x;
-			f[i]->custom.ef_ofsY += shift_objects.y;
-		}
-
-		Frame* r = pFrame;
-		r->custom.ef_ofsX = shift_objects.x;
-	}
-	if ((shift_all_trg == true)) {
 		//Player* p = pPlayer;
 		//p->custom.ef_ofsX = shift_objects.x;
 		//p->custom.ef_ofsY = shift_objects.y;
-
+		
 		//Enemy** e = pEnemy_Manager->enemy;
-
 		//for (int i = 0; i < ENEMY_MAX; i++) {
 		//	if (!e[i])continue;
 		//	e[i]->custom.ef_ofsX = shift_objects.x;
@@ -262,9 +244,39 @@ void Effect_Manager::Update() {
 		//	f[i]->custom.ef_ofsX += shift_objects.x;
 		//	f[i]->custom.ef_ofsY += shift_objects.y;
 		//}
+
+		Frame* r = pFrame;
+		r->custom.ef_ofsX = shift_objects.x;
+
 	}
 
-	if ((shift_objects_trg == 0x02) || (shift_all_trg == 0x02)) {
+	if ((shift_all_trg == true)) {
+
+	}
+
+
+
+
+	if ( shift_multierror_trg==true ) {
+		Player* p = pPlayer;
+		p->custom.ef_ofsX = shift_multierror.x;
+		p->custom.ef_ofsY = shift_multierror.y;
+	}
+
+
+	if ( shift_jast_trg==true ) {
+		Frame* r = pFrame;
+		r->custom.ef_ofsX = shift_jast.x;
+		r->custom.ef_ofsY = shift_jast.y;
+	}
+
+
+
+
+
+
+	if ((shift_objects_trg == TRG_RELEASE) || (shift_all_trg == TRG_RELEASE) || 
+		(shift_multierror_trg == TRG_RELEASE) || (shift_jast_trg == TRG_RELEASE)) {
 		Player* p = pPlayer;
 		p->custom.ef_ofsX = 0;
 		p->custom.ef_ofsY = 0;
@@ -278,12 +290,15 @@ void Effect_Manager::Update() {
 		}
 
 		Effect** f = pEffect_Manager->effect;
-
 		for (int i = 0; i < EFF_MAX; i++) {
 			if (!f[i])continue;
 			f[i]->custom.ef_ofsX = 0;
 			f[i]->custom.ef_ofsY = 0;
 		}
+
+		Frame* r = pFrame;
+		r->custom.ef_ofsX = 0;
+		r->custom.ef_ofsY = 0;
 	}
 
 	if ((shift_all_trg == 0x10)) {
@@ -336,6 +351,18 @@ void Effect_Manager::add_object(V2 v) {
 	shift_objects += v;
 	shift_objects_trg = true;
 }
+
+//ジャストピント時振動
+void Effect_Manager::add_multierror(V2 v) {
+	shift_multierror += v;
+	shift_multierror_trg = true;
+}
+//マルチフォーカス失敗振動
+void Effect_Manager::add_jast(V2 v) {
+	shift_jast += v;
+	shift_jast_trg = true;
+}
+
 
 //フレーム回転
 void framerotate(Effect *obj)
@@ -699,7 +726,33 @@ void Lock(Effect* obj) {
 	}
 }
 
+
+
 #include "sceneMain.h"
+//コンボカラー
+void Combo_Color(Effect*obj) {
+	if ( pScore->getCombo()<=9 ) { //0～コンボ時の色
+		obj->i_work[6] = obj->timer%7+1;
+		if (obj->i_work[6]<=3) obj->custom.argb = 0xFFffad21;		//オレンジ色
+		else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFc77fef;	//紫色
+		else if (obj->i_work[6]<=7) obj->custom.argb = 0xFFed9797;	//薄赤色
+	}
+	else if ( pScore->getCombo()<=19 ) { //10～コンボ時の色
+		obj->i_work[6] = obj->timer%10+1;
+		if (obj->i_work[6]<=5) obj->custom.argb = 0xFFd0e021;		//黄色
+		else if (obj->i_work[6]<=10) obj->custom.argb = 0xFFf76c8c;	//ピンク色
+	}
+	else /*if ( pScore->getCombo()<=29 )*/ { //20～コンボ時の色
+		obj->i_work[6] = obj->timer%12+1;
+		if (obj->i_work[6]<=2)  obj->custom.argb = 0xFFe65ffc;		//紫色
+		else if (obj->i_work[6]<=4)  obj->custom.argb = 0xFFff8426;	//オレンジ色
+		else if (obj->i_work[6]<=6)  obj->custom.argb = 0xFFffe942;	//黄色
+		else if (obj->i_work[6]<=8)  obj->custom.argb = 0xFF8dff42;	//緑色
+		else if (obj->i_work[6]<=10) obj->custom.argb = 0xFF58eaef;	//水色
+		else if (obj->i_work[6]<=12) obj->custom.argb = 0xFF5e9bff;	//青色
+	}
+}
+
 //コンボ
 void Combo(Effect* obj) {
 	switch (obj->state) {
@@ -711,31 +764,17 @@ void Combo(Effect* obj) {
 		obj->i_work[6] = 0; //色変更ランダム用
 		obj->i_work[7] = 0; //コンボ用
 		obj->f_work[8] = obj->pos.y; //座標保存用
+		obj->custom.argb = 0xFFffab05;	//オレンジ色
 		obj->spd.y = -4;
 		obj->state=MOVE;
 		//break;
 	case MOVE:
 		obj->i_work[7] = obj->spd.x; //コンボ
 		obj->data = &combo_number[obj->i_work[7]]; //コンボ表示
-
-		//色----------------------------------------------------------------------
-		if ( pScore->getCombo()<10 ) {
-			obj->i_work[6] = obj->timer%3;
-			if (obj->i_work[6]==0) obj->custom.argb = 0xFFffab05;	//オレンジ色
-			else if (obj->i_work[6]==1) obj->custom.argb = 0xFFc577ef;	//紫色
-			else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
-		}
-		else/* if ( pScore->getCombo()<20 )*/ {
-			obj->i_work[6] = obj->timer%6;
-			//if (obj->i_work[6]==0) obj->custom.argb = 0xFFd1cd12;	//色
-			//else if (obj->i_work[6]==1) obj->custom.argb = 0xFFe569a0;	//色
-			//else if (obj->i_work[6]==2) obj->custom.argb = 0xFFdd8768;	//色
-			if (obj->i_work[6]<=2) obj->custom.argb = 0xFFcbdb1c;	//色
-			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff6387;	//色
-		}
-		//ddef13;
+		Combo_Color(obj); //色
 		if ((obj->f_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
-		else if (obj->timer++>10) obj->state = CLEAR; //消去
+		else if (obj->timer>30) obj->state = CLEAR; //消去
+		obj->timer++;
 		break;
 	case CLEAR:
 		obj->clear();
@@ -743,7 +782,6 @@ void Combo(Effect* obj) {
 	default:
 		break;
 	}
-
 }
 
 //コンボテキスト
@@ -756,28 +794,15 @@ void ComboText(Effect* obj) {
 		obj->timer = 0;
 		obj->i_work[6] = 0; //色変更ランダム用
 		obj->f_work[8] = obj->pos.y; //座標保存用
+		obj->custom.argb = 0xFFffab05;	//オレンジ色
 		obj->spd.y = -4;
 		obj->state=MOVE;
 		//break;
 	case MOVE:
-		//色----------------------------------------------------------------------
-		if ( pScore->getCombo()<10 ) {
-			obj->i_work[6] = obj->timer%3;
-			if (obj->i_work[6]==0) obj->custom.argb = 0xFFffab05;	//オレンジ色
-			else if (obj->i_work[6]==1) obj->custom.argb = 0xFFc577ef;	//紫色
-			else if (obj->i_work[6]==2) obj->custom.argb = 0xFFD68D8D;	//薄赤色
-		}
-		else/* if ( pScore->getCombo()<20 )*/ {
-			obj->i_work[6] = obj->timer%6;
-			//if (obj->i_work[6]==0) obj->custom.argb = 0xFFd1cd12;	//色
-			//else if (obj->i_work[6]==1) obj->custom.argb = 0xFFe569a0;	//色
-			//else if (obj->i_work[6]==2) obj->custom.argb = 0xFFdd8768;	//色
-			if (obj->i_work[6]<=2) obj->custom.argb = 0xFFcbdb1c;	//色
-			else if (obj->i_work[6]<=5) obj->custom.argb = 0xFFff72b0;	//色
-		}
-
+		Combo_Color(obj); //色
 		if ((obj->f_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
-		else if (obj->timer++>10) obj->state = CLEAR; //消去
+		else if (obj->timer>30) obj->state = CLEAR; //消去
+		obj->timer++;
 		break;
 	case CLEAR:
 		obj->clear();
@@ -1217,21 +1242,19 @@ void fade_Out(Effect* obj) {
 #define SHAKE_X obj->i_work[7]
 #define SHAKE_Y obj->i_work[8]
 void Shake(Effect* obj) {
-								//Shake_timer = time;
-								//Shake_Size_Max = sizeMax;
-							//Shake_Size_Min = sizeMin;
+
 	int randxy = rand();
 
 	switch (obj->state)
 	{
-	case 0:
+	case INIT:
 		SHAKE_MAX = (int)obj->pos.x;
 		SHAKE_MIN = (int)obj->pos.y;
 
 		obj->timer = (int)obj->spd.x;
 		obj->state = (int)obj->spd.y;
 		break;
-	case 1:
+	case MOVE: //ジャストピント時振動もしくは、マルチフォーカス失敗振動
 		//SHAKE_Y =  (int)((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
 		//SHAKE_X = (int)(randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
 		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
@@ -1239,25 +1262,42 @@ void Shake(Effect* obj) {
 
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
-			obj->state = 3;
+			obj->state = CLEAR;
 		}
 		pEffect_Manager->add_object(V2((float)SHAKE_X, (float)SHAKE_Y));
 
 		break;
-	case 2:
+	case MOVE2:
 		//SHAKE_X = (randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
 		//SHAKE_Y = ((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
 		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
-			obj->state = 3;
+			obj->state = CLEAR;
 		}
 		pEffect_Manager->add_all(V2(SHAKE_X, SHAKE_Y));
 		break;
-	case 3:
+
+	case MOVE3: //マルチフォーカス失敗振動(右下UI)
+		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		if (obj->timer-- < 0) {
+			obj->timer = 0;
+			obj->state = CLEAR;
+		}
+		pEffect_Manager->add_multierror(V2(SHAKE_X, SHAKE_Y));
+		break;
+	case MOVE4: //ジャストピント時振動
+		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		if (obj->timer-- < 0) {
+			obj->timer = 0;
+			obj->state = CLEAR;
+		}
+		pEffect_Manager->add_jast(V2(SHAKE_X, SHAKE_Y));
+		break;
+	case CLEAR:
 		obj->clear();
 	default:
-		obj->state = 3;
+		obj->state = CLEAR;
 		break;
 	}
 

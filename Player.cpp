@@ -193,7 +193,7 @@ void Player::move() {
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
-			pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //U“®
+			pEffect_Manager->searchSet(V2(12, 6), V2(8, 3), Shake); //U“®
 		}
 
 		mlt_Update();
@@ -290,6 +290,7 @@ void Player::anime() {
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		pEffect_Manager->searchSet(V2(6, 2), V2(3, 4), Shake); //ƒ_ƒ[ƒWU“®
 
 		if (reflect) {
 			if ( anime_no>=5 ) {

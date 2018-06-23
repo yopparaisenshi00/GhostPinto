@@ -286,7 +286,6 @@ void Normal(Enemy* obj);	//襲ってくる敵
 void Tombo(Enemy* obj);		//敵突進
 void zMove(Enemy* obj);		//襲ってくる敵
 void Big(Enemy* obj);		//デカイ(向かってくる)
-void Big2(Enemy* obj);		//デカイ(横移動のみ)
 
 void Aggre(Enemy* obj);			//集合体制御
 void Aggre_parent(Enemy* obj);	//集合体＿親
