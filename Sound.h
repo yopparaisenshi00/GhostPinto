@@ -6,8 +6,9 @@ enum {
 	BGM_MAIN,	//メインBGM
 	BGM_TITLE,	//タイトルBGM
 
+	SE_LOCK,	//ロックした時
 	SE_PINTO,	//ピントが合った時
-	SE_JUSTPINTO,	//ジャストピントの時
+	SE_JUSTPINTO,	//ジャストピントで敵を倒した時
 	SE_EXT,		//消滅
 	SE_RETURN,	//霊力復帰
 	SE_LOSS,	//霊力消失
