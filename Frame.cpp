@@ -298,10 +298,10 @@ void Frame::exorcise_Update() {
 		if (axisy < 100)axisy = 0;					// スティック感度以下なら0
 		axisy *= 0.001f;							// スティック情報 0～1に正規化 
 		{
-			pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
 
 			float Ex = (PINTO_COST_S)*(axisy);//  
-			pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
 
 			//if (0 > Ex) { Ex *= -1; }
 			exorcise -= Ex;

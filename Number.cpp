@@ -18,12 +18,20 @@ Number gametimer2;	//ゲームタイマー2
 Number crushnum;	//撃破数
 Number crushnum2;	//撃破目標数
 Number exorcisetimer; //霊力タイマー
-
+Number eval_addscore;	//コンボリザルト用撮影スコア
+Number eval_combo;		//コンボリザルト用コンボ数
+Number eval_justpinto;	//コンボリザルト用ジャストピント
+Number eval_total;		//コンボリザルト用TOTAL
 
 
 SPR_DATA ui_data[] = {
-{ spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
-{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA
+	{ spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
+	{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//COMBORESULT------
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//TIMETOSHOOT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//COMBO COUNT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//JUST COUNT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//TOTAL SCORE
 };
 
 
@@ -44,20 +52,28 @@ SPR_DATA ui_data[] = {
 
 Number::Number() {
 	//score.data = &anime_Number_data[0];
-	score.numImage = new iex2DObj("DATA\\Public\\number.png");
-	gametimer.numImage = new iex2DObj("DATA\\Public\\number.png");
-	gametimer2.numImage = new iex2DObj("DATA\\Public\\number.png");
-	crushnum.numImage = new iex2DObj("DATA\\Public\\number.png");
-	crushnum2.numImage = new iex2DObj("DATA\\Public\\number.png");
-	exorcisetimer.numImage = new iex2DObj("DATA\\Public\\number.png");
 	numImage = new iex2DObj("DATA\\Public\\number.png");
-	
+	score.numImage = numImage;
+	gametimer.numImage = numImage;
+	gametimer2.numImage = numImage;
+	crushnum.numImage = numImage;
+	crushnum2.numImage = numImage;
+	exorcisetimer.numImage = numImage;
+	eval_addscore.numImage = numImage;
+	eval_combo.numImage = numImage;
+	eval_justpinto.numImage = numImage;
+	eval_total.numImage = numImage;
+
 	score.SetSize(32);			//スコア文字サイズ設定
 	gametimer.SetSize(64);		//ゲームタイマー (上2ケタ)文字サイズ設定
 	gametimer2.SetSize((int)(64 * 0.6f));	//ゲームタイマー2(下2ケタ)文字サイズ設定
 	crushnum.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
 	crushnum2.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
 	exorcisetimer.SetSize((int)(64 * 0.6f));	//霊力タイマーサイズ設定
+	eval_addscore.SetSize((int)(32 * 0.9f));
+	eval_combo.SetSize((int)(32 * 0.9f));
+	eval_justpinto.SetSize((int)(32 * 0.9f));
+	eval_total.SetSize((int)(32 * 0.9f));
 	
 	//score.custom.clear();
 	//gametimer.custom.clear();
@@ -81,6 +97,75 @@ void Number::Init() {
 
 }
 
+
+
+//評価用関数
+void Number::eval_agree() {
+	eval.p_pos.x = pPlayer->pos.x; //プレイヤーのx座標
+	eval.p_pos.y = pPlayer->pos.y; //プレイヤーのy座標
+	//プレイヤーが右下に寄っていたら(左上)
+	if ( (eval.p_pos.x>(SCREEN_WIDTH-300)) && (eval.p_pos.y>(SCREEN_HEIGHT-160)) ) {
+		eval.result_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-170);
+		eval.time_pos =		V2(eval.p_pos.x-260,eval.p_pos.y-130);
+		eval.combo_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-90);
+		eval.just_pos =		V2(eval.p_pos.x-260,eval.p_pos.y-50);
+		eval.total_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-10);
+	}
+	//プレイヤーが右に寄っていたら(左下)
+	else if ( eval.p_pos.x>(SCREEN_WIDTH-300) ) {
+		eval.result_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+0);
+		eval.time_pos =		V2(eval.p_pos.x-250,eval.p_pos.y+40);
+		eval.combo_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+80);
+		eval.just_pos =		V2(eval.p_pos.x-250,eval.p_pos.y+120);
+		eval.total_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+160);
+	}
+	//プレイヤーが下に寄っていたら(右上)
+	else if ( eval.p_pos.y>(SCREEN_HEIGHT-160) ) {
+		eval.result_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-170);
+		eval.time_pos =		V2(eval.p_pos.x+60,eval.p_pos.y-130);
+		eval.combo_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-90);
+		eval.just_pos =		V2(eval.p_pos.x+60,eval.p_pos.y-50);
+		eval.total_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-10);
+	}
+	//基本プレイヤーの(右下)
+	else {
+		eval.result_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+0);
+		eval.time_pos =		V2(eval.p_pos.x+60,eval.p_pos.y+40);
+		eval.combo_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+80);
+		eval.just_pos =		V2(eval.p_pos.x+60,eval.p_pos.y+120);
+		eval.total_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+160);
+	}
+
+
+
+	if ( pScore->getcombotimer()>=COMBO_TIME/* && (pScore->getCombo()>5) */ ) {
+		eval.addscore = pScore->getAddscore();						//保存
+		eval.combo = pScore->getCombo();							//保存
+		eval.just = pScore->getEval_justpinto();					//保存
+		eval.total = eval.addscore+eval.combo*200+eval.just*100;	//TOTAL計算
+
+		eval_addscore.SetNum(eval.addscore,3);	//撮影スコア（映してる間増加するスコア）
+		eval_combo.SetNum(eval.combo,2);		//倒した数
+		eval_justpinto.SetNum(eval.just,2);		//ジャストピントを決めた数
+		eval_total.SetNum(eval.total,4);		//TOTAL
+
+		eval.flg = true;
+	}
+
+	if ( eval.flg == true ) eval.timer++;
+	//移動処理
+	//
+	//
+	//
+	if ( eval.timer>60 ) {
+		eval.flg = false;
+		eval.timer = 0;
+		pScore->addscore = 0;
+		pScore->eval_justpinto = 0;
+	}
+}
+
+
 void Number::Update(int timer) {
 	//score.AddScale(pScore->getScore(),1.25f);
 	score.SetNum(pScore->getScore(), 5);		//スコア処理
@@ -92,9 +177,9 @@ void Number::Update(int timer) {
 	gametimer2.SetNum(timer % 60, 2);			//ゲームタイマー2(下2ケタ)処理
 	crushnum.AddScale(pScore->getKill_num(),1.7f);	//撃破数加算時の拡大表示
 	crushnum.SetNum(pScore->getKill_num(), 2);	//撃破数処理
-	crushnum2.SetNum(50, 2);					//撃破数処理
-	//				 ↑ステージに応じて変更
+	crushnum2.SetNum(50, 2);					//撃破数処理(ステージに応じて変更)
 	exorcisetimer.SetNum(pFrame->exorciseDwon_timer / 60 + 1, 1);	//霊力タイマー処理
+	eval_agree();
 	n_timer = timer;
 }
 
@@ -111,6 +196,18 @@ void Number::Render() {
 	}
 	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//撃破数
+
+	if ( eval.flg ) {
+		eval_addscore.Render(	eval.time_pos.x  +120,  eval.time_pos.y,3);
+		eval_combo.Render(		eval.combo_pos.x +120,  eval.combo_pos.y,2);
+		eval_justpinto.Render(	eval.just_pos.x  +120,  eval.just_pos.y,2);
+		eval_total.Render(		eval.total_pos.x +120,  eval.total_pos.y,4);
+		spr_data::Render(eval.result_pos,&ui_data[2]);	//コンボリザルト------------------------
+		spr_data::Render(eval.time_pos,&ui_data[3]);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
+		spr_data::Render(eval.combo_pos,&ui_data[4]);	//COMBO COUNT：倒した数
+		spr_data::Render(eval.just_pos,&ui_data[5]);	//JUST COUNT ：ジャストピントを決めた数
+		spr_data::Render(eval.total_pos,&ui_data[6]);	//TOTAL SCORE：コンボで稼いだ得点
+	}
 }
 
 
@@ -166,12 +263,12 @@ void Number::AddScale(int n, float scale) {
 //数値描画関数(桁数分だけ描画)
 void  Number::Render2(int x, int y, int num)
 {
-	//表示文字数処理
+	int _num = num;
 	int digit_max = 0;
-	for (int i = 0; i < 5; i++) {
-		digit_max++;
-		if (num < 10) break;
-		num /= 10;
+
+	while ( _num>=10 ) { //10以上なら
+		_num /= 10;		//10で割って
+		digit_max++;		//x位置ずらしカウント
 	}
 
 	x += digitDispSize * digit_max;  //  一の位から描画するので右端にずらす

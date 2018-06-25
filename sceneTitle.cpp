@@ -100,7 +100,7 @@ bool sceneTitle::Initialize()
 	titleChar.clear();
 	titleName.clear();
 	IEX_StopSound(BGM_MAIN);
-	IEX_PlaySound(BGM_TITLE, TRUE); //BGM
+	//IEX_PlaySound(BGM_TITLE, TRUE); //BGM
 
 	return TRUE;
 }
@@ -234,9 +234,9 @@ void sceneTitle::Update()
 		if (KEY_Get(KEY_SPACE) == 3){
 			MainFrame->ChangeScene(new sceneMain);
 		}
-		if (KEY_Get(KEY_START) == 3) {
-			MainFrame->ChangeScene(new sceneTutorial);
-		}
+		//if (KEY_Get(KEY_START) == 3) {
+		//	MainFrame->ChangeScene(new sceneTutorial);
+		//}
 
 		pPlayer->Update();
 		break;

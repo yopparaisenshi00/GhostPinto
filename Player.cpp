@@ -102,8 +102,6 @@ void Player::Init() {
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
-	g.pos = pos + D3DXVECTOR2(-30,0);
-
 	state++;
 	//fearstd = ((float)192 / (float)FERE_MAX);
 }
@@ -189,7 +187,7 @@ void Player::move() {
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
+			//pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
@@ -263,7 +261,6 @@ void Player::anime() {
 			p_eff_timer = 0;
 		}
 	}
-
 
 	//ゲームオーバー
 	if (hp <= 0) {
@@ -356,7 +353,6 @@ void Player::anime() {
 	}
 
 }
-
 
 void Player::Render() {
 	if (data)spr_data::Render(pos, data);

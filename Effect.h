@@ -109,5 +109,13 @@ void gameclear_aggre(Effect*);		//ゲームクリア時エフェクト_集合
 void gameclear_kirakira(Effect*);	//ゲームクリア時エフェクトキラキラ
 void gameclear_eight(Effect*);		//ゲームクリア時エフェクト8方向
 void gameclear(Effect*);			//ゲームクリア時エフェクト
+void Eval_agree(Effect* obj);			//評価用_集合
+void Eval(Effect*);					//評価用テキスト
+void Eval_combo_text(Effect*);		//評価用コンボテキスト
+void Eval_jastpinto_text(Effect*);	//評価用ジャストピントテキスト
+void Eval_combo(Effect*);			//評価用コンボ
+void Eval_jastpinto(Effect*);		//評価用ジャストピント
+
+
 
 #endif // !_EFFECT_H_

@@ -173,9 +173,9 @@ void	sceneMain::Update()
 		pMAP->SetCenter((OBJ2D*)pPlayer);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		//IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		count_down = 2;
+		//count_down = 2;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		timer = 80 * 60;

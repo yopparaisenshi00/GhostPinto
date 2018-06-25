@@ -254,7 +254,7 @@ int Frash_Alpha(int timer, int num, int alpha, float alpha1, float alpha2, int e
 
 
 
-void Enemy_Manager::just_dragIn(Enemy* obj) {
+void Enemy_Manager::jast_dragIn(Enemy* obj) {
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲なら
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Just_pinto);
 		for (int i = 0; i < ENEMY_MAX; i++) {
@@ -634,9 +634,10 @@ void Combo(Enemy* obj) {
 //死亡エフェクト＆消去処理
 void Enemy_Dead(Enemy* obj) {
 	pFrame->add_Exorcise(KILL_CURE);
-	pEnemy_Manager->just_dragIn(obj);
+	pEnemy_Manager->jast_dragIn(obj);
 	Enemy_DeadEffect(obj);			//死亡時エフェクト
 	pScore->add_KillScore(obj->score);		//スコア,コンボ,kill数加算
+	if ( obj->sz<JUSTPINTO_SIZE ) pScore->eval_justpinto++; //一時評価用ジャストピント数
 	Combo(obj);						//コンボ表示
 	IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
 	pPlayer->mltfcs.add_point(1);

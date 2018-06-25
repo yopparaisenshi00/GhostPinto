@@ -62,9 +62,13 @@ private:
 		maxcombo = 0;
 		combotimer = 0;
 		kill_num = 0;
+		addscore = 0;
+		eval_justpinto = 0;
 	}
 public:
 	int kill_num;
+	int addscore;		//コンボリザルト_撮影スコア
+	int eval_justpinto; //コンボリザルト_ジャストピント数
 
 	//初期設定
 	void Init() {
@@ -86,6 +90,7 @@ public:
 	//スコア加算(映っている間)
 	void add_ClearlyScore(int add) {
 		score += add;
+		addscore += add; //コンボが途切れるまでadd分保存
 	}
 	//スコア加算(倒した後)
 	void add_KillScore(int add) {
@@ -111,7 +116,18 @@ public:
 	int getMaxCombo() {
 		return maxcombo;
 	}
-
+	//コンボリザルト_撮影スコア
+	int getAddscore() {
+		return addscore;
+	}
+	//コンボリザルト_ジャストピント数
+	int getEval_justpinto() {
+		return eval_justpinto;
+	}
+	//コンボリザルト_コンボタイマー
+	int getcombotimer() {
+		return combotimer;
+	}
 
 	void Render() {
 		int x = 800;

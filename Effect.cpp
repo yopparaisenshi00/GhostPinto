@@ -60,7 +60,7 @@ static SPR_DATA fade_out = {
 
 
 //ジャストピントエフェクト素材(ピントリングの流用)
-static SPR_DATA justpinto_data = SPR_DATA{ spr_data::UI1,0,0,128,128,-64,-64,0 };
+static SPR_DATA jastpinto_data = SPR_DATA{ spr_data::UI1,0,0,128,128,-64,-64,0 };
 
 //飛行エフェクト素材(消滅エフェクトの流用)
 static SPR_DATA jet_data = SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,0 };
@@ -220,10 +220,10 @@ void Effect_Manager::Update() {
 			effect[i]->Update();
 		}
 	}
-	pD_TEXT->set_Text(V2(600, 264), "ef_trg_t", shift_objects_trg == true, 0xFFFFFFFF);
-	pD_TEXT->set_Text(V2(600, 280), "ef_trg_f", shift_objects_trg == false, 0xFFFFFFFF);
-	pD_TEXT->set_Text(V2(600, 296), "ef_trg_02", shift_objects_trg == 0x02, 0xFFFFFFFF);
-	pD_TEXT->set_Text(V2(600, 312), "ef_trg_01", shift_objects_trg == 0x01, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 264), "ef_trg_t", shift_objects_trg == true, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 280), "ef_trg_f", shift_objects_trg == false, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 296), "ef_trg_02", shift_objects_trg == 0x02, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 312), "ef_trg_01", shift_objects_trg == 0x01, 0xFFFFFFFF);
 	
 	if ((shift_objects_trg == true) || (shift_all_trg == true)) {
 
@@ -306,8 +306,8 @@ void Effect_Manager::Update() {
 
 	}
 
-	pD_TEXT->set_Text(V2(600, 312 + 24), "shift_obj_x", shift_objects.x, 0xFFFFFFFF);
-	pD_TEXT->set_Text(V2(600, 312 + 40), "shift_obj_y", shift_objects.y, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 312 + 24), "shift_obj_x", shift_objects.x, 0xFFFFFFFF);
+	//pD_TEXT->set_Text(V2(600, 312 + 40), "shift_obj_y", shift_objects.y, 0xFFFFFFFF);
 }
 void Effect_Manager::Render() {
 	for (int i = 0; i < EFF_MAX; i++) {
@@ -1056,7 +1056,7 @@ void Just_pinto(Effect *obj)
 	{
 	case INIT:
 		//obj->animeData = anime_ext_data;
-		obj->data = &justpinto_data;
+		obj->data = &jastpinto_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 1.0f;
 		obj->custom.argb = 0xDDff9393; //赤色
@@ -1088,7 +1088,7 @@ void pinto_lock(Effect *obj)
 	{
 	case INIT:
 		//obj->animeData = anime_ext_data;
-		obj->data = &justpinto_data;
+		obj->data = &jastpinto_data;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = 3.0f;
 		obj->custom.argb = 0xDDCFCFCF; //赤色
