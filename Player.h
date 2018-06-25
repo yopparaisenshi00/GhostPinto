@@ -109,7 +109,8 @@ public:
 
 	bool damage_se_flg;
 
-	struct gage { //ゲージ用
+
+	struct gage {
 		V2 pos;
 		D3DCOLOR argb;
 		spr_data::CUSTOM custom;
@@ -130,6 +131,7 @@ public:
 	void Recoil(V2 enemy_pos, V2 enemy_spd); //ダメージ時の反動
 	D3DCOLOR Light(D3DCOLOR color);
 	void mlt_Update();
+	void Eval();
 
 	//void Deat_Enemy() {
 	//	

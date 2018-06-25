@@ -129,25 +129,10 @@ void Frame::Update() {
 		else out_argb = 0xFF000000; //黒色
 		///////////////////////////////////////////////////////////////////////////////////
 
-
-		///////////////////////////////////////////////////////////////////////////////////
-		//振動処理
-		if (pPlayer->s.old_nodamage == false && pPlayer->s.nodamage == true) { //プレイヤーがダメージを受けたら
-			Vib_Set(7, 1); //(揺れ幅,時間)
-			//s.old_nodamage=true (Player.cppで処理)
-		}
-		//if (pScore->getCombo()>2) { //
-		//	Vib_Set(7, 1); //(揺れ幅,時間)
-		//}
-
 		//pD_TEXT->set_Text(V2(600, 200), "PL_trg_t", lockPinto_trg == true, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 216), "PL_trg_f", lockPinto_trg == false, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 232), "PL_trg_02", lockPinto_trg == 0x02, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 248), "PL_trg_01", lockPinto_trg == 0x01, 0xFFFFFFFF);
-
-
-		Vib_Update();
-		///////////////////////////////////////////////////////////////////////////////////
 
 		break;
 	default:
@@ -180,11 +165,11 @@ void Frame::Render() {
 		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
 		light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
 	}
-	else light_argb = 0xCCFFFFFF;							//マルチフォーカスを使ったら発光
+	else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
 	if (pFrame->exorciseDwon_flg) {
 		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0x3F000000, 0);
 	}
@@ -313,10 +298,10 @@ void Frame::exorcise_Update() {
 		if (axisy < 100)axisy = 0;					// スティック感度以下なら0
 		axisy *= 0.001f;							// スティック情報 0～1に正規化 
 		{
-			pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
 
 			float Ex = (PINTO_COST_S)*(axisy);//  
-			pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
 
 			//if (0 > Ex) { Ex *= -1; }
 			exorcise -= Ex;
@@ -420,45 +405,17 @@ void Frame::use_Multifocus(int power) {
 		break;
 	}
 }
-#define USE_PINTOLOCK (20)
+
 //----------------------------------------------------------------------------------------------------
 //  ピントロック使用、設定
 //----------------------------------------------------------------------------------------------------
 void Frame::use_lockPinto() {
 	if(!exorciseDwon_flg){
-		exorcise -= USE_PINTOLOCK;
+		//exorcise -= USE_PINTOLOCK; //Enemy_Manager::damage_Calculationに移行
 		lockPinto_trg = true;
 	}
 }
 
-
-
-//*****************************************************************************
-//		振動
-//*****************************************************************************
-
-void Frame::Vib_Set(float width, int timer) {
-	vibWidth = width;		//-width ～ +widthの幅で揺れる
-	vibTimer = 0;
-	vibTimerMax = timer;
-}
-
-
-void Frame::Vib_Update() {
-	//振動が継続中かのチェック
-	if (vibTimer >= vibTimerMax)
-	{
-		vibTimer = vibTimerMax;
-		vibX = vibY = 0.0f;		//ずれ幅をリセット
-		return;
-	}
-
-	//ずれ幅の計算
-	vibX = ((rand() % 201) - 100)*0.01f * vibWidth;
-	vibY = ((rand() % 201) - 100)*0.01f * vibWidth;
-	vibTimer++;
-
-}
 
 float Frame::get_sz(float z) {
 	float sz = 0;

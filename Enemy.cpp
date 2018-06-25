@@ -254,9 +254,8 @@ int Frash_Alpha(int timer, int num, int alpha, float alpha1, float alpha2, int e
 
 
 
-void Enemy_Manager::just_dragIn(Enemy* obj) {
+void Enemy_Manager::jast_dragIn(Enemy* obj) {
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲なら
-		pEffect_Manager->searchSet(V2(12, 4), V2(10, 2), Shake); //振動
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Just_pinto);
 		for (int i = 0; i < ENEMY_MAX; i++) {
 			if (!enemy[i] || !enemy[i]->move)continue;
@@ -278,9 +277,10 @@ void Enemy_Manager::damage_Calculation(Enemy* obj) {
 
 	if (obj->sz < pFrame->getPintoSize())
 	{
-		if (pFrame->lockPinto_trg == true) {
+		if ( (pFrame->lockPinto_trg==true) && (obj->zlock_flg==false)) {
 			pEffect_Manager->searchSet(obj->pos, V2(0, 0), pinto_lock); //ピントロックエフェクト
 			pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
+			pFrame->exorcise -= USE_PINTOLOCK;
 			obj->zlock_flg = true;
 		}
 		if ( obj->damage>(obj->damageMAX-obj->damageMAX/4) ) Frash_white(obj,11); //白点滅(早)
@@ -526,7 +526,6 @@ void Enemy::Render() {
 	custom.argb = (alpha << 24 | custom.argb << 8 >> 8);
 	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
-	//spr_data::Render(V2(pos.x+custom.ef_ofsX,pos.y), data, &custom, custom.argb, shader2D, "depth");
 }
 
 void Enemy::UIRender() {
@@ -599,7 +598,7 @@ void Enemy_DeadEffect(Enemy*obj) {
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 2.5f), CircleExt);		//丸エフェクト
 		for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_c);	//パーティクルエフェクト●
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0, 0), Ext);				//敵消滅エフェクト
-		pEffect_Manager->searchSet(V2(6, 2), V2(15, 1), Shake); //振動
+		pEffect_Manager->searchSet(V2(6, 2), V2(15, 4), Shake); //ジャストピント振動
 	}
 }
 
@@ -635,11 +634,13 @@ void Combo(Enemy* obj) {
 //死亡エフェクト＆消去処理
 void Enemy_Dead(Enemy* obj) {
 	pFrame->add_Exorcise(KILL_CURE);
-	pEnemy_Manager->just_dragIn(obj);
+	pEnemy_Manager->jast_dragIn(obj);
 	Enemy_DeadEffect(obj);			//死亡時エフェクト
 	pScore->add_KillScore(obj->score);		//スコア,コンボ,kill数加算
+	if ( obj->sz<JUSTPINTO_SIZE ) pScore->eval_justpinto++; //コンボリザルト_ジャストピント数
 	Combo(obj);						//コンボ表示
-	IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
+	if (obj->sz < JUSTPINTO_SIZE)	IEX_PlaySound(SE_JUSTPINTO, FALSE);	//消滅時のSE(ジャストピント)
+	else IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
 	pPlayer->mltfcs.add_point(1);
 	obj->clear();
 }
@@ -758,7 +759,7 @@ void Teleport(Enemy* obj) {
 		obj->pos.x += ( (float)(rand()%201-100)*0.01f*200.0f );
 		obj->pos.y += ( (float)(rand()%201-100)*0.01f*200.0f );
 		if ( obj->pos.x<100 ) obj->pos.x += 200;
-		if ( (SCREEN_WIDTH*2-100)<obj->pos.x ) obj->pos.x -= 200;
+		if ( (SCREEN_WIDTH-100)<obj->pos.x ) obj->pos.x -= 200;
 		if ( obj->pos.y<100 ) obj->pos.y += 200;
 		if ( (SCREEN_HEIGHT-100)<obj->pos.y ) obj->pos.y -= 200;
 		//---------------------------------------------------------------------

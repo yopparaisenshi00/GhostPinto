@@ -226,6 +226,7 @@ public:
 	Enemy* enemy[ENEMY_MAX];
 	int timer;
 
+
 	void searchSet(V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(Enemy*) = nullptr,float _z = 0,Enemy* parent = NULL);
 	void searchSet(void(*_move)(Enemy*), V2 &_pos = Vector2(0, 0), V2 &_spd = Vector2(0, 0), V2 &_spdAcc = Vector2(0, 0),
 		V2 &_spdMax = Vector2(0, 0), float _z = 0) {
@@ -259,7 +260,7 @@ public:
 
 // エネミー共通関数
 	void damage_Calculation(Enemy*);
-	void just_dragIn(Enemy*);
+	void jast_dragIn(Enemy*);
 	float get_sz(float z);//フレームとのピントの差計算
 
 protected:
@@ -286,7 +287,6 @@ void Normal(Enemy* obj);	//襲ってくる敵
 void Tombo(Enemy* obj);		//敵突進
 void zMove(Enemy* obj);		//襲ってくる敵
 void Big(Enemy* obj);		//デカイ(向かってくる)
-void Big2(Enemy* obj);		//デカイ(横移動のみ)
 
 void Aggre(Enemy* obj);			//集合体制御
 void Aggre_parent(Enemy* obj);	//集合体＿親

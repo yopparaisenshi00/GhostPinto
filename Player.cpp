@@ -102,8 +102,6 @@ void Player::Init() {
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
-	g.pos = pos + D3DXVECTOR2(-30,0);
-
 	state++;
 	//fearstd = ((float)192 / (float)FERE_MAX);
 }
@@ -171,7 +169,7 @@ void Player::move() {
 		//-----------------------------------------------------------
 		//  移動
 		//----------------------------------------------------------
-		if ( hp>0 && (pScore->getKill_num()<50)/* || timer <= 0*/ ) {
+		if ( hp>0 && (pScore->getKill_num()<CLEAR_KILLNUM)/* || timer <= 0*/ ) {
 			//----------------------------
 			//Y軸
 			//----------------------------
@@ -189,11 +187,11 @@ void Player::move() {
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
+			//pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
-			pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
+			pEffect_Manager->searchSet(V2(12, 6), V2(8, 3), Shake); //振動
 		}
 
 		mlt_Update();
@@ -264,14 +262,13 @@ void Player::anime() {
 		}
 	}
 
-
 	//ゲームオーバー
 	if (hp <= 0) {
 		if (anime_no >=4) anime_no = 0;
 		data = &p_over[anime_no];
 	}
 	//ゲームクリア
-	else if ((pScore->getKill_num() >= 50)/* || timer == 0*/) {
+	else if ((pScore->getKill_num() >= CLEAR_KILLNUM)/* || timer == 0*/) {
 		if ( (anime_no==9)&&(anime_timer==1) ) {
 			pEffect_Manager->searchSet(pos, V2(5, 5), gameclear_aggre);
 			for (int i = 0; i<5; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%8-4),(float)(rand()%8-4)), ParticleExt_k);	//パーティクルエフェクトキラキラ
@@ -290,6 +287,7 @@ void Player::anime() {
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		pEffect_Manager->searchSet(V2(6, 2), V2(3, 4), Shake); //ダメージ振動
 
 		if (reflect) {
 			if ( anime_no>=5 ) {
@@ -355,7 +353,6 @@ void Player::anime() {
 	}
 
 }
-
 
 void Player::Render() {
 	if (data)spr_data::Render(pos, data);

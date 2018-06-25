@@ -370,7 +370,7 @@ void spr_data::Render(V2 pos,SPR_DATA* data,UINT color,float angle,iexShader* sh
 }
 void spr_data::Render(V2 pos, SPR_DATA* data, CUSTOM* custom ,D3DCOLOR argb, iexShader* shader, char* tech) {
 	obj[data->no]->customRender(
-		pos.x+data->ofsx/* + custom->ef_ofsX*/,pos.y + data->ofsy/* + custom->ef_ofsY*/,
+		pos.x+data->ofsx + custom->ef_ofsX,pos.y + data->ofsy + custom->ef_ofsY,
 		custom->scaleX * data->dw, custom->scaleY * data->dh,
 		data->dx,data->dy,
 		data->sx,data->sy,

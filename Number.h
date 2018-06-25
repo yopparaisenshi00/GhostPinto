@@ -25,10 +25,36 @@ private:
 	int front = 0;
 	int after = 0;
 	D3DCOLOR gametimer_argb;
+
+
+	struct EVAL {
+		V2 p_pos;
+
+		int addscore,combo,just,total;
+
+		V2 result_pos;
+		V2 time_pos;
+		V2 combo_pos;
+		V2 just_pos;
+		V2 total_pos;
+
+		D3DCOLOR argb;
+		spr_data::CUSTOM custom;
+
+		bool flg;
+
+		int timer;
+	};
+	EVAL eval;
+
+
+
+
 public:
 	Number();
 	~Number();
 	void Init();
+	void eval_agree();
 	void Update(int timer);
 	void Render();
 	int n_timer;
