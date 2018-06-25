@@ -169,7 +169,7 @@ void Player::move() {
 		//-----------------------------------------------------------
 		//  移動
 		//----------------------------------------------------------
-		if ( hp>0 && (pScore->getKill_num()<50)/* || timer <= 0*/ ) {
+		if ( hp>0 && (pScore->getKill_num()<CLEAR_KILLNUM)/* || timer <= 0*/ ) {
 			//----------------------------
 			//Y軸
 			//----------------------------
@@ -268,7 +268,7 @@ void Player::anime() {
 		data = &p_over[anime_no];
 	}
 	//ゲームクリア
-	else if ((pScore->getKill_num() >= 50)/* || timer == 0*/) {
+	else if ((pScore->getKill_num() >= CLEAR_KILLNUM)/* || timer == 0*/) {
 		if ( (anime_no==9)&&(anime_timer==1) ) {
 			pEffect_Manager->searchSet(pos, V2(5, 5), gameclear_aggre);
 			for (int i = 0; i<5; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%8-4),(float)(rand()%8-4)), ParticleExt_k);	//パーティクルエフェクトキラキラ

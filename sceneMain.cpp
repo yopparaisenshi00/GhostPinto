@@ -173,9 +173,9 @@ void	sceneMain::Update()
 		pMAP->SetCenter((OBJ2D*)pPlayer);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		//IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		//count_down = 2;
+		count_down = 2;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		timer = 80 * 60;
@@ -228,8 +228,8 @@ void	sceneMain::Update()
 				state = GAMEOVER;
 			}
 		}
-		else if ((pScore->getKill_num() >= 50) || timer <= 0) {
-			if ( scene_timer++>110 ) {
+		else if ((pScore->getKill_num() >= CLEAR_KILLNUM) || timer <= 0) {
+			if ( scene_timer++>150 ) {
 				state = GAMECLEAR;
 			}
 		}
@@ -267,6 +267,11 @@ void	sceneMain::Render()
 	pLandScape->RenderBG();
 	pMAP->Render();
 	pEnemy_Manager->Render();
+
+	if ( (pScore->getKill_num()>=CLEAR_KILLNUM)||timer<=0 ) {
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,0x44000000,0); //ˆÃ“]
+	}
+
 	pEffect_Manager->Render();
 	pPlayer->Render();
 
@@ -307,7 +312,7 @@ default:
 
 	pD_TEXT->Render();
 
-	if ( (pScore->getKill_num()>=50)||timer<=0 ) {
+	if ( (pScore->getKill_num()>=CLEAR_KILLNUM)||timer<=0 ) {
 		spr_data::Render(V2(200,100),&clear); //GAMECLEAR•¶Žš
 	}
 

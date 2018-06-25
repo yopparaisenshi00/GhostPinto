@@ -637,9 +637,10 @@ void Enemy_Dead(Enemy* obj) {
 	pEnemy_Manager->jast_dragIn(obj);
 	Enemy_DeadEffect(obj);			//死亡時エフェクト
 	pScore->add_KillScore(obj->score);		//スコア,コンボ,kill数加算
-	if ( obj->sz<JUSTPINTO_SIZE ) pScore->eval_justpinto++; //一時評価用ジャストピント数
+	if ( obj->sz<JUSTPINTO_SIZE ) pScore->eval_justpinto++; //コンボリザルト_ジャストピント数
 	Combo(obj);						//コンボ表示
-	IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
+	if (obj->sz < JUSTPINTO_SIZE)	IEX_PlaySound(SE_JUSTPINTO, FALSE);	//消滅時のSE(ジャストピント)
+	else IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
 	pPlayer->mltfcs.add_point(1);
 	obj->clear();
 }

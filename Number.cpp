@@ -74,6 +74,7 @@ Number::Number() {
 	eval_combo.SetSize((int)(32 * 0.9f));
 	eval_justpinto.SetSize((int)(32 * 0.9f));
 	eval_total.SetSize((int)(32 * 0.9f));
+
 	
 	//score.custom.clear();
 	//gametimer.custom.clear();
@@ -94,6 +95,7 @@ Number::~Number() {
 }
 
 void Number::Init() {
+	eval.flg = false;
 
 }
 
@@ -197,7 +199,7 @@ void Number::Render() {
 	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//Œ‚”j”
 
-	if ( eval.flg ) {
+	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ ) {
 		eval_addscore.Render(	eval.time_pos.x  +120,  eval.time_pos.y,3);
 		eval_combo.Render(		eval.combo_pos.x +120,  eval.combo_pos.y,2);
 		eval_justpinto.Render(	eval.just_pos.x  +120,  eval.just_pos.y,2);
