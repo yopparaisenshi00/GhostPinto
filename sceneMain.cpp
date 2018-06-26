@@ -62,6 +62,7 @@ static IMG_DATA IMG_Main[] = {
 	{ spr_data::Circle,"DATA\\Public\\Circle.png" },
 	{ spr_data::TeleExt,"DATA\\Public\\Teleport.jpg" },
 	{ spr_data::Player_eff,"DATA\\Public\\Player_effect.png" },
+	{ spr_data::Mulch_eff,"DATA\\Public\\mulch_ef.png" },
 	{ spr_data::EdgeCircle,"DATA\\UI\\pint_s2.png" },
 	{ spr_data::Number,"DATA\\Public\\number.png" },
 	{ spr_data::FADE_IN1 ,"DATA\\Public\\delta.png" },
@@ -173,7 +174,7 @@ void	sceneMain::Update()
 		pMAP->SetCenter((OBJ2D*)pPlayer);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		//IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
 		//count_down = 2;
 		count_down_timer = 0;

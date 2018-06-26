@@ -115,7 +115,9 @@ void Frame::Update() {
 
 		if (pFrame->multifocus_timer>0 && multi_flg == true) {
 			if (pFrame->multifocus_timer % 12 == 0) { //15回に分けて(12で割った余りが0の時)
-				pinto_argb += 0x00001111; //徐々に白に
+				//pinto_argb += 0x00001111; //徐々に白に
+				if ( pinto_argb>=0xFFFFDDDD ) pinto_argb=0xFFFFFFFF;
+				else pinto_argb += 0x00001111; //徐々に白に
 			}
 		}
 
@@ -161,11 +163,11 @@ void Frame::Render() {
 		//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 	}
 
-	if ( multifocus_flg ) {
-		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
-		light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
-	}
-	else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
+	//if ( multifocus_flg ) {
+	//	iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
+	//	light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
+	//}
+	//else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 

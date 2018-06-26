@@ -58,13 +58,15 @@ struct MLT_FOCUS {
 	
 	int point;
 	int lv;
+	int old_lv;
 	void add_point(int);
 	SPR_DATA* data;
 	spr_data::CUSTOM custom;
 
 	void clear() {
 		point = 0;
-		lv = 0;
+		lv = 3;
+		old_lv = 3;
 	}
 };
 
@@ -104,8 +106,6 @@ public:
 	
 	int jet_eff_timer;			//
 	int p_eff_timer;			//
-
-	int old_mlt;
 
 	bool damage_se_flg;
 

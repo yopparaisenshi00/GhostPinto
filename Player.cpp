@@ -97,6 +97,7 @@ void Player::Init() {
 	hp = 0;
 	mltfcs.clear();
 
+
 	hp = 3;
 	pos = D3DXVECTOR2(960, 270);
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
@@ -132,22 +133,22 @@ D3DCOLOR Player::Light(D3DCOLOR color) {
 //マルチフォーカス処理
 void Player::mlt_Update() {
 	//ゲージ拡大
-	if ( old_mlt<mltfcs.lv ) {
+	if ( mltfcs.old_lv<mltfcs.lv ) {
 		g.custom.scaleMode = CENTER;
 		g.custom.scaleX = g.custom.scaleY = 3.0f;
 	}
 	//ゲージ縮小
-	else if ( old_mlt==mltfcs.lv ) {
+	else if ( mltfcs.old_lv==mltfcs.lv ) {
 		g.custom.scaleMode = CENTER;
 		g.custom.scaleX = g.custom.scaleY -= 0.2f;
 		if ( g.custom.scaleX<=1.0f ) g.custom.scaleX = g.custom.scaleY = 1.0f;
 	}
 	//使ったら発光
-	if ( old_mlt!=mltfcs.lv ) g.argb = 0xFFFFFFFF;	
+	if ( mltfcs.old_lv!=mltfcs.lv ) g.argb = 0xFFFFFFFF;	
 	if ( g.argb>=0x11FFFFFF ) g.argb -= 0x11000000;
 	else g.argb = 0x00FFFFFF;
 
-	old_mlt = mltfcs.lv;
+	mltfcs.old_lv = mltfcs.lv;
 }
 
 void Player::move() {
@@ -184,13 +185,14 @@ void Player::move() {
 		//-----------------------------------------------------------
 		//  マルチフォーカス
 		//-----------------------------------------------------------
-		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
+		if (KEY_Get(MULTIFOCUS_KEY) == 3 && (mltfcs.lv==3)) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			//pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(4.0f,0), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(-6.0f,0), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
-		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
+		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv<3) ) {
 			pEffect_Manager->searchSet(V2(12, 6), V2(8, 3), Shake); //振動
 		}
 

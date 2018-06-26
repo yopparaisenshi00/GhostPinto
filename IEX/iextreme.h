@@ -700,6 +700,7 @@ public:
 		TeleExt,
 
 		Player_eff,
+		Mulch_eff,
 
 		Number,
 		Number2,

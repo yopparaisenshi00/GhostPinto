@@ -27,11 +27,11 @@ Number eval_total;		//コンボリザルト用TOTAL
 SPR_DATA ui_data[] = {
 	{ spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
 	{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//COMBORESULT------
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//TIMETOSHOOT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//COMBO COUNT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//JUST COUNT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//TOTAL SCORE
+	{ spr_data::UI6,  0,64*11,  32*7,40,  0,0,  (int)((32*7)*0.75f),(int)(40*0.6f) },//COMBORESULT------
+	{ spr_data::UI6,  0,64*12,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//TIMETOSHOOT
+	{ spr_data::UI6,  0,64*13,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//COMBO COUNT
+	{ spr_data::UI6,  0,64*14,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//JUST COUNT
+	{ spr_data::UI6,  0,64*15,  32*7,40,  0,0,  (int)((32*7)*0.75f),(int)(40*0.6f) },//TOTAL SCORE
 };
 
 
@@ -83,11 +83,11 @@ Number::Number() {
 	//eval.total_pos =	V2(680,320+160);
 
 	//左真ん中
-	eval.result_pos =	V2(10,200+0);
-	eval.time_pos =		V2(10,200+40);
-	eval.combo_pos =	V2(10,200+80);
-	eval.just_pos =		V2(10,200+120);
-	eval.total_pos =	V2(10,200+160);
+	eval.result_pos =	V2(50,200+0);
+	eval.time_pos =		V2(50,200+40);
+	eval.combo_pos =	V2(50,200+80);
+	eval.just_pos =		V2(50,200+120);
+	eval.total_pos =	V2(50,200+160);
 
 	//左上
 	//eval.result_pos =	V2(150,20+0);
@@ -104,7 +104,7 @@ Number::Number() {
 	eval.custom.scaleMode = CENTER;
 
 	eval.custom.argb = 0xFFFFFFFF;
-
+	eval.alpha = 0;
 }
 
 Number::~Number() {
@@ -141,12 +141,22 @@ void Number::eval_agree() {
 
 	//移動処理-------------------------------------------------
 
-	if ( 1<=eval.timer && eval.timer<=20 ) { //
-		eval.alpha = 255;
-		if ((eval.timer % 8) <  4) eval.alpha = (int)(255*0.3f); //01
-		if ((eval.timer % 8) >= 4) eval.alpha = (int)(255*0.6f); //23
+	if ( (1<=eval.timer) && (eval.timer<=30) ) { //
+		//if ( (eval.timer%8)<4 ) {
+		//	//eval.alpha = (int)(255*0.7f); //01
+		//	custom.argb = 0xFFffe1e0;
+		//}
+		//if ( (eval.timer%8)>=4 ) {
+		//	//eval.alpha = (int)(255*0.9f); //23
+		//	custom.argb = 0xFFFFFFFF;
+		//}
+		eval.alpha += 60;
+		if ( eval.alpha>=255 ) eval.alpha = 255;
 	}
-	else eval.alpha = 255;
+	else if( 30<eval.timer ){
+		eval.alpha = 255;
+		//custom.argb = 0xFFFFFFFF;
+	}
 
 	if ( eval.timer>70 ) {
 		eval_addscore.	custom.scaleY -=0.2f;
@@ -166,6 +176,7 @@ void Number::eval_agree() {
 		eval.timer = 0;
 		pScore->addscore = 0;
 		pScore->eval_justpinto = 0;
+		eval.alpha = 0;
 		eval_addscore.	custom.scaleY = 1.0f;
 		eval_combo.		custom.scaleY = 1.0f;
 		eval_justpinto.	custom.scaleY = 1.0f;
@@ -207,12 +218,12 @@ void Number::Render() {
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//撃破数
 
 	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ && (eval.combo>=5) ) {
-		eval_addscore.Render(	eval.time_pos.x  +90,  eval.time_pos.y	-14,3);
-		eval_combo.Render(		eval.combo_pos.x +90,  eval.combo_pos.y	-14,2);
-		eval_justpinto.Render(	eval.just_pos.x  +90,  eval.just_pos.y	-14,2);
-		eval_total.Render(		eval.total_pos.x +90,  eval.total_pos.y	-14,4);
 		eval.custom.argb = (eval.alpha << 24 | custom.argb << 8 >> 8);
-		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);	//コンボリザルト------------------------
+		eval_addscore.Render3(	eval.time_pos.x  +180,  eval.time_pos.y	-14,3,eval.custom.argb);
+		eval_combo.Render3(		eval.combo_pos.x +180,  eval.combo_pos.y-14,2,eval.custom.argb);
+		eval_justpinto.Render3(	eval.just_pos.x  +180,  eval.just_pos.y	-14,2,eval.custom.argb);
+		eval_total.Render3(		eval.total_pos.x +180,  eval.total_pos.y-14,4,eval.custom.argb);
+		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);//コンボリザルト------------------------
 		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
 		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval.custom.argb);	//COMBO COUNT：倒した数
 		spr_data::Render(eval.just_pos,&ui_data[5],&eval.custom,eval.custom.argb);	//JUST COUNT ：ジャストピントを決めた数
@@ -348,6 +359,7 @@ void  Number::Render3(int x, int y, int digit_max, D3DCOLOR argb)
 			argb, custom.reflectX, custom.scaleMode);
 	}
 }
+
 
 //数値描画関数(指数値描画(num) + 指定分描画 + color)           (digitmax = 表示文字数)
 void  Number::RenderFree(int x, int y, int num, int digit_max, int _digitDispSize, D3DCOLOR argb = 0xFFFFFFFF)

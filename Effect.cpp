@@ -123,7 +123,7 @@ static SPR_DATA gameclear_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,
 //static SPR_DATA noAction_data = SPR_DATA{ spr_data::Player_eff,128,1*6,6,6,-6/2,-6/2 };
 
 //マルチフォーカス使用時エフェクト
-static SPR_DATA multi_data = SPR_DATA{spr_data::Player1,64*5,0,64,64,-32,-32};
+static SPR_DATA multi_data = SPR_DATA{spr_data::Mulch_eff,0,0,128,128,-64,-64};
 
 
 //static SPR_DATA p_eff_data[] = {
@@ -149,6 +149,7 @@ static SPR_DATA multi_data = SPR_DATA{spr_data::Player1,64*5,0,64,64,-32,-32};
 //	SPR_DATA{spr_data::Player_eff, 128, 4*6+3*9, 9, 9, -9/2,-9/2,2}, //p_eff4*1.5
 //	SPR_DATA{			       -1,	 0,       0, 0, 0,    0,   0,3}
 //};
+
 
 
 
@@ -1059,18 +1060,38 @@ void Multifocus(Effect*obj) {
 		case INIT:
 			obj->data = &multi_data;
 			obj->custom.scaleMode = CENTER;
-			obj->custom.scaleX = obj->custom.scaleY = 0.2f;
-			//obj->custom.argb = 0xFFfff056;
-			obj->alpha = 180;
+			obj->custom.scaleX = obj->custom.scaleY = 0.8f;
+			//obj->custom.argb = 0xFFfff056; //色
+			obj->alpha = (int)(255*0.8f);
+			obj->i_work[1] = (int)(obj->spd.x); //angle_spd
 			obj->state = MOVE;
 			//break;
 		case MOVE:
-			obj->custom.scaleX = obj->custom.scaleY += 0.6f;
-			if ( obj->custom.scaleX>=6.0f ) obj->alpha -= 255/16;
-			if ( obj->alpha<=0 ) {
-				obj->alpha = 0;
-				obj->state = CLEAR;
+			//プレイヤーの座標
+			obj->pos.x = pPlayer->pos.x;
+			obj->pos.y = pPlayer->pos.y;
+
+			//回転
+			obj->custom.angle += obj->i_work[1];
+			if ( obj->custom.angle>=360 ) obj->custom.angle = 0;
+
+			//消去準備
+			if ( (obj->timer>(MALTIFOCUS_TIME-60)) && (obj->timer<MALTIFOCUS_TIME) ) {
+				//点滅
+				if ( (obj->timer%4)<2 )  obj->alpha = (int)(255*0.15f);//01
+				if ( (obj->timer%4)>=2 ) obj->alpha = (int)(255*0.8f); //23
 			}
+			//透明
+			if ( obj->timer>MALTIFOCUS_TIME ) {
+				obj->alpha -= 20;
+				if ( obj->alpha<0 ) {
+					obj->alpha = 0;
+					obj->timer = 0;
+					obj->custom.angle = 0;
+					obj->state = CLEAR;
+				}
+			}
+			obj->timer++;
 			break;
 		case CLEAR:
 			obj->clear();
