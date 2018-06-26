@@ -55,7 +55,7 @@ STAGE_DATA stage1_time[] = {
 
 //キル数による出現データ
 STAGE_DATA stage1_kill[] = {
-	//全21匹
+	//全21匹(旧)
 	//         出現     関数		座標			速度			加速度    最大速度		Z値
 
 	STAGE_DATA(15,		zMove,		V2(660, 512),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -84,6 +84,19 @@ STAGE_DATA stage1_kill[] = {
 	STAGE_DATA(35,		Tombo,		V2(500, 352),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(35,		Tombo,		V2(1720,352),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(35,		Tombo,		V2(1420,352),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
+
+	//10(追加)
+
+	STAGE_DATA(45,		Tombo,		V2(800, 452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(45,		Tombo,		V2(1220,452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(45,		Big,		V2(680, 512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(45,		Big,		V2(1040,512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(45,		zMove,		V2(1260,762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(660, 762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(1160,662),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(760, 662),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		Normal,		V2(600, 652),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		Normal,		V2(700, 652),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 	//末端データ
 	STAGE_DATA(-1,		nullptr,	V2(600, 250),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
@@ -149,8 +162,10 @@ LAND_SCAPE_DATA stage1_bg_effect[] = {
 	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(1600,612),V2(0,0),V2(0,0),V2(0,0),60 },
 	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(2000,612),V2(0,0),V2(0,0),V2(0,0),60 },
 
-
+	{ LSD::CENTER,0,BG_Fly_capsule_l,V2(1800,352),V2(0,0),V2(0,0),V2(0,0),-60 },
 	{ LSD::CENTER,0,BG_Fly_capsule_l,V2(1200,312),V2(0,0),V2(0,0),V2(0,0),-60 },
+	{ LSD::CENTER,0,BG_Fly_capsule_d,V2(500,212),V2(0,0),V2(0,0),V2(0,0),-60 },
+
 
 	{ 0,-1,nullptr, V2(0,0), V2(0, 0), V2(0, -1), V2(0, -2), 0 },
 };
