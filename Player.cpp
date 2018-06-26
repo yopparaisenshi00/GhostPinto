@@ -99,7 +99,7 @@ void Player::Init() {
 
 
 	hp = 3;
-	pos = D3DXVECTOR2(960, 270);
+	pos = D3DXVECTOR2(960, 512);
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 

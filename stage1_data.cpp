@@ -27,8 +27,8 @@ STAGE_DATA stage1_time[] = {
 
 	STAGE_DATA(0,		Normal	,	V2(200, 912),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Normal	,	V2(280, 832),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(600, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(0,		Normal	,	V2(1260, 452),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(660, 700),	V2(0.8f, 0.8f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(0,		Normal	,	V2(1260, 700),	V2(0.8f, 0.8f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Normal	,	V2(1600,912),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(0,		Normal	,	V2(1700,832),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
