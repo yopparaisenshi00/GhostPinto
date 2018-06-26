@@ -2,7 +2,17 @@
 #define _ENEMY_H_
 
 #define ENEMY_MAX (256)
-#define DAMAGE_MAX (700) //
+#define DAMAGE_MAX (700) //iran
+
+//エネミーＨＰ群
+#define ENEMY_HP_A (700)//漂う奴
+#define ENEMY_HP_B (600)//普通の奴
+#define ENEMY_HP_C (700)//ワープする奴
+#define ENEMY_HP_D (700)//Z値移動する奴
+#define ENEMY_HP_E (1300)//でかい奴
+#define ENEMY_HP_F (900)//トンボ
+
+
 #define DAMAGE_LINE (3.6) 
 #ifndef PINTO_MAX
 

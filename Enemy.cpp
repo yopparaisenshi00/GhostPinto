@@ -391,7 +391,7 @@ void Enemy::UIUpdate() {
 		u.custom.scaleX = u.custom.scaleY = 1.0f;
 		count = 0;
 	}
-	line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
+	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
 }
 void Enemy_Manager::stageUpdate()
 {
@@ -662,65 +662,6 @@ void Enemy_Dead(Enemy* obj) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-//“®‚©‚È‚¢“G
-void Base(Enemy* obj) {
-	switch (obj->state)
-	{
-	case INIT:	//‰Šúİ’è
-		obj->data = &Enemy_data;
-		obj->damageMAX = DAMAGE_MAX;
-		obj->custom.argb = 0x0000FFFF;
-		obj->size = V2(20 / 2, 20 / 2);
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		Enemy_Init(obj);
-		obj->state = BEGIN;
-		//break;
-	case BEGIN:
-		//ƒ_ƒ[ƒW”»’è
-		Enemy_Update(obj);
-		break;
-	case DEAD: //€–Sˆ—
-		Enemy_Dead(obj);
-		break;
-	default:
-		break;
-	}
-}
-
-
-//‹ß‚Ã‚¢‚½‚çp‚ğŒ»‚·“G
-void Sudden(Enemy* obj) {
-	switch (obj->state)
-	{
-	case INIT: //‰Šúİ’è
-		obj->data = &Enemy_data;
-		obj->damageMAX = DAMAGE_MAX;
-		obj->size = V2(20 / 2, 20 / 2);
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		Enemy_Init(obj);
-		obj->state = BEGIN;
-		//break;
-	case BEGIN:
-		Enemy_Update(obj);
-		obj->rangeflg = E_lenge(obj, pPlayer, 300); //‹——£”»’è
-		if (obj->rangeflg == true) {
-			obj->alpha += (255 / 20);				//
-			if (obj->alpha>255) obj->alpha = 255;	//
-		}											//	
-		else {										//	_o‹S–vˆ—
-			obj->alpha -= (255 / 20);				//
-			if (obj->alpha<0) obj->alpha = 0;		//
-		}											//
-		break;
-	case DEAD: //€–Sˆ—
-		Enemy_Dead(obj);
-		break;
-	default:
-		break;
-	}
-}
 
 
 //ƒeƒŒƒ|[ƒg
@@ -731,7 +672,8 @@ void Teleport(Enemy* obj) {
 		obj->Anime_Box = blue_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 400;
+		//HP
+		obj->damageMAX = ENEMY_HP_C;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
@@ -804,7 +746,8 @@ void Normal(Enemy* obj) {
 		obj->Anime_Box = pink_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 400;
+		//HP
+		obj->damageMAX = ENEMY_HP_B;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
@@ -842,7 +785,8 @@ void Tombo(Enemy* obj) {
 		obj->Anime_Box = green_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 1000;
+		//HP
+		obj->damageMAX = ENEMY_HP_F;
 		obj->pos.y -= 10;			//----------
 		obj->ANGLE = INIT_ANGLE;	//@‰ñ“]—p
 		obj->ANGLEspd = 0.5f;		//
@@ -863,7 +807,7 @@ void Tombo(Enemy* obj) {
 		obj->rangeflg = E_lenge(obj, pPlayer, 1000); //‹——£”»’è
 		if (obj->rangeflg == true) { //”ÍˆÍ“à‚È‚ç
 
-//				obj->spd = E_P(obj, pPlayer, obj->spd); //ˆÚ“®ˆ— 8.0f
+			//obj->spd = E_P(obj, pPlayer, obj->spd); //ˆÚ“®ˆ— 8.0f
 
 			obj->dx = obj->pos.x - pPlayer->pos.x;				//
 			obj->dy = obj->pos.y - pPlayer->pos.y;				//
@@ -943,7 +887,8 @@ void zMove(Enemy* obj) {
 		obj->data = &obj->animeData[0];
 
 		obj->f_work[3] = obj->z;
-		obj->damageMAX = DAMAGE_MAX;
+		//HP
+		obj->damageMAX = ENEMY_HP_D;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->size = V2(20 / 2, 20 / 2);
@@ -990,7 +935,8 @@ void Big(Enemy* obj) {
 		obj->Anime_Box =kari_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 1000;
+		//HP
+		obj->damageMAX = ENEMY_HP_E;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = B_scale;
 		obj->size = V2(40, 40);
@@ -1020,6 +966,153 @@ void Big(Enemy* obj) {
 }
 
 
+/////////////////////////////////////////////////////////////
+//
+//‰ñ“]•‚—V
+//
+/////////////////////////////////////////////////////////////
+
+enum
+{
+	posx = 0,
+	posy = 1,
+};
+
+
+//•Y‚¤“G
+
+void Rotation(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:
+		obj->Anime_Box = yellow_data;
+		obj->animeData = obj->Anime_Box[normal];
+		obj->data = &obj->animeData[0];
+		//HP
+		obj->damageMAX = ENEMY_HP_A;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->score = 100;
+		Enemy_Init(obj);
+		obj->state = APPEARANCE;
+		//break;
+	case APPEARANCE:
+		Enemy_appearance(obj);
+		break;
+	case BEGIN:
+		Enemy_Update(obj);
+		{
+			//‰ñ“]ŒvZ
+			obj->pos -= V2(obj->f_work[posx], obj->f_work[posy]);
+			float y = 70 * (sinf(obj->ANGLE * 0.01745f));
+			float x = 50 * (cosf(obj->ANGLE * 0.01745f));
+			obj->f_work[posx] = x;
+			obj->f_work[posy] = y;
+
+			obj->pos += V2(x, y);
+			obj->ANGLE += 0.5;
+			if (obj->ANGLE > 360) {
+				obj->ANGLE = 0;
+			}
+		}
+		break;
+	case DEAD: //€–Sˆ—
+		Enemy_Dead(obj);
+		pEnemy_Kill->kill_num_yellow++;
+
+		break;
+	default:
+		break;
+	}
+}
+
+
+void Tutorial(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//‰Šúİ’è
+		obj->data = &Enemy_data;
+		obj->damageMAX = DAMAGE_MAX;
+		obj->custom.argb = 0x0000FFFF;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		Enemy_Init(obj);
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ƒ_ƒ[ƒW”»’è
+		Enemy_Update(obj);
+		break;
+	case DEAD: //€–Sˆ—
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
+
+
+//“®‚©‚È‚¢“G
+void Base(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//‰Šúİ’è
+		obj->data = &Enemy_data;
+		obj->damageMAX = DAMAGE_MAX;
+		obj->custom.argb = 0x0000FFFF;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		Enemy_Init(obj);
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ƒ_ƒ[ƒW”»’è
+		Enemy_Update(obj);
+		break;
+	case DEAD: //€–Sˆ—
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
+
+
+//‹ß‚Ã‚¢‚½‚çp‚ğŒ»‚·“G
+void Sudden(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT: //‰Šúİ’è
+		obj->data = &Enemy_data;
+		obj->damageMAX = DAMAGE_MAX;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		Enemy_Init(obj);
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		Enemy_Update(obj);
+		obj->rangeflg = E_lenge(obj, pPlayer, 300); //‹——£”»’è
+		if (obj->rangeflg == true) {
+			obj->alpha += (255 / 20);				//
+			if (obj->alpha>255) obj->alpha = 255;	//
+		}											//	
+		else {										//	_o‹S–vˆ—
+			obj->alpha -= (255 / 20);				//
+			if (obj->alpha<0) obj->alpha = 0;		//
+		}											//
+		break;
+	case DEAD: //€–Sˆ—
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
 
 /////////////////////////////////////////////////////////////
 //
@@ -1154,21 +1247,6 @@ void Aggre_child(Enemy* obj) {
 }
 
 
-
-
-
-/////////////////////////////////////////////////////////////
-//
-//‰ñ“]•‚—V
-//
-/////////////////////////////////////////////////////////////
-
-enum
-{
-	posx = 0,
-	posy = 1,
-};
-
 //W‡‘Ì§Œä(Rotetion)¶
 void Rotation_Aggre_4(Enemy* obj) {
 	switch (obj->state)
@@ -1190,80 +1268,6 @@ void Rotation_Aggre_4(Enemy* obj) {
 		break;
 	case CLEAR:
 		obj->clear();
-	default:
-		break;
-	}
-}
-
-void Rotation(Enemy* obj) {
-	switch (obj->state)
-	{
-	case INIT:
-		obj->Anime_Box = yellow_data;
-		obj->animeData = obj->Anime_Box[normal];
-		obj->data = &obj->animeData[0];
-
-		//eİ’è(§Œä‚É©g‚Ì‘¶İ‚ğ“n‚·)
-		obj->damageMAX = DAMAGE_MAX;
-		obj->size = V2(20 / 2, 20 / 2);
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		obj->score = 100;
-		Enemy_Init(obj);
-		obj->state = APPEARANCE;
-		//break;
-	case APPEARANCE:
-		Enemy_appearance(obj);
-		break;
-	case BEGIN:
-		//§Œä‚É‡‚í‚¹‚Ä“®‚­(e‚ÌüˆÍ‚ğ‰ñ“])
-		Enemy_Update(obj);
-		{
-			//‰ñ“]ŒvZ
-			obj->pos -= V2(obj->f_work[posx], obj->f_work[posy]);
-			float y = 70 * (sinf(obj->ANGLE * 0.01745f));
-			float x = 50 * (cosf(obj->ANGLE * 0.01745f));
-			obj->f_work[posx] = x;
-			obj->f_work[posy] = y;
-
-			obj->pos += V2(x, y);
-			obj->ANGLE += 0.5;
-			if (obj->ANGLE > 360) {
-				obj->ANGLE = 0;
-			}
-		}
-		break;
-	case DEAD: //€–Sˆ—
-		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_yellow++;
-
-		break;
-	default:
-		break;
-	}
-}
-
-
-void Tutorial(Enemy* obj) {
-	switch (obj->state)
-	{
-	case INIT:	//‰Šúİ’è
-		obj->data = &Enemy_data;
-		obj->damageMAX = DAMAGE_MAX;
-		obj->custom.argb = 0x0000FFFF;
-		obj->size = V2(20 / 2, 20 / 2);
-		obj->custom.scaleMode = CENTER;
-		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		Enemy_Init(obj);
-		obj->state = BEGIN;
-		//break;
-	case BEGIN:
-		//ƒ_ƒ[ƒW”»’è
-		Enemy_Update(obj);
-		break;
-	case DEAD: //€–Sˆ—
-		Enemy_Dead(obj);
-		break;
 	default:
 		break;
 	}
