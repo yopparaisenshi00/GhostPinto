@@ -814,6 +814,7 @@ void ComboText(Effect* obj) {
 }
 
 
+
 //塵(ちり)エフェクト
 void dust(Effect* obj) {
 	switch ( obj->state ) {
@@ -849,7 +850,6 @@ void dust(Effect* obj) {
 			break;
 	}
 }
-
 
 //スカエフェクト
 void noAction(Effect *obj) {
@@ -891,7 +891,6 @@ void gameclear_aggre(Effect*obj) {
 			if ( obj->timer==0 ) pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
 			if ( obj->timer==5 ) pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
 			if ( obj->timer==10 ) {
-				//pEffect_Manager->searchSet(V2(0,0), V2(0,0), gameclear_screen_many); //画面全体
 				pEffect_Manager->searchSet(obj->pos, obj->spd, gameclear_eight); //8方向
 				pEffect_Manager->searchSet(obj->pos, V2(6,6), gameclear_kirakira); //キラキラ
 			}
@@ -911,10 +910,10 @@ void gameclear_screen_many(Effect*obj) {
 	switch ( obj->state ) {
 		case INIT:
 		case MOVE:
-			pEffect_Manager->searchSet(V2(			 0+300,			   0+250), V2(0,0), gameclear_screen); //右
-			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,			   0+250), V2(0,0), gameclear_screen); //左
-			pEffect_Manager->searchSet(V2(			 0+300,SCREEN_HEIGHT-100), V2(0,0), gameclear_screen); //上
-			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,SCREEN_HEIGHT-100), V2(0,0), gameclear_screen); //下
+			pEffect_Manager->searchSet(V2(			 0+300,  			 0+250), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  			 0+250), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(			 0+300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
 		case CLEAR:
 			obj->clear();
 			break;
@@ -931,9 +930,11 @@ void gameclear_screen(Effect*obj) {
 			obj->custom.scaleMode = CENTER;
 			obj->custom.scaleX = obj->custom.scaleY = 3.0f;
 			obj->custom.argb = 0xFFFFFFFF;
-			obj->alpha = (int)(255*0.7f);
+			obj->alpha = (int)(255*0.55f);
 			obj->timer = 0;
-			obj->i_work[6] = 0;
+			obj->i_work[6] = 0; //色
+			obj->f_work[1] = obj->pos.x;
+			obj->f_work[2] = obj->pos.y;
 			obj->state=MOVE;
 			//break;
 		case MOVE:
@@ -945,6 +946,9 @@ void gameclear_screen(Effect*obj) {
 			else if (obj->i_work[6] <= 12) obj->custom.argb = 0xFFE2E268;	//黄色
 			else if (obj->i_work[6] <= 16) obj->custom.argb = 0xFFc577ef;	//紫色
 			else if (obj->i_work[6] <= 20) obj->custom.argb = 0xFFa2f783;	//緑色
+
+			//obj->pos.x = obj->f_work[1]+rand()%20;
+			//obj->pos.y = obj->f_work[2]+rand()%20;
 
 			if (obj->timer>120) {	//指定時間経ったら
 				obj->state = CLEAR;		//消去処理へ
@@ -1025,6 +1029,8 @@ void gameclear(Effect* obj) {
 			break;
 	}
 }
+
+
 
 //プレイヤーダメージエフェクト
 void P_damage(Effect* obj) {

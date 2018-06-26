@@ -38,7 +38,7 @@ private:
 		V2 just_pos;
 		V2 total_pos;
 
-		D3DCOLOR argb;
+		int alpha;
 		spr_data::CUSTOM custom;
 
 		bool flg;

@@ -99,7 +99,7 @@ bool sceneTitle::Initialize()
 	ppsk.clear();
 	titleChar.clear();
 	titleName.clear();
-	IEX_StopSound(BGM_MAIN);
+	//IEX_StopSound(BGM_MAIN);
 	IEX_PlaySound(BGM_TITLE, TRUE); //BGM
 
 	return TRUE;

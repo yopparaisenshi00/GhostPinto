@@ -27,11 +27,11 @@ Number eval_total;		//コンボリザルト用TOTAL
 SPR_DATA ui_data[] = {
 	{ spr_data::UI6,  0,190,  120,40,  0,0 },//SCORE
 	{ spr_data::UI6,  0,250,  120,40,  0,0 },//NORMA
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//COMBORESULT------
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//TIMETOSHOOT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//COMBO COUNT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//JUST COUNT
-	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.8f),(int)(40*0.8f) },//TOTAL SCORE
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//COMBORESULT------
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//TIMETOSHOOT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//COMBO COUNT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//JUST COUNT
+	{ spr_data::UI6,  0,190,  120,40,  0,0,  (int)(120*0.6f),(int)(40*0.6f) },//TOTAL SCORE
 };
 
 
@@ -70,23 +70,40 @@ Number::Number() {
 	crushnum.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
 	crushnum2.SetSize((int)(64 * 0.6f));		//撃破数文字サイズ設定
 	exorcisetimer.SetSize((int)(64 * 0.6f));	//霊力タイマーサイズ設定
-	eval_addscore.SetSize((int)(32 * 0.9f));
-	eval_combo.SetSize((int)(32 * 0.9f));
-	eval_justpinto.SetSize((int)(32 * 0.9f));
-	eval_total.SetSize((int)(32 * 0.9f));
+	eval_addscore.SetSize((int)(32 * 0.7f));
+	eval_combo.SetSize((int)(32 * 0.7f));
+	eval_justpinto.SetSize((int)(32 * 0.7f));
+	eval_total.SetSize((int)(32 * 0.7f));
 
-	
-	//score.custom.clear();
-	//gametimer.custom.clear();
-	//gametimer2.custom.clear();
-	
-	//score.custom.scaleMode = CENTER;
-	//gametimer.custom.scaleMode = CENTER;
-	//gametimer2.custom.scaleMode = CENTER;
-	
-	//score.custom.scaleY = score.custom.scaleX = 1;
-	//gametimer.custom.scaleY = gametimer.custom.scaleX = 1;
-	//gametimer.custom.scaleX = gametimer.custom.scaleY = 1;
+	//右下
+	//eval.result_pos =	V2(680,320+0);
+	//eval.time_pos =		V2(680,320+40);
+	//eval.combo_pos =	V2(680,320+80);
+	//eval.just_pos =		V2(680,320+120);
+	//eval.total_pos =	V2(680,320+160);
+
+	//左真ん中
+	eval.result_pos =	V2(10,200+0);
+	eval.time_pos =		V2(10,200+40);
+	eval.combo_pos =	V2(10,200+80);
+	eval.just_pos =		V2(10,200+120);
+	eval.total_pos =	V2(10,200+160);
+
+	//左上
+	//eval.result_pos =	V2(150,20+0);
+	//eval.time_pos =		V2(150,20+40);
+	//eval.combo_pos =	V2(150,20+80);
+	//eval.just_pos =		V2(150,20+120);
+	//eval.total_pos =	V2(150,20+160);
+
+
+	eval_addscore.custom.scaleMode = CENTER;
+	eval_combo.custom.scaleMode = CENTER;
+	eval_justpinto.custom.scaleMode = CENTER;
+	eval_total.custom.scaleMode = CENTER;
+	eval.custom.scaleMode = CENTER;
+
+	eval.custom.argb = 0xFFFFFFFF;
 
 }
 
@@ -103,42 +120,6 @@ void Number::Init() {
 
 //評価用関数
 void Number::eval_agree() {
-	eval.p_pos.x = pPlayer->pos.x; //プレイヤーのx座標
-	eval.p_pos.y = pPlayer->pos.y; //プレイヤーのy座標
-	//プレイヤーが右下に寄っていたら(左上)
-	if ( (eval.p_pos.x>(SCREEN_WIDTH-300)) && (eval.p_pos.y>(SCREEN_HEIGHT-160)) ) {
-		eval.result_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-170);
-		eval.time_pos =		V2(eval.p_pos.x-260,eval.p_pos.y-130);
-		eval.combo_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-90);
-		eval.just_pos =		V2(eval.p_pos.x-260,eval.p_pos.y-50);
-		eval.total_pos =	V2(eval.p_pos.x-260,eval.p_pos.y-10);
-	}
-	//プレイヤーが右に寄っていたら(左下)
-	else if ( eval.p_pos.x>(SCREEN_WIDTH-300) ) {
-		eval.result_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+0);
-		eval.time_pos =		V2(eval.p_pos.x-250,eval.p_pos.y+40);
-		eval.combo_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+80);
-		eval.just_pos =		V2(eval.p_pos.x-250,eval.p_pos.y+120);
-		eval.total_pos =	V2(eval.p_pos.x-250,eval.p_pos.y+160);
-	}
-	//プレイヤーが下に寄っていたら(右上)
-	else if ( eval.p_pos.y>(SCREEN_HEIGHT-160) ) {
-		eval.result_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-170);
-		eval.time_pos =		V2(eval.p_pos.x+60,eval.p_pos.y-130);
-		eval.combo_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-90);
-		eval.just_pos =		V2(eval.p_pos.x+60,eval.p_pos.y-50);
-		eval.total_pos =	V2(eval.p_pos.x+60,eval.p_pos.y-10);
-	}
-	//基本プレイヤーの(右下)
-	else {
-		eval.result_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+0);
-		eval.time_pos =		V2(eval.p_pos.x+60,eval.p_pos.y+40);
-		eval.combo_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+80);
-		eval.just_pos =		V2(eval.p_pos.x+60,eval.p_pos.y+120);
-		eval.total_pos =	V2(eval.p_pos.x+60,eval.p_pos.y+160);
-	}
-
-
 
 	if ( pScore->getcombotimer()>=COMBO_TIME/* && (pScore->getCombo()>5) */ ) {
 		eval.addscore = pScore->getAddscore();						//保存
@@ -155,15 +136,41 @@ void Number::eval_agree() {
 	}
 
 	if ( eval.flg == true ) eval.timer++;
-	//移動処理
-	//
-	//
-	//
-	if ( eval.timer>60 ) {
+
+
+
+	//移動処理-------------------------------------------------
+
+	if ( 1<=eval.timer && eval.timer<=20 ) { //
+		eval.alpha = 255;
+		if ((eval.timer % 8) <  4) eval.alpha = (int)(255*0.3f); //01
+		if ((eval.timer % 8) >= 4) eval.alpha = (int)(255*0.6f); //23
+	}
+	else eval.alpha = 255;
+
+	if ( eval.timer>70 ) {
+		eval_addscore.	custom.scaleY -=0.2f;
+		eval_combo.		custom.scaleY -=0.2f;
+		eval_justpinto.	custom.scaleY -=0.2f;
+		eval_total.		custom.scaleY -=0.2f;
+		eval.custom.scaleY			  -=0.2f;
+		if ( eval_addscore.custom.scaleY<=0 )	eval_addscore.custom.scaleY = 0.0f;
+		if ( eval_combo.custom.scaleY<=0 )		eval_combo.custom.scaleY = 0.0f;
+		if ( eval_justpinto.custom.scaleY<=0 )	eval_justpinto.custom.scaleY = 0.0f;
+		if ( eval_total.custom.scaleY<=0 )		eval_total.custom.scaleY = 0.0f;
+		if ( eval.custom.scaleY<=0 )			eval.custom.scaleY = 0.0f;
+	}
+
+	if ( eval.timer>90 ) {
 		eval.flg = false;
 		eval.timer = 0;
 		pScore->addscore = 0;
 		pScore->eval_justpinto = 0;
+		eval_addscore.	custom.scaleY = 1.0f;
+		eval_combo.		custom.scaleY = 1.0f;
+		eval_justpinto.	custom.scaleY = 1.0f;
+		eval_total.		custom.scaleY = 1.0f;
+		eval.custom.scaleY = 1.0f;
 	}
 }
 
@@ -199,16 +206,17 @@ void Number::Render() {
 	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//撃破数
 
-	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ ) {
-		eval_addscore.Render(	eval.time_pos.x  +120,  eval.time_pos.y,3);
-		eval_combo.Render(		eval.combo_pos.x +120,  eval.combo_pos.y,2);
-		eval_justpinto.Render(	eval.just_pos.x  +120,  eval.just_pos.y,2);
-		eval_total.Render(		eval.total_pos.x +120,  eval.total_pos.y,4);
-		spr_data::Render(eval.result_pos,&ui_data[2]);	//コンボリザルト------------------------
-		spr_data::Render(eval.time_pos,&ui_data[3]);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
-		spr_data::Render(eval.combo_pos,&ui_data[4]);	//COMBO COUNT：倒した数
-		spr_data::Render(eval.just_pos,&ui_data[5]);	//JUST COUNT ：ジャストピントを決めた数
-		spr_data::Render(eval.total_pos,&ui_data[6]);	//TOTAL SCORE：コンボで稼いだ得点
+	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ && (eval.combo>=5) ) {
+		eval_addscore.Render(	eval.time_pos.x  +90,  eval.time_pos.y	-14,3);
+		eval_combo.Render(		eval.combo_pos.x +90,  eval.combo_pos.y	-14,2);
+		eval_justpinto.Render(	eval.just_pos.x  +90,  eval.just_pos.y	-14,2);
+		eval_total.Render(		eval.total_pos.x +90,  eval.total_pos.y	-14,4);
+		eval.custom.argb = (eval.alpha << 24 | custom.argb << 8 >> 8);
+		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);	//コンボリザルト------------------------
+		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
+		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval.custom.argb);	//COMBO COUNT：倒した数
+		spr_data::Render(eval.just_pos,&ui_data[5],&eval.custom,eval.custom.argb);	//JUST COUNT ：ジャストピントを決めた数
+		spr_data::Render(eval.total_pos,&ui_data[6],&eval.custom,eval.custom.argb);	//TOTAL SCORE：コンボで稼いだ得点
 	}
 }
 
@@ -348,7 +356,7 @@ void  Number::RenderFree(int x, int y, int num, int digit_max, int _digitDispSiz
 	Number::tagDIGIT _digit[DIGIT_MAX];
 	for (int i = 0; i < digit_max; i++)
 	{
-		_digit[i].val = num % 10;	//  一の位を抽出
+		_digit[i].val = num%10;//  一の位を抽出
 		_digit[i].x = 0;
 		_digit[i].y = 0;
 		_digit[i].w = _digit[i].h = 1;
@@ -369,4 +377,3 @@ void  Number::RenderFree(int x, int y, int num, int digit_max, int _digitDispSiz
 			argb, custom.reflectX, custom.scaleMode);
 	}
 }
-
