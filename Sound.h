@@ -2,8 +2,8 @@
 #define _SOUND_H_
 
 
-enum {
-	BGM_MAIN,	//メインBGM
+static enum {
+	BGM_MAIN = 0,	//メインBGM
 	BGM_TITLE,	//タイトルBGM
 
 	SE_LOCK,	//ロックした時
