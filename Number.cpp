@@ -83,11 +83,11 @@ Number::Number() {
 	//eval.total_pos =	V2(680,320+160);
 
 	//左真ん中
-	eval.result_pos =	V2(50,200+0);
-	eval.time_pos =		V2(50,200+40);
-	eval.combo_pos =	V2(50,200+80);
-	eval.just_pos =		V2(50,200+120);
-	eval.total_pos =	V2(50,200+160);
+	eval.result_pos =	V2(-10,200+0);
+	eval.time_pos =		V2(-10,200+40);
+	eval.combo_pos =	V2(-10,200+80);
+	eval.just_pos =		V2(-10,200+120);
+	eval.total_pos =	V2(-10,200+160);
 
 	//左上
 	//eval.result_pos =	V2(150,20+0);
@@ -103,6 +103,12 @@ Number::Number() {
 	eval_total.custom.scaleMode = CENTER;
 	eval.custom.scaleMode = CENTER;
 
+	eval_addscore.custom.scaleY = eval_addscore.custom.scaleX	=5.0f;
+	eval_combo.custom.scaleY = eval_combo.custom.scaleX			=5.0f;
+	eval_justpinto.custom.scaleY = eval_justpinto.custom.scaleX =5.0f;
+	eval_total.custom.scaleY = eval_total.custom.scaleX			=5.0f;
+	eval.custom.scaleY = eval.custom.scaleY						=5.0f;
+
 	eval.custom.argb = 0xFFFFFFFF;
 	eval.alpha = 0;
 }
@@ -116,12 +122,29 @@ void Number::Init() {
 
 }
 
+//点滅関数(二色)
+void Number::Frash_Color_two(Number* obj,int num,D3DCOLOR argb1, D3DCOLOR argb2) {
+	if ((eval.timer % (num * 2)) <  num) obj->custom.argb = argb1;
+	if ((eval.timer % (num * 2)) >= num) obj->custom.argb = argb2;
+}
+//点滅関数(虹色)
+void Number::Frash_Color_rainbow(Number* obj,int num,
+	D3DCOLOR argb1, D3DCOLOR argb2,D3DCOLOR argb3, 
+	D3DCOLOR argb4, D3DCOLOR argb5,D3DCOLOR argb6) {
+	eval.iwork = eval.timer%num*6+1;
+	     if (eval.iwork<=num*1) obj->custom.argb = argb1;	//紫色
+	else if (eval.iwork<=num*2) obj->custom.argb = argb2;	//オレンジ色
+	else if (eval.iwork<=num*3) obj->custom.argb = argb3;	//黄色
+	else if (eval.iwork<=num*4) obj->custom.argb = argb4;	//緑色
+	else if (eval.iwork<=num*5) obj->custom.argb = argb5;	//水色
+	else if (eval.iwork<=num*6) obj->custom.argb = argb6;	//青色
+}
 
 
 //評価用関数
 void Number::eval_agree() {
 
-	if ( pScore->getcombotimer()>=COMBO_TIME/* && (pScore->getCombo()>5) */ ) {
+	if ( pScore->getcombotimer()>=COMBO_TIME && (pScore->getCombo()>=5) ) {
 		eval.addscore = pScore->getAddscore();						//保存
 		eval.combo = pScore->getCombo();							//保存
 		eval.just = pScore->getEval_justpinto();					//保存
@@ -138,27 +161,56 @@ void Number::eval_agree() {
 	if ( eval.flg == true ) eval.timer++;
 
 
-
 	//移動処理-------------------------------------------------
 
-	if ( (1<=eval.timer) && (eval.timer<=30) ) { //
+	if ( (1<=eval.timer) && (eval.timer<=60) ) { //
+		//if(eval.addscore>=500)		Frash_Color_rainbow(&eval_addscore,4,RB1,RB2,RB3,RB4,RB5,RB6);
+		/*else */if(eval.addscore>=250)	Frash_Color_two(&eval_addscore,4,YELLOW,WHITE);
+		else						Frash_Color_two(&eval_addscore,4,RED,WHITE);
+
+		//if(eval.combo>=20)		Frash_Color_rainbow(&eval_combo,4,RB1,RB2,RB3,RB4,RB5,RB6);
+		/*else */if(eval.combo>=10)	Frash_Color_two(&eval_combo,4,YELLOW,WHITE);
+		else					Frash_Color_two(&eval_combo,4,RED,WHITE);
+
+		//if(eval.just>=15)		Frash_Color_rainbow(&eval_justpinto,4,RB1,RB2,RB3,RB4,RB5,RB6);
+		/*else */if(eval.just>=10)	Frash_Color_two(&eval_justpinto,4,YELLOW,WHITE);
+		else					Frash_Color_two(&eval_justpinto,4,RED,WHITE);
+
+		//if(eval.total>=6500)		Frash_Color_rainbow(&eval_total,4,RB1,RB2,RB3,RB4,RB5,RB6);
+		/*else */if(eval.total>=3000)	Frash_Color_two(&eval_total,4,YELLOW,WHITE);
+		else						Frash_Color_two(&eval_total,4,RED,WHITE);
+
+
+		eval_addscore.custom.scaleY = eval_addscore.custom.scaleX	-=0.5f;
+		eval_combo.custom.scaleY = eval_combo.custom.scaleX			-=0.5f;
+		eval_justpinto.custom.scaleY = eval_justpinto.custom.scaleX -=0.5f;
+		eval_total.custom.scaleY = eval_total.custom.scaleX			-=0.5f;
+		eval.custom.scaleY = eval.custom.scaleY						-=0.5f;
+		if ( eval_addscore.custom.scaleX = eval_addscore.custom.scaleY		<=1.0f )	eval_addscore.custom.scaleX = eval_addscore.custom.scaleY	= 1.0f;
+		if ( eval_combo.custom.scaleX = eval_combo.custom.scaleY			<=1.0f )	eval_combo.custom.scaleX = eval_combo.custom.scaleY			= 1.0f;
+		if ( eval_justpinto.custom.scaleX = eval_justpinto.custom.scaleY	<=1.0f )	eval_justpinto.custom.scaleX = eval_justpinto.custom.scaleY = 1.0f;
+		if ( eval_total.custom.scaleX = eval_total.custom.scaleY			<=1.0f )	eval_total.custom.scaleX = eval_total.custom.scaleY			= 1.0f;
+		if ( eval.custom.scaleX = eval.custom.scaleY						<=1.0f )	eval.custom.scaleX = eval.custom.scaleY						= 1.0f;
+
 		//if ( (eval.timer%8)<4 ) {
-		//	//eval.alpha = (int)(255*0.7f); //01
-		//	custom.argb = 0xFFffe1e0;
+		//	custom.argb = 0xFFff7a7a;
 		//}
 		//if ( (eval.timer%8)>=4 ) {
-		//	//eval.alpha = (int)(255*0.9f); //23
 		//	custom.argb = 0xFFFFFFFF;
 		//}
-		eval.alpha += 60;
-		if ( eval.alpha>=255 ) eval.alpha = 255;
+		eval.alpha += 50;
+		if ( eval.alpha>=(int)(255*0.9f) ) eval.alpha = (int)(255*0.9f);
 	}
-	else if( 30<eval.timer ){
-		eval.alpha = 255;
-		//custom.argb = 0xFFFFFFFF;
+	else if( 60<eval.timer ){
+		eval.alpha = (int)(255*0.9f);
+		custom.argb = 0xFFFFFFFF;
+		eval_addscore.custom.argb = 0xFFFFFFFF;
+		eval_combo.custom.argb = 0xFFFFFFFF;
+		eval_justpinto.custom.argb = 0xFFFFFFFF;
+		eval_total.custom.argb = 0xFFFFFFFF;
 	}
 
-	if ( eval.timer>70 ) {
+	if ( eval.timer>130 ) {
 		eval_addscore.	custom.scaleY -=0.2f;
 		eval_combo.		custom.scaleY -=0.2f;
 		eval_justpinto.	custom.scaleY -=0.2f;
@@ -171,7 +223,7 @@ void Number::eval_agree() {
 		if ( eval.custom.scaleY<=0 )			eval.custom.scaleY = 0.0f;
 	}
 
-	if ( eval.timer>90 ) {
+	if ( eval.timer>150 ) {
 		eval.flg = false;
 		eval.timer = 0;
 		pScore->addscore = 0;
@@ -197,7 +249,7 @@ void Number::Update(int timer) {
 	gametimer2.SetNum(timer % 60, 2);			//ゲームタイマー2(下2ケタ)処理
 	crushnum.AddScale(pScore->getKill_num(),1.7f);	//撃破数加算時の拡大表示
 	crushnum.SetNum(pScore->getKill_num(), 2);	//撃破数処理
-	crushnum2.SetNum(50, 2);					//撃破数処理(ステージに応じて変更)
+	crushnum2.SetNum(60, 2);					//撃破数処理(ステージに応じて変更)
 	exorcisetimer.SetNum(pFrame->exorciseDwon_timer / 60 + 1, 1);	//霊力タイマー処理
 	eval_agree();
 	n_timer = timer;
@@ -219,15 +271,15 @@ void Number::Render() {
 
 	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ && (eval.combo>=5) ) {
 		eval.custom.argb = (eval.alpha << 24 | custom.argb << 8 >> 8);
-		eval_addscore.Render3(	eval.time_pos.x  +180,  eval.time_pos.y	-14,3,eval.custom.argb);
-		eval_combo.Render3(		eval.combo_pos.x +180,  eval.combo_pos.y-14,2,eval.custom.argb);
-		eval_justpinto.Render3(	eval.just_pos.x  +180,  eval.just_pos.y	-14,2,eval.custom.argb);
-		eval_total.Render3(		eval.total_pos.x +180,  eval.total_pos.y-14,4,eval.custom.argb);
+		eval_addscore.Render3(	eval.time_pos.x  +180,  eval.time_pos.y	-14,3,eval_addscore.custom.argb);
+		eval_combo.Render3(		eval.combo_pos.x +180,  eval.combo_pos.y-14,2,eval_combo.custom.argb);
+		eval_justpinto.Render3(	eval.just_pos.x  +180,  eval.just_pos.y	-14,2,eval_justpinto.custom.argb);
+		eval_total.Render3(		eval.total_pos.x +180,  eval.total_pos.y-14,4,eval_total.custom.argb);
 		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);//コンボリザルト------------------------
-		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
-		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval.custom.argb);	//COMBO COUNT：倒した数
-		spr_data::Render(eval.just_pos,&ui_data[5],&eval.custom,eval.custom.argb);	//JUST COUNT ：ジャストピントを決めた数
-		spr_data::Render(eval.total_pos,&ui_data[6],&eval.custom,eval.custom.argb);	//TOTAL SCORE：コンボで稼いだ得点
+		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval_addscore.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
+		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval_combo.custom.argb);	//COMBO COUNT：倒した数
+		spr_data::Render(eval.just_pos,&ui_data[5],&eval.custom,eval_justpinto.custom.argb);	//JUST COUNT ：ジャストピントを決めた数
+		spr_data::Render(eval.total_pos,&ui_data[6],&eval.custom,eval_total.custom.argb);	//TOTAL SCORE：コンボで稼いだ得点
 	}
 }
 
@@ -389,3 +441,6 @@ void  Number::RenderFree(int x, int y, int num, int digit_max, int _digitDispSiz
 			argb, custom.reflectX, custom.scaleMode);
 	}
 }
+
+
+

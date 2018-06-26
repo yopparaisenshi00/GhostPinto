@@ -745,7 +745,7 @@ void Combo_Color(Effect*obj) {
 	}
 	else /*if ( pScore->getCombo()<=29 )*/ { //20～コンボ時の色
 		obj->i_work[6] = obj->timer%12+1;
-		if (obj->i_work[6]<=2)  obj->custom.argb = 0xFFe65ffc;		//紫色
+		     if (obj->i_work[6]<=2)  obj->custom.argb = 0xFFe65ffc;	//紫色
 		else if (obj->i_work[6]<=4)  obj->custom.argb = 0xFFff8426;	//オレンジ色
 		else if (obj->i_work[6]<=6)  obj->custom.argb = 0xFFffe942;	//黄色
 		else if (obj->i_work[6]<=8)  obj->custom.argb = 0xFF8dff42;	//緑色
@@ -1060,9 +1060,9 @@ void Multifocus(Effect*obj) {
 		case INIT:
 			obj->data = &multi_data;
 			obj->custom.scaleMode = CENTER;
-			obj->custom.scaleX = obj->custom.scaleY = 0.8f;
-			//obj->custom.argb = 0xFFfff056; //色
-			obj->alpha = (int)(255*0.8f);
+			obj->custom.scaleX = obj->custom.scaleY = obj->spd.y;
+			obj->custom.argb = 0xFFFFFFFF; //色
+			obj->alpha = (int)(255*0.5f);
 			obj->i_work[1] = (int)(obj->spd.x); //angle_spd
 			obj->state = MOVE;
 			//break;
@@ -1075,15 +1075,20 @@ void Multifocus(Effect*obj) {
 			obj->custom.angle += obj->i_work[1];
 			if ( obj->custom.angle>=360 ) obj->custom.angle = 0;
 
-			//消去準備
+			//色
+			if ( (obj->timer%18)<9 )  obj->custom.argb = 0xFFFFFFFF; //01
+			if ( (obj->timer%18)>=9 ) obj->custom.argb = 0xFFff7a7a; //23
+
+			//消去準備------------------------------------------------
 			if ( (obj->timer>(MALTIFOCUS_TIME-60)) && (obj->timer<MALTIFOCUS_TIME) ) {
 				//点滅
-				if ( (obj->timer%4)<2 )  obj->alpha = (int)(255*0.15f);//01
-				if ( (obj->timer%4)>=2 ) obj->alpha = (int)(255*0.8f); //23
+				if ( (obj->timer%4)<2 )  obj->alpha = (int)(255*0.1f); //01
+				if ( (obj->timer%4)>=2 ) obj->alpha = (int)(255*0.7f); //23
 			}
 			//透明
 			if ( obj->timer>MALTIFOCUS_TIME ) {
 				obj->alpha -= 20;
+				obj->custom.scaleX = obj->custom.scaleY += 0.05f;
 				if ( obj->alpha<0 ) {
 					obj->alpha = 0;
 					obj->timer = 0;

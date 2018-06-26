@@ -21,7 +21,6 @@ enum {
 };
 
 
-
 //SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
 SPR_DATA spr_flame_out = { flame_out,0,0,1024,540,-512,-270 };
 SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
@@ -31,7 +30,7 @@ SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 //SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 SPR_DATA spr_pinto_a2 = { pinto_a,0,0,128,128,-64,-64 };
 
-SPR_DATA spr_exorcise_frame= { flame_out,1000,540,14,44,0,0 };
+SPR_DATA spr_exorcise_frame= { flame_out,0,32*18,32,64,0,0 };
 
 
 //SPR_DATA spr_Frame[] = {
@@ -153,6 +152,8 @@ D3DCOLOR Light(D3DCOLOR color) {
 
 
 void Frame::Render() {
+
+	spr_data::Render(V2((int)(pPlayer->pos.x + 30-2), (int)(pPlayer->pos.y-40-4)), &spr_exorcise_frame );
 
 	//iexPolygon::Rect(160,30,exorcise*2,30,0,0xFFFFFF00,0); //霊力ゲージ描画(上にずらした)
 	//iexPolygon::Rect(20,180,30,exorcise*2,0,0xFFFFFF00,0); //霊力ゲージ描画(縦 ※sceneMain変更)
@@ -342,10 +343,6 @@ void Frame::exorcise_Update() {
 	}
 	old_exorcise = exorcise; //変化前の霊力ゲージを保存
 	//******************************************************************************************************
-
-
-	old_exorcise = exorcise;
-
 
 	//UIダウンタイマー更新
 	//pD_TEXT->set_Text(V2(400, 260), "multiF_timer", multifocus_timer, 0xFFFFFFFF);

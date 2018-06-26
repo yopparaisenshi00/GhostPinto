@@ -34,7 +34,7 @@
 #define KILL_CURE (15 - (10 * (obj->sz / PINTOMODE_DEFAULT)))	//エネミー撃破時＿霊力回復量
 #define EXORCISE_AUTOHEEL (5.5)	//自然回復
 #define EXORCISE_AUTOHEEL_TIME (90)//自然回復開始時間
-#define USE_PINTOLOCK (15) //ピントロック消費量
+#define USE_PINTOLOCK (10) //ピントロック消費量
 //----------------------------------------------------------------------
 
 

@@ -391,7 +391,7 @@ void Enemy::UIUpdate() {
 		u.custom.scaleX = u.custom.scaleY = 1.0f;
 		count = 0;
 	}
-	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
+	line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
 }
 void Enemy_Manager::stageUpdate()
 {
@@ -539,6 +539,15 @@ void Enemy::UIRender() {
 			}
 		}
 	}
+	//auto a = pos.x-pPlayer->pos.x;
+	//auto b = pos.y-pPlayer->pos.y;
+	//auto c = sqrt(a*a+b*b);
+	//iexPolygon::Rect(pPlayer->pos.x, pPlayer->pos.y, c, 2, 0, 0xFFFFFFFF);
+
+	//iexPolygon::Rect(pPlayer->pos.x, pPlayer->pos.y, pos.x-pPlayer->pos.x, pos.y-pPlayer->pos.y, 0, 0xFFFFFFFF);
+	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
+
+
 
 	//iexPolygon::Rect(pos.x,pos.y + 50,damage/ DAMAGE_LINE,10,0,0xFFFF0000); //damage_line
 	//

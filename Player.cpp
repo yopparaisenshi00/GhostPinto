@@ -188,8 +188,10 @@ void Player::move() {
 		if (KEY_Get(MULTIFOCUS_KEY) == 3 && (mltfcs.lv==3)) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			pEffect_Manager->searchSet(pos, V2(4.0f,0), Multifocus); //MF使用時エフェクト
-			pEffect_Manager->searchSet(pos, V2(-6.0f,0), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(6.0f,0.3f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(-8.0f,0.35f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(4.0f,0.75f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(-6.0f,0.8f), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
 		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv<3) ) {
@@ -360,7 +362,8 @@ void Player::Render() {
 	if (data)spr_data::Render(pos, data);
 }
 void Player::UIRender() {
-
+	//マルチフォーカス描画------------------------------------------------------
+	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < 3; i++)
 	{
 		spr_data::Render(V2(g.pos.x+custom.ef_ofsX, g.pos.y), &multi[0]); //マルチフォーカス欠
@@ -369,16 +372,15 @@ void Player::UIRender() {
 	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < mltfcs.lv; i++)
 	{
-		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2]); //マルチフォーカス満
-		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],g.argb,0); //白
 		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2],&g.custom,0xFFFFFFFF); //マルチフォーカス満
 		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],&g.custom,g.argb); //白
 		g.pos += V2(0, 45);
 	}
+	//---------------------------------------------------------------------------
+
 	//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 
 	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
-
 }
 
 void Player::judge() {//

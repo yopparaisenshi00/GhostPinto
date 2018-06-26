@@ -10,6 +10,17 @@
 #define NUM_DIGIT_1LINE		5	//数字画像の1列に並んでいる数
 #define DIGIT_CHANGE_TIMER	2
 
+#define RED		(UINT)0xFFff5656
+#define YELLOW	(UINT)0xFFfff549
+#define WHITE	(UINT)0xFFFFFFFF
+
+#define RB1 (UINT)0xFFe65ffc	//紫色
+#define RB2 (UINT)0xFFff8426	//オレンジ色
+#define RB3 (UINT)0xFFffe942	//黄色
+#define RB4 (UINT)0xFF8dff42	//緑色
+#define RB5 (UINT)0xFF58eaef	//水色
+#define RB6 (UINT)0xFF5e9bff	//青色
+
 
 class Number : public OBJ2DEX, public Singleton<Number>
 {
@@ -44,6 +55,8 @@ private:
 		bool flg;
 
 		int timer;
+
+		int iwork;
 	};
 	EVAL eval;
 
@@ -55,6 +68,10 @@ public:
 	~Number();
 	void Init();
 	void eval_agree();
+	void Frash_Color_two(Number* obj,int num,D3DCOLOR argb1, D3DCOLOR argb2);
+	void Number::Frash_Color_rainbow(Number* obj,int num,
+		D3DCOLOR argb1,D3DCOLOR argb2,D3DCOLOR argb3,
+		D3DCOLOR argb4,D3DCOLOR argb5,D3DCOLOR argb6);
 	void Update(int timer);
 	void Render();
 	int n_timer;
