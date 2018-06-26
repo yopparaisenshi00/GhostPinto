@@ -19,7 +19,7 @@
 
 #define rand_PINTO		(10000)//“G‚ÌZ’lƒ‰ƒ“ƒ_ƒ€
 //#define rand_PINTO		((rand()%(PINTO_MAX*2)) -PINTO_MAX)	//“G‚ÌZ’lƒ‰ƒ“ƒ_ƒ€
-#define DAMAGE (6)
+#define DAMAGE (9)
 #define JUSTPINTO_SIZE (2)
 
 //enum {
