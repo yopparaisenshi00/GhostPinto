@@ -375,7 +375,7 @@ void Enemy::DotLine() {
 	if ( /*0<Dot_alpha*/ Dot_timer<30 ) {
 		V2 e_p;
 		float len = 20;
-		for ( int i = 4; i<((int)len-1); i++ )
+		for ( int i = 4; i<((int)len-2); i++ )
 		{
 			D3DXVec2Lerp(&e_p,&pos,&pPlayer->pos,i/len);
 			pEffect_Manager->searchSet(e_p, V2(alpha, 0), line);
