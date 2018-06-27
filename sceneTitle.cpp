@@ -234,9 +234,6 @@ void sceneTitle::Update()
 		if (KEY_Get(KEY_SPACE) == 3){
 			MainFrame->ChangeScene(new sceneMain);
 		}
-		//if (KEY_Get(KEY_START) == 3) {
-		//	MainFrame->ChangeScene(new sceneTutorial);
-		//}
 
 		pPlayer->Update();
 		break;
@@ -249,8 +246,9 @@ void sceneTitle::Update()
 		break;
 	}
 
-	
-
+	if (KEY_Get(KEY_START) == 3) {
+		MainFrame->ChangeScene(new sceneTutorial);
+	}
 }
 
 //•`‰æ

@@ -45,7 +45,7 @@ static IMG_DATA IMG_Tutorial[] = {
 	{ spr_data::UI7,"DATA\\UI\\face.png" }, //プレイヤーHP
 	{ spr_data::UI8,"DATA\\UI\\CharIcon.jpg" },
 	{ spr_data::UI9 ,"DATA\\public\\hukidasi.png" },
-
+	{ spr_data::UI10,"DATA\\public\\tuto_key.png" },
 	{ spr_data::Player1,"DATA\\CHR\\player\\Player.png" },
 	{ spr_data::Enemy1,"DATA\\CHR\\enemy_kari.png" },
 	{ spr_data::Enemy2,"DATA\\CHR\\enemy.png" },
@@ -56,6 +56,7 @@ static IMG_DATA IMG_Tutorial[] = {
 	{ spr_data::Circle,"DATA\\Public\\Circle.png" },
 	{ spr_data::TeleExt,"DATA\\Public\\Teleport.jpg" },
 	{ spr_data::Player_eff,"DATA\\Public\\Player_effect.png" },
+	{ spr_data::Mulch_eff,"DATA\\Public\\mulch_ef.png" },
 	{ spr_data::EdgeCircle,"DATA\\UI\\pint_s2.png" },
 	{ spr_data::Number,"DATA\\Public\\number.png" },
 	{ spr_data::FADE_IN1 ,"DATA\\Public\\delta.png" },
@@ -65,11 +66,13 @@ static IMG_DATA IMG_Tutorial[] = {
 	{ -1,"" },
 };
 
+
+
 //*****************************************************************************
 //プロトタイプ宣言
 //*****************************************************************************
 void center_move(OBJ2D* obj);
-void tuto_operator_move(OBJ2D* obj);
+//void tuto_operator_move(OBJ2D* obj);
 //*****************************************************************************
 //
 //			初期化
@@ -97,6 +100,7 @@ bool sceneTutorial::Initialize()
 void sceneTutorial::UnInit() {
 
 }
+
 
 sceneTutorial::~sceneTutorial()
 {
@@ -284,29 +288,30 @@ void TutoOperater::Init() {
 }
 
 void TutoOperater::pagenext() {
-	if (KEY_Get(KEY_C) == 3) {
-		if ((operater.data + 1)->no < 0) {
-			iwork[messege_end] |= TRUE;
-		}
-		else {
-			operater.data++;
-			if ((operater.data + 1)->no < 0) {
-				iwork[messege_end] |= TRUE;
-			}
-		}
+	if ((operater.data + 1)->no < 0) {
+		iwork[messege_end] |= TRUE;
 	}
-
+	if (!iwork[messege_end] && KEY_Get(KEY_C) == 3) {
+		operater.data++;
+	}
 }
 
+
+void move_key(OBJ2D* obj);
+
 void TutoOperater::Update() {
-	
+	if(state > 0 && KEY_Get(KEY_SELECT) == 3){
+		state = END;
+	}
 
 	switch (state)
 	{
 	case 0:
 		//メンバ変数初期化
 		operater.clear();
+		suboperater.clear();
 		master_char.clear();
+
 		state = BEGIN;
 	case BEGIN:
 		////////////////////////////////
@@ -338,13 +343,12 @@ void TutoOperater::Update() {
 			state = PLAYER_MOVE_BEGIN;
 		}
 
-
 		pagenext();
 		break;
 	case PLAYER_MOVE_BEGIN:
 		ZeroMemory(iwork, sizeof(iwork));
 		//プレイヤー移動説明
-		
+		suboperater.move = &move_key;
 		operater.data = spr_player_move;
 		state = PLAYER_MOVE;
 		//break;
@@ -439,21 +443,15 @@ void TutoOperater::Update() {
 		state = EXORCISE;
 		//break;
 	case EXORCISE:
-		if (KEY_Get(KEY_C) == 3) {
-			if (!iwork[messege_end]) {
-				operater.data++;
-				if ((operater.data + 1)->no < 0) {
-					iwork[messege_end] |= TRUE;
-				}
-			}
-		}
-
-
-		pFrame->add_Exorcise(-(EXORCISE_MAX + 1));
+		pFrame->add_Exorcise(-(EXORCISE_MAX+1));
 		
-		if (iwork[messege_end]) {
+		if (iwork[messege_end] && KEY_Get(KEY_C) == 3) {
 			state = MULTIFOCUS_BEGIN;
+			pFrame->exorciseDwon_flg = false;
+			pFrame->add_Exorcise(EXORCISE_MAX);
 		}
+
+		pagenext();
 		break;
 	//マルチフォーカス説明
 	case MULTIFOCUS_BEGIN:
@@ -461,25 +459,18 @@ void TutoOperater::Update() {
 		operater.data = spr_multifocus_move;
 		state = MULTIFOCUS;
 	case MULTIFOCUS:
-		if (KEY_Get(KEY_C) == 3) {
-			if (iwork[messege_end]) {
-				if (!iwork[enemy_pop]) {
-					pEnemy_Manager->searchSet(V2(720, 320), V2(0, 0), tuto_multifocus, 30);
-					pEnemy_Manager->searchSet(V2(720, 200), V2(0, 0), tuto_multifocus, -30);
-					iwork[enemy_pop] |= TRUE;
-				}
-			}
-			else {
-				operater.data++;
-				if ((operater.data + 1)->no < 0) {
-					iwork[messege_end] |= TRUE;
-				}
-			}
+
+		if (!iwork[enemy_pop] && iwork[messege_end]) {
+			pEnemy_Manager->searchSet(V2(720, 320), V2(0, 0), tuto_multifocus, 30);
+			pEnemy_Manager->searchSet(V2(720, 200), V2(0, 0), tuto_multifocus, -30);
+			iwork[enemy_pop] |= TRUE;
 		}
+		pPlayer->mltfcs.add_point(10);
 		
 		if (pScore->getKill_num() >= 6 && iwork[messege_end]) {
 			state = REGAMERULE_BEGIN;
 		}
+		pagenext();
 
 		break;
 		//再ゲーム説明
@@ -489,20 +480,13 @@ void TutoOperater::Update() {
 		state = REGAMERULE;
 		//break;
 	case REGAMERULE:
-		if (KEY_Get(KEY_C) == 3) {
-			if ((operater.data + 1)->no < 0) {
-				iwork[messege_end] |= TRUE;
-			}
-			else {
-				operater.data++;
-			}
-		}
-		
-		if (iwork[messege_end]) {
+	
+		if (iwork[messege_end] && KEY_Get(KEY_SELECT)) {
 			state = END;
 		}
-		break;
 	
+		pagenext();
+		break;
 	default:
 		break;
 	}
@@ -513,10 +497,12 @@ void TutoOperater::Update() {
 }
 void TutoOperater::Render() {
 	operater.Render();
+	//suboperater.Render();
 	master_char.Render();
 }
 void TutoOperater::clear() {
 	operater.clear();
+	suboperater.clear();
 	master_char.clear();
 
 }
@@ -529,4 +515,19 @@ TutoOperater::TutoOperater()
 TutoOperater::~TutoOperater()
 {
 
+}
+
+SPR_DATA tuto_move = { spr_data::UI10,128,0,256,256,-128,-128 ,0 };
+void move_key(OBJ2D* obj) {
+	switch (obj->state)
+	{
+	case 0:
+		obj->data = &tuto_move;//R1 吹き出しデータ
+		obj->state++;
+	case 1:
+		obj->pos = pPlayer->pos;
+		break;
+	default:
+		break;
+	}
 }

@@ -231,10 +231,7 @@ void Frame::f_move() {
 		if (axisx < PINTO_SENSITIVE && axisx > -PINTO_SENSITIVE && axisy < PINTO_SENSITIVE && axisy > -PINTO_SENSITIVE) 
 		{ 
 			
-			if (f_timer++ > EXORCISE_AUTOHEEL_TIME) {
-				f_timer &= 0x0000FFFF;
-				add_Exorcise(EXORCISE_AUTOHEEL);
-			}
+		
 			move_flg = false; 		}
 		else move_flg = true;
 	}
@@ -242,7 +239,7 @@ void Frame::f_move() {
 		//if (axisx < PINTO_SENSITIVE && axisx > -PINTO_SENSITIVE&& 
 		//	axisy < PINTO_SENSITIVE && axisy > -PINTO_SENSITIVE) 
 		//{ 
-		f_timer &= 0;
+		
 		if (axisy < PINTO_SENSITIVE && axisy > -PINTO_SENSITIVE)
 		{
 
@@ -316,6 +313,15 @@ void Frame::exorcise_Update() {
 			exorciseDwon_flg = true;				//霊力ダウンフラグ
 			IEX_PlaySound(SE_LOSS, FALSE);			//霊力が0のSE
 
+		}
+		if (move_flg) {
+			if (f_timer++ > EXORCISE_AUTOHEEL_TIME) {
+				f_timer &= 0x0000FFFF;
+				add_Exorcise(EXORCISE_AUTOHEEL);
+			}
+		}
+		else {
+			f_timer &= 0;
 		}
 		break;
 	}
