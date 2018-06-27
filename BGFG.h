@@ -179,7 +179,7 @@ private:
 		void clear() {
 			pos = V2(0,0);
 			Reduced_level = 0;
-			ZeroMemory(data,sizeof(data[LANDSCAPE_MAX]));
+			ZeroMemory(data,sizeof(data));
 			count = 0;
 		}
 	};

@@ -102,7 +102,7 @@ void Player::Init() {
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
-	g.pos = pos + D3DXVECTOR2(-30,0);
+ 	g.pos = pos + D3DXVECTOR2(-30,0);
 
 	state++;
 	//fearstd = ((float)192 / (float)FERE_MAX);
@@ -274,6 +274,7 @@ void Player::anime() {
 
 	//ゲームオーバー
 	if (hp <= 0) {
+		hp = 0;
 		if (anime_no >=4) anime_no = 0;
 		data = &p_over[anime_no];
 	}
@@ -449,19 +450,19 @@ void Player::Recoil(V2 enemy_pos, V2 enemy_spd) {
 
 void Player::Y_move() {
 
-	jimen_flg = false;										// 着地していない
-	old_y = pos.y;											// 更新前のY座標を保存
-															//spd.y += PLAYER_AY;										// 重力加速度の加算
+	jimen_flg = false;			// 着地していない
+	old_y = pos.y;				// 更新前のY座標を保存
+	//spd.y += PLAYER_AY;		// 重力加速度の加算
 	Get_spdy();
-	pos.y += spd.y;											// 落下
-	dy = pos.y - old_y;										// 実際に動いたドット数																// 落下したとき
-	if (dy > 0) {
-		// MAPとのあたりチェック
-		if (pMAP->isFloor(pos.x, pos.y + (PLAYER_HEIGHT / 2), 0)) {	// 地面にめり込んだとき
-			bg_crt_down(this);								// 地面ぎりぎりの場所にする
-			jimen_flg = true;								// 着地状態
-		}
-	}
+	pos.y += spd.y;				// 落下
+	dy = pos.y - old_y;			// 実際に動いたドット数																// 落下したとき
+	//if (dy > 0) {
+	//	// MAPとのあたりチェック
+	//	if (pMAP->isFloor(pos.x, pos.y + (PLAYER_HEIGHT / 2), 0)) {	// 地面にめり込んだとき
+	//		bg_crt_down(this);								// 地面ぎりぎりの場所にする
+	//		jimen_flg = true;								// 着地状態
+	//	}
+	//}
 
 }
 

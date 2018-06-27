@@ -138,6 +138,7 @@
     <ClCompile Include="sceneTitle.cpp" />
     <ClCompile Include="sceneTutorial.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="tutorial_move.cpp" />
     <ClCompile Include="spr_data.cpp" />
     <ClCompile Include="stage1_data.cpp" />
     <ClCompile Include="system\Framework.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\System.h" />
     <ClInclude Include="Template.h" />
+    <ClInclude Include="tutorial_move.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>

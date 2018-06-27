@@ -27,7 +27,7 @@
 #include	"sceneClear.h"			//　ゲームクリア
 #include	"sceneMain.h"			//	シーンメイン
 #include	"sceneTutorial.h"		//	シーンチュートリアル
-
+#include	"tutorial_move.h"		//　チュートリアル行動関数
 
 static IMG_DATA IMG_Tutorial[] = {
 	{ spr_data::BG1,"DATA\\BG\\bg.png" },
@@ -44,10 +44,12 @@ static IMG_DATA IMG_Tutorial[] = {
 	{ spr_data::UI6,"DATA\\Public\\strings.png" },
 	{ spr_data::UI7,"DATA\\UI\\face.png" }, //プレイヤーHP
 	{ spr_data::UI8,"DATA\\UI\\CharIcon.jpg" },
+	{ spr_data::UI9 ,"DATA\\public\\hukidasi.png" },
 
 	{ spr_data::Player1,"DATA\\CHR\\player\\Player.png" },
 	{ spr_data::Enemy1,"DATA\\CHR\\enemy_kari.png" },
 	{ spr_data::Enemy2,"DATA\\CHR\\enemy.png" },
+	{ spr_data::Enemy3,"DATA\\UI\\master.png" },
 
 	//{ spr_data::Ext,"DATA\\Public\\flash_star.png" },
 	{ spr_data::Ext,"DATA\\Public\\enemy_extinction.png" },
@@ -63,25 +65,11 @@ static IMG_DATA IMG_Tutorial[] = {
 	{ -1,"" },
 };
 
-static SPR_DATA numbers[10] = {
-	{ spr_data::Number2,64 * 0,64 ,192,64, -64,-32 },
-	{ spr_data::Number ,64 * 1,0 ,64,64, -32,-32,64,64 },
-	{ spr_data::Number ,64 * 2,0 ,64,64, -32,-32,64,64 },
-	{ spr_data::Number ,64 * 3,0 ,64,64, -32,-32,64,64 },
-	{ spr_data::Number ,64 * 4,0 ,64,64, -32,-32,64,64 },
-	{ spr_data::Number ,64 * 0,64,64,64,-32,-32,64,64 },
-	{ spr_data::Number ,64 * 1,64,64,64,-32,-32,64,64 },
-	{ spr_data::Number ,64 * 2,64,64,64,-32,-32,64,64 },
-	{ spr_data::Number ,64 * 3,64,64,64,-32,-32,64,64 },
-	{ spr_data::Number ,64 * 4,64,64,64,-32,-32,64,64 },
-
-};
-
 //*****************************************************************************
 //プロトタイプ宣言
 //*****************************************************************************
 void center_move(OBJ2D* obj);
-
+void tuto_operator_move(OBJ2D* obj);
 //*****************************************************************************
 //
 //			初期化
@@ -119,7 +107,7 @@ sceneTutorial::~sceneTutorial()
 enum {
 	LOAD,
 	INIT,
-	BIGEN,
+	BEGIN,
 	FADE_IN,
 	READY,
 	MAIN,
@@ -147,15 +135,15 @@ void	sceneTutorial::Update()
 	case INIT:
 		//break;
 		stage_no = tutorial;
-		pPlayer->Init(V2(SCREEN_WIDTH, SCREEN_HEIGHT));
+		pPlayer->Init(V2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
 		pFrame->Init();
 		pScore->Init();
-		state = BIGEN;
-	case BIGEN:
-		//初期設定
 		center.Init();
-		center.move = &center_move;
-		center.move(&center);
+		state = BEGIN;
+
+	case BEGIN:
+		//初期設定
+
 		pMAP->Init(&tutorial_bg);
 		pLandScape->Init(stage_no);
 
@@ -163,10 +151,11 @@ void	sceneTutorial::Update()
 		
 		pEnemy_Manager->Init(stage_no);
 		pEnemy_Kill->Init();
-		pMAP->SetCenter(&center);
+		//pMAP->SetCenter(&center);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		tuto_operator.Init();
 
 		count_down = COUNT_DOWN_TIME;
 		count_down_timer = 0;
@@ -179,47 +168,33 @@ void	sceneTutorial::Update()
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
 		state = READY;
 	case READY:
-
-		count_down_timer++;
-		if (count_down_timer > 60) {
-			count_down--;
-			count_down_timer = 0;
-		}
-		if (count_down < 0)state = MAIN;
-		//pPlayer->R_Update();
-		//pFrame->R_Update();
-		pPlayer->R_Update();
-		pFrame->R_Update();
-		pEnemy_Manager->Update();
-		pEnemy_Manager->UIUpdate();
-		pEffect_Manager->Update();
-		pScore->Update();
-		pMAP->Update();
-		pLandScape->Update();
-
-		break;
+		state = MAIN;
 	case MAIN:
+		
 		pPlayer->Update();
 		pFrame->Update();
 		pEnemy_Manager->Update();
 		pEnemy_Manager->UIUpdate();
 		pEffect_Manager->Update();
-		pScore->Update();
+		//pScore->Update();
 		pMAP->Update();
 		pNumber->Update(timer);
-
 		pLandScape->Update();
+		tuto_operator.Update();
+		//pD_TEXT->set_Text(center.pos, "cpos", center.pos, 0xFFFF0000);
 
-		
 		timer--;
+		
+		//if () {
+		//	
+		//}
 		break;
 	case GAMEOVER:
 		MainFrame->ChangeScene(new sceneOver());
-
-
+		
 		break;
 	case GAMECLEAR:
-		MainFrame->ChangeScene(new sceneClear());
+		MainFrame->ChangeScene(new sceneMain());
 
 		break;
 
@@ -254,11 +229,12 @@ void	sceneTutorial::Render()
 	pLandScape->RenderFG();
 	pFrame->Render();
 	if (!pFrame->exorciseDwon_flg) { //霊力があれば描画
-		pMAP->MiniMapRender();
 		pPlayer->UIRender();
 	}
 	//pNumber->Render();
 	pUI->Render();
+
+	tuto_operator.Render();
 
 	switch (state)
 	{
@@ -278,14 +254,279 @@ void center_move(OBJ2D* obj) {
 	switch (obj->state)
 	{
 	case 0:
-		obj->pos = V2(SCREEN_WIDTH, SCREEN_HEIGHT);
-		obj->sc_w = SCROLL_RIGHT / 2;
-		obj->sc_h = SCREEN_HEIGHT / 2;
+		obj->pos = pPlayer->pos;
+		obj->sc_w = SCROLL_RIGHT;
+		obj->sc_h = SCREEN_HEIGHT/ 2;
 		obj->state++;
 	case 1:
 
 	default:
 		break;
 	}
+
+}
+
+
+
+
+//------------------------------------------------------------
+//		プレイヤー操作移動説明
+//------------------------------------------------------------
+
+void TutoOperater::Init() {
+	operater.clear();
+	master_char.clear();
+	state = 0;
+	clear_flg = 0;
+	ZeroMemory(iwork, sizeof(iwork));
+	master_char.clear();
+
+}
+
+void TutoOperater::pagenext() {
+	if (KEY_Get(KEY_C) == 3) {
+		if ((operater.data + 1)->no < 0) {
+			iwork[messege_end] |= TRUE;
+		}
+		else {
+			operater.data++;
+			if ((operater.data + 1)->no < 0) {
+				iwork[messege_end] |= TRUE;
+			}
+		}
+	}
+
+}
+
+void TutoOperater::Update() {
+	
+
+	switch (state)
+	{
+	case 0:
+		//メンバ変数初期化
+		operater.clear();
+		master_char.clear();
+		state = BEGIN;
+	case BEGIN:
+		////////////////////////////////
+		//チュートリアルアイコンキャラ//
+		////////////////////////////////
+		//位置設定 (画面右下)
+		master_char.pos = V2(SCREEN_WIDTH - 128, SCREEN_HEIGHT - 128);
+		//画像設定 
+		master_char.data = &spr_tutomaster;
+		//////////////////////////
+		//チュートリアル吹き出し//
+		//////////////////////////
+
+		//位置設定 (画面右下)
+		operater.pos = V2(SCREEN_WIDTH - 156, SCREEN_HEIGHT - 32);
+		//画像設定 (未設定)
+		operater.data = NULL;
+		
+		//ステート切り替え(ゲームルール説明)
+		state = GAMERULE_BEGIN;
+		//break;
+	case GAMERULE_BEGIN:
+		//画像設定(ゲームルール説明)
+		operater.data = spr_gamerulr;
+		state = GAMERULE;
+		//break;
+	case GAMERULE:
+		if (KEY_Get(KEY_C) == 3 && iwork[messege_end]) {
+			state = PLAYER_MOVE_BEGIN;
+		}
+
+
+		pagenext();
+		break;
+	case PLAYER_MOVE_BEGIN:
+		ZeroMemory(iwork, sizeof(iwork));
+		//プレイヤー移動説明
+		
+		operater.data = spr_player_move;
+		state = PLAYER_MOVE;
+		//break;
+	case PLAYER_MOVE:
+		
+		//XYそれぞれ９割以上スティックが倒された
+		if (iwork[messege_end]) {
+			if (KEY_Get(KEY_AXISY) > 900) {
+				iwork[move_y_ok] = TRUE;
+			}
+			if (KEY_Get(KEY_AXISX) > 900) {
+				iwork[move_x_ok] = TRUE;
+			}
+			if (KEY_Get(KEY_AXISY) < -900) {
+				iwork[move_y_ok] = TRUE;
+			}
+			if (KEY_Get(KEY_AXISX) < -900) {
+				iwork[move_x_ok] = TRUE;
+			}
+		}
+		
+		if (iwork[move_x_ok] && iwork[move_y_ok]) {
+			state = PINTO_MOVE_BEGIN;
+		}
+		
+		pagenext();
+		break;
+	case PINTO_MOVE_BEGIN://プレイヤーの移動方法
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_pinto_move;
+		state = PINTO_MOVE;
+		//break;
+	case PINTO_MOVE:
+		
+		if (iwork[messege_end]) {
+			if (KEY_Get(KEY_AXISY2) > 900) {
+				iwork[move_y_ok] = TRUE;
+			}
+			if (KEY_Get(KEY_AXISY2) < -900) {
+				iwork[move_x_ok] = TRUE;
+			}
+		}
+
+		if (iwork[move_x_ok] && iwork[move_y_ok] && iwork[messege_end]) {
+			state = ENEMY_DWON_BEGIN;
+		}
+
+		pagenext();
+		break;
+	case ENEMY_DWON_BEGIN://敵の倒し方
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_out_enemy_move;
+		state = ENEMY_DWON;
+	
+		break;
+	case ENEMY_DWON:
+		
+		if (iwork[messege_end] && !iwork[enemy_pop]) {
+			iwork[enemy_pop] |= TRUE;
+			pEnemy_Manager->searchSet(V2(720, 320), V2(0, 0), tuto_Base, 30);
+			pEnemy_Manager->searchSet(V2(720, 200), V2(0, 0), tuto_Base, -30);
+		}
+		if (pScore->getKill_num() >= 2 && iwork[messege_end]) {
+			state = PINTO_LOCK_BEGIN; 
+		}
+		
+		pagenext();
+		break;
+	case PINTO_LOCK_BEGIN:
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_pintrock_move;
+		state = PINTO_LOCK;
+		//break;
+	case PINTO_LOCK:
+
+		if (iwork[messege_end] && !iwork[enemy_pop]) {
+			iwork[enemy_pop] |= TRUE;
+			pEnemy_Manager->searchSet(V2(720, 320), V2(0, 0), tuto_rock, 30);
+			pEnemy_Manager->searchSet(V2(720, 200), V2(0, 0), tuto_rock, -30);
+		}
+
+
+		if (pScore->getKill_num() >= 4 && iwork[messege_end]) {
+			state = EXORCISE_BEGIN;
+		}
+		pagenext();
+
+		break;
+	case EXORCISE_BEGIN://霊力ゲージ説明
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_exorcise_move;
+		state = EXORCISE;
+		//break;
+	case EXORCISE:
+		if (KEY_Get(KEY_C) == 3) {
+			if (!iwork[messege_end]) {
+				operater.data++;
+				if ((operater.data + 1)->no < 0) {
+					iwork[messege_end] |= TRUE;
+				}
+			}
+		}
+
+
+		pFrame->add_Exorcise(-(EXORCISE_MAX + 1));
+		
+		if (iwork[messege_end]) {
+			state = MULTIFOCUS_BEGIN;
+		}
+		break;
+	//マルチフォーカス説明
+	case MULTIFOCUS_BEGIN:
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_multifocus_move;
+		state = MULTIFOCUS;
+	case MULTIFOCUS:
+		if (KEY_Get(KEY_C) == 3) {
+			if (iwork[messege_end]) {
+				if (!iwork[enemy_pop]) {
+					pEnemy_Manager->searchSet(V2(720, 320), V2(0, 0), tuto_multifocus, 30);
+					pEnemy_Manager->searchSet(V2(720, 200), V2(0, 0), tuto_multifocus, -30);
+					iwork[enemy_pop] |= TRUE;
+				}
+			}
+			else {
+				operater.data++;
+				if ((operater.data + 1)->no < 0) {
+					iwork[messege_end] |= TRUE;
+				}
+			}
+		}
+		
+		if (pScore->getKill_num() >= 6 && iwork[messege_end]) {
+			state = REGAMERULE_BEGIN;
+		}
+
+		break;
+		//再ゲーム説明
+	case REGAMERULE_BEGIN:
+		ZeroMemory(iwork, sizeof(iwork));
+		operater.data = spr_gamerule_move;
+		state = REGAMERULE;
+		//break;
+	case REGAMERULE:
+		if (KEY_Get(KEY_C) == 3) {
+			if ((operater.data + 1)->no < 0) {
+				iwork[messege_end] |= TRUE;
+			}
+			else {
+				operater.data++;
+			}
+		}
+		
+		if (iwork[messege_end]) {
+			state = END;
+		}
+		break;
+	
+	default:
+		break;
+	}
+	if (state == END) {
+		MainFrame->ChangeScene(new sceneMain());
+	}
+	pD_TEXT->set_Text(V2(200,100),"state",state,0xFFFFFF0000);
+}
+void TutoOperater::Render() {
+	operater.Render();
+	master_char.Render();
+}
+void TutoOperater::clear() {
+	operater.clear();
+	master_char.clear();
+
+}
+
+TutoOperater::TutoOperater()
+{
+	Init();
+}
+
+TutoOperater::~TutoOperater()
+{
 
 }

@@ -225,7 +225,7 @@ void iexInput::Vibration( u32 gain, float period )
 //--------------------------左X軸  ---左Y軸----右X軸----右Y軸---A  B  X  Y----LB LT L3---R1 R2 R3---St Sel
 PADSET	iexInput::ps101   = { AXIS_X, AXIS_Y, AXIS_Z,  AXIS_RZ, 2, 3, 1, 4,   7, 5,11,   8, 6,12,  10 ,9 };	// ELECOM JS-PS101USV
 PADSET	iexInput::sixaxis = { AXIS_X, AXIS_Y, AXIS_Z,  AXIS_RZ, 2, 3, 1, 4,   7, 5,10,   8, 6,11,  12, 9 };	// SixAxis	
-PADSET	iexInput::xbox360 = { AXIS_X, AXIS_Y, AXIS_RX, AXIS_RY, 1, 2, 3, 4,   5,11, 9,   6,12,10,   7, 8 };	// XBOX360 Controller
+PADSET	iexInput::xbox360 = { AXIS_X, AXIS_Y, AXIS_RX, AXIS_RY, 1,1,1,1,   5,11, 9,   6,12,10,   7, 8 };	// XBOX360 Controller
 
 //------------------------------------------------------
 //		キーボード設定
