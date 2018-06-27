@@ -72,65 +72,58 @@ private:
 	//ゲームルール説明
 	SPR_DATA spr_gamerulr[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 0,256,128,-256,-128,0},
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 0,256,128,-256,-128,0},
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 1,256,128,-256,-128,0},
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 1,256,128,-256,-128,0},
+		SPR_DATA{ spr_data::UI9,0,128 * 0,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 1,680,128,-680,-128,0},
 		SPR_LOOP, 
 	};
 	//プレイヤー移動説明
 	SPR_DATA spr_player_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 2,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 2,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 2,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	//ピント操作説明
 	SPR_DATA spr_pinto_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 3,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 3,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 3,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	//敵撃破説明
 	SPR_DATA spr_out_enemy_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 4,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 4,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 4,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 5,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	SPR_DATA spr_pintrock_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 9,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 10,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 10,256,128,-256,-128,0 },
-
+		SPR_DATA{ spr_data::UI9,0,128 * 6,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 7,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 8,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	SPR_DATA spr_exorcise_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 6,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 6,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 7,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 7,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 9,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 10,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 11,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	SPR_DATA spr_multifocus_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 7,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 7,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 12,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
 	SPR_DATA spr_gamerule_move[5] =
 	{
-		SPR_DATA{ spr_data::UI9,256 * 0,128 * 8,256,128,-256,-128,0 },
-		SPR_DATA{ spr_data::UI9,256 * 1,128 * 8,256,128,-256,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 13,680,128,-680,-128,0 },
+		SPR_DATA{ spr_data::UI9,0,128 * 14,680,128,-680,-128,0 },
 		SPR_LOOP,
 	};
 
@@ -141,14 +134,34 @@ private:
 			obj->data;//R1 吹き出しデータ
 			state++;
 		case 1:
-
-		case 2:
-
+			if (obj->parent->move == null) {
+				obj->clear();
+				break;
+			}
+			obj->pos = obj->parent->pos;
+			break;
 		default:
 			break;
 		}
 	}
-
+	void up_effect(Effect* obj) {
+		switch (obj->state)
+		{
+		case 0:
+			obj->data;//R1 吹き出しデータ
+			state++;
+		case 1:
+			if (obj->parent->move == null) {
+				obj->clear();
+				break;
+			}
+			obj->pos = obj->parent->pos;
+			break;
+		default:
+			break;
+		}
+	}
+	
 
 public:
 	void Init();

@@ -499,12 +499,12 @@ float Enemy_Manager::get_sz(float z) {
 	float fz = pFrame->Get_f_z();
 
 	if (fz > ez) {
-		sz = (fz + 90) - (ez + 90);
+		sz = (fz) - (ez);
 	}
 	else {
-		sz = (ez + 90) - (fz + 90);
+		sz = (ez) - (fz);
 	}
-
+	sz;
 	//	if (sz > 90)sz = 180 - sz;
 	return sz;
 }
@@ -1329,11 +1329,12 @@ void tuto_rock(Enemy* obj) {
 				obj->zlock_flg = true;
 			}
 		}
-		if (obj->zlock_flg) {
-			obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
-			if (obj->rangeflg) {
-				pEnemy_Manager->damage_Calculation(obj);
-			}
+		obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
+		if (obj->rangeflg) {
+			pEnemy_Manager->damage_Calculation(obj);
+		}
+		if (!obj->zlock_flg) {
+			obj->damage = 0;
 		}
 		//反転チェック
 		if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
@@ -1418,12 +1419,17 @@ void tuto_multifocus(Enemy* obj) {
 		//break;
 	case BEGIN:
 		//ダメージ判定
-		Enemy_Update(obj);
-		
-		obj->z = -pFrame->Get_f_z();
-			
-		if (90 < obj->z) obj->z -= 180;
-		if (-90 > obj->z) obj->z += 180;
+		obj->sz = 45;
+
+		obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
+		if (obj->rangeflg) {
+			pEnemy_Manager->damage_Calculation(obj);
+		}
+		//反転チェック
+		if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
+		else obj->custom.reflectX = false;
+		//死亡チェック
+		if (obj->damage > obj->damageMAX) obj->state = DEAD;
 
 		break;
 	case DEAD: //死亡処理
