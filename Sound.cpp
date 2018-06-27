@@ -12,7 +12,7 @@ void Sound_Load() {
 	IEX_SetWAV(SE_RETURN, "DATA\\Sound\\SE\\Alarm0031.wav");
 	//IEX_SetWAV(SE_RETURN,		"DATA\\Sound\\SE\\Alarm0032.wav"); 
 	//IEX_SetWAV(SE_PINTO,		"DATA\\Sound\\SE\\Cancel0019.wav"); 
-	IEX_SetWAV(SE_EXT, "DATA\\Sound\\SE\\item02.wav");
+	IEX_SetWAV(SE_EXT, "DATA\\Sound\\SE\\Cancel0055.wav");
 	//IEX_SetWAV(SE_PINTO,		"DATA\\Sound\\SE\\Cosmo0008.wav"); 
 	//IEX_SetWAV(SE_PINTO,		"DATA\\Sound\\SE\\Cosmo0019.wav"); 
 	IEX_SetWAV(SE_PINTO, "DATA\\Sound\\SE\\Cosmo0020.wav");

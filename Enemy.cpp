@@ -290,9 +290,12 @@ void Enemy_Manager::damage_Calculation(Enemy* obj) {
 		obj->damageflg = true;
 	}
 	else {
-		obj->damageflg = false;
-		obj->animeData = obj->Anime_Box[normal];
-		obj->alpha = 255;
+		if (obj->Anime_Box) {
+			obj->damageflg = false;
+			obj->animeData = obj->Anime_Box[normal];
+			obj->data = &obj->animeData[0];
+			obj->alpha = 255;
+		}
 	}
 }
 
@@ -331,8 +334,6 @@ void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Ene
 STAGE_DATA* stageSetData_time[] = {
 	tutorial_time,
 	stage1_time,
-	//stage2_setData,
-	//stage3_setData,
 };
 
 STAGE_DATA* stageSetData_kill[] = {
@@ -352,13 +353,8 @@ void Enemy_Manager::Init(int stageNo) {
 	data2 = stageSetData_kill[stageNo];
 }
 void Enemy_Manager::Update() {
-	//if ((pFrame->Get_f_z() + DAMAGE_SIZE) > 90 || (pFrame->Get_f_z() - DAMAGE_SIZE) < -90)
-	//	calculation_refrect_flg = true;
-	//else 
-	//	calculation_refrect_flg = false;
-
 	stageUpdate();
-
+	
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		if (enemy[i] && enemy[i]->move) {
 			enemy[i]->move(enemy[i]);
@@ -494,7 +490,7 @@ void Enemy::clear() {
 	alpha = 255;
 	count = 0;
 	u.argb = 0xFFFFFFFF;
-
+	
 	dx = 0;
 	dy = 0;
 	dist = 0;
@@ -508,6 +504,8 @@ void Enemy::clear() {
 	z_flg = false;
 	zlock_flg = false;
 	flash_timer = 0;
+	noHit_flg = 1;
+	Anime_Box = nullptr;
 	Dot_timer = 0;
 	Dot_argb = 0xFFFFFFFF;
 
@@ -601,6 +599,10 @@ void Enemy_Init(Enemy* obj) {
 	obj->alpha = 255;
 	obj->rangeflg = false;
 	obj->noHit_flg = true;
+	obj->Anime_Box = yellow_data;
+	obj->animeData = obj->Anime_Box[normal];
+
+
 }
 
 inline void Enemy_Update(Enemy* obj) {
@@ -608,7 +610,7 @@ inline void Enemy_Update(Enemy* obj) {
 	if (!obj->zlock_flg) {
 		obj->sz = pEnemy_Manager->get_sz(obj->z);
 	}
-	obj->rangeflg = E_lenge(obj, pPlayer, FRAME_SIZE / 2);
+	obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
 	if (obj->rangeflg) {
 		pEnemy_Manager->damage_Calculation(obj);
 	}
@@ -638,8 +640,9 @@ void Enemy_appearance(Enemy* obj) {
 
 //死亡時エフェクト
 void Enemy_DeadEffect(Enemy*obj) {
-	for (int i = 0; i<5; i++) pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_k);	//パーティクルエフェクトキラキラ
-	pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt_lightB);	//丸エフェクト
+	Effect_Manager* fm = pEffect_Manager;
+	for (int i = 0; i<5; i++) fm->searchSet(V2(obj->pos.x, obj->pos.y), V2((float)(rand() % 20 - 10), (float)(rand() % 20 - 10)), ParticleExt_k);	//パーティクルエフェクトキラキラ
+	fm->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt_lightB);	//丸エフェクト
 	if (obj->sz < JUSTPINTO_SIZE) { //ジャストピントの範囲ならエフェクト追加
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(0.0f, 1.5f), CircleExt);		//丸エフェクト
 		pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y), V2(4.0f, 2.5f), CircleExt);		//丸エフェクト
@@ -778,15 +781,16 @@ void Teleport(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
+		Enemy_Init(obj);
 		obj->Anime_Box = blue_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 400;
+		//HP
+		obj->damageMAX = ENEMY_HP_C;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->score = 100;
-		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
 	case APPEARANCE:
@@ -853,14 +857,15 @@ void Normal(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
+		Enemy_Init(obj);
 		obj->Anime_Box = pink_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 400;
+		//HP
+		obj->damageMAX = ENEMY_HP_B;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		Enemy_Init(obj);
 		obj->score = 100;
 		obj->state = APPEARANCE;
 		//break;
@@ -892,10 +897,12 @@ void Tombo(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		Enemy_Init(obj);
 		obj->Anime_Box = green_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 1000;
+		//HP
+		obj->damageMAX = ENEMY_HP_F;
 		obj->pos.y -= 10;			//----------
 		obj->ANGLE = INIT_ANGLE;	//　回転用
 		obj->ANGLEspd = 0.5f;		//
@@ -904,7 +911,6 @@ void Tombo(Enemy* obj) {
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->size = V2(20 / 2, 20 / 2);
-		Enemy_Init(obj);
 		obj->score = 100;
 		obj->state = APPEARANCE;
 		//break;
@@ -916,7 +922,7 @@ void Tombo(Enemy* obj) {
 		obj->rangeflg = E_lenge(obj, pPlayer, 1000); //距離判定
 		if (obj->rangeflg == true) { //範囲内なら
 
-//				obj->spd = E_P(obj, pPlayer, obj->spd); //移動処理 8.0f
+			//obj->spd = E_P(obj, pPlayer, obj->spd); //移動処理 8.0f
 
 			obj->dx = obj->pos.x - pPlayer->pos.x;				//
 			obj->dy = obj->pos.y - pPlayer->pos.y;				//
@@ -994,17 +1000,18 @@ void zMove(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT: //初期設定
+		Enemy_Init(obj);
 		obj->Anime_Box =white_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
 
 		obj->f_work[3] = obj->z;
-		obj->damageMAX = DAMAGE_MAX;
+		//HP
+		obj->damageMAX = ENEMY_HP_D;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->score = 100;
-		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
 	case APPEARANCE:
@@ -1044,16 +1051,17 @@ void zMove(Enemy* obj) {
 void Big(Enemy* obj) {
 	switch (obj->state) {
 	case INIT:
+		Enemy_Init(obj);
 		//obj->data = &Enemy_data;
 		obj->Anime_Box =kari_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
-		obj->damageMAX = 1000;
+		//HP
+		obj->damageMAX = ENEMY_HP_E;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = B_scale;
 		obj->size = V2(40, 40);
 		obj->score = 200;
-		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
 	case APPEARANCE:
@@ -1080,6 +1088,20 @@ void Big(Enemy* obj) {
 }
 
 
+/////////////////////////////////////////////////////////////
+//
+//回転浮遊
+//
+/////////////////////////////////////////////////////////////
+
+enum
+{
+	posx = 0,
+	posy = 1,
+};
+
+
+
 
 /////////////////////////////////////////////////////////////
 //
@@ -1103,6 +1125,7 @@ void Aggre(Enemy* obj) {
 	{
 	case INIT:
 		//初期設定
+		Enemy_Init(obj);
 		obj->data = NULL;
 		obj->noHit_flg = false;
 		//親生成
@@ -1118,7 +1141,6 @@ void Aggre(Enemy* obj) {
 			pEnemy_Manager->searchSet(V2((float)(angle * 5), 0), V2(0.0f, 0.0f), &Aggre_child, (float)rand_PINTO, obj);
 		}
 		obj->f_work[child_num] = 0;
-		Enemy_Init(obj);
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->state = MOVE;
 		break;
@@ -1141,6 +1163,7 @@ void Aggre_parent(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		Enemy_Init(obj);
 		obj->data = &Enemy_data;
 		//親設定(制御に自身の存在を渡す)
 		obj->damageMAX = DAMAGE_MAX;
@@ -1150,7 +1173,6 @@ void Aggre_parent(Enemy* obj) {
 		obj->spd = V2(0, 0);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = B_scale;
-		Enemy_Init(obj);
 		obj->state = MOVE;
 		//break;
 	case MOVE: //移動処理
@@ -1174,6 +1196,7 @@ void Aggre_child(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		Enemy_Init(obj);
 		obj->data = &Enemy_data;
 		//親設定(制御に自身の存在を渡す)
 		((Enemy*)(obj->parent))->f_work[child_num]++;
@@ -1184,7 +1207,6 @@ void Aggre_child(Enemy* obj) {
 		obj->custom.scaleX = obj->custom.scaleY = C_scale;
 		obj->damageMAX = DAMAGE_MAX;
 		obj->size = V2(20 / 2, 20 / 2);
-		Enemy_Init(obj);
 		obj->state = MOVE;
 		//break;
 	case MOVE:
@@ -1213,21 +1235,6 @@ void Aggre_child(Enemy* obj) {
 	}
 }
 
-
-
-
-
-/////////////////////////////////////////////////////////////
-//
-//回転浮遊
-//
-/////////////////////////////////////////////////////////////
-
-enum
-{
-	posx = 0,
-	posy = 1,
-};
 
 //集合体制御(Rotetion)左
 void Rotation_Aggre_4(Enemy* obj) {
@@ -1259,6 +1266,7 @@ void Rotation(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:
+		Enemy_Init(obj);
 		obj->Anime_Box = yellow_data;
 		obj->animeData = obj->Anime_Box[normal];
 		obj->data = &obj->animeData[0];
@@ -1269,7 +1277,6 @@ void Rotation(Enemy* obj) {
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
 		obj->score = 100;
-		Enemy_Init(obj);
 		obj->state = APPEARANCE;
 		//break;
 	case APPEARANCE:
@@ -1310,18 +1317,177 @@ void Tutorial(Enemy* obj) {
 	switch (obj->state)
 	{
 	case INIT:	//初期設定
+		Enemy_Init(obj);
 		obj->data = &Enemy_data;
 		obj->damageMAX = DAMAGE_MAX;
 		obj->custom.argb = 0x0000FFFF;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
-		Enemy_Init(obj);
 		obj->state = BEGIN;
 		//break;
 	case BEGIN:
 		//ダメージ判定
 		Enemy_Update(obj);
+		break;
+	case DEAD: //死亡処理
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
+
+
+
+void tuto_Base(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		Enemy_Init(obj);
+		obj->damageMAX = DAMAGE_MAX;
+		//obj->custom.argb = 0x0000FFFF;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ダメージ判定
+		Enemy_Update(obj);
+	
+		break;
+	case DEAD: //死亡処理
+		Enemy_Dead(obj);
+
+		break;
+	default:
+		break;
+	}
+}
+
+void tuto_rock(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		Enemy_Init(obj);
+		obj->damageMAX = DAMAGE_MAX;
+		//obj->custom.argb = 0x0000FFFF;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ダメージ処理
+		if (!obj->zlock_flg) {
+			obj->sz = pEnemy_Manager->get_sz(obj->z);
+		}
+		if (obj->sz < pFrame->getPintoSize())
+		{
+
+			if (pFrame->lockPinto_trg == true) {
+				pEffect_Manager->searchSet(obj->pos, V2(0, 0), pinto_lock); //ピントロックエフェクト
+				pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
+				obj->zlock_flg = true;
+			}
+		}
+		if (obj->zlock_flg) {
+			obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
+			if (obj->rangeflg) {
+				pEnemy_Manager->damage_Calculation(obj);
+			}
+		}
+		//反転チェック
+		if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
+		else obj->custom.reflectX = false;
+		//死亡チェック
+		if (obj->damage > obj->damageMAX) obj->state = DEAD;
+		break;
+	case DEAD: //死亡処理
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
+
+void tuto_justpinto(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		Enemy_Init(obj);
+		obj->damageMAX = DAMAGE_MAX;
+		//obj->custom.argb = 0x0000FFFF;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ダメージ判定
+		if (!obj->zlock_flg) {
+			obj->sz = pEnemy_Manager->get_sz(obj->z);
+		}
+
+		if (obj->zlock_flg) {
+			obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
+			if (obj->rangeflg) {
+				if (obj->sz < 2)
+				{
+					if (pFrame->lockPinto_trg == true) {
+						pEffect_Manager->searchSet(obj->pos, V2(0, 0), pinto_lock); //ピントロックエフェクト
+						pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
+						obj->zlock_flg = true;
+					}
+					if (obj->damage>(obj->damageMAX - obj->damageMAX / 4)) Frash_white(obj, 11); //白点滅(早)
+					else Frash_white(obj, 35); //白点滅(遅)
+					obj->damage += DAMAGE;
+					obj->damageflg = true;
+				}
+				else {
+					if (obj->Anime_Box) {
+						obj->damageflg = false;
+						obj->animeData = obj->Anime_Box[normal];
+						obj->alpha = 255;
+					}
+				}
+			}
+		}
+		//反転チェック
+		if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
+		else obj->custom.reflectX = false;
+		//死亡チェック
+		if (obj->damage > obj->damageMAX) obj->state = DEAD;
+		break;
+	case DEAD: //死亡処理
+		Enemy_Dead(obj);
+		break;
+	default:
+		break;
+	}
+}
+
+void tuto_multifocus(Enemy* obj) {
+	switch (obj->state)
+	{
+	case INIT:	//初期設定
+		Enemy_Init(obj);
+		obj->damageMAX = DAMAGE_MAX;
+		obj->size = V2(20 / 2, 20 / 2);
+		obj->custom.scaleMode = CENTER;
+		obj->custom.scaleX = obj->custom.scaleY = N_scale;
+		obj->state = BEGIN;
+		//break;
+	case BEGIN:
+		//ダメージ判定
+		Enemy_Update(obj);
+		
+		obj->z = -pFrame->Get_f_z();
+			
+		if (90 < obj->z) obj->z -= 180;
+		if (-90 > obj->z) obj->z += 180;
+
 		break;
 	case DEAD:
 		Enemy_Dead_ready(obj);

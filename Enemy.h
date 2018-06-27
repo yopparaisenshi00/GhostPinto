@@ -2,7 +2,17 @@
 #define _ENEMY_H_
 
 #define ENEMY_MAX (256)
-#define DAMAGE_MAX (700) //
+#define DAMAGE_MAX (700) //iran
+
+//エネミーＨＰ群
+#define ENEMY_HP_A (700)//漂う奴
+#define ENEMY_HP_B (600)//普通の奴
+#define ENEMY_HP_C (700)//ワープする奴
+#define ENEMY_HP_D (700)//Z値移動する奴
+#define ENEMY_HP_E (1300)//でかい奴
+#define ENEMY_HP_F (900)//トンボ
+
+
 #define DAMAGE_LINE (3.6) 
 #ifndef PINTO_MAX
 
@@ -175,8 +185,6 @@ public:
 	float RADIUS;   //半径
 	float sz;		//フレームとのピント差
 
-
-	
 	//関数
 	//OBJ継承関数---------------------------------------
 	virtual void Init(); //
@@ -260,8 +268,14 @@ public:
 	void Render();
 	void UIUpdate();
 	void UIRender();
-
-
+	void clear() {
+		for (int i = 0; i < ENEMY_MAX; i++) {
+			if (!enemy[i])continue;
+			enemy[i]->clear();
+		}
+		data = NULL;
+		data2 = NULL; 
+	}
 // エネミー共通関数
 	void damage_Calculation(Enemy*);
 	void jast_dragIn(Enemy*);
@@ -299,7 +313,10 @@ void Aggre_child(Enemy* obj);	//集合体＿子
 
 void Rotation_Aggre_4(Enemy* obj);	//集合体制御(Rotetion)左
 void Rotation(Enemy* obj);	//回転浮遊
-void Tutorial(Enemy* obj); //チュートリアル用
-
+//void Tutorial(Enemy* obj); //チュートリアル用
+void tuto_Base(Enemy* obj);//チュートリアル用(倒し方)
+void tuto_rock(Enemy* obj);//チュートリアル用(ピントロック)
+void tuto_justpinto(Enemy* obj);//チュートリアル用(ジャストピント)
+void tuto_multifocus(Enemy* obj);//チュートリアル用(マルチフォーカス)
 
 #endif // !_ENEMY_H_

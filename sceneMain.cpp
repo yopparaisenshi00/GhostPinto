@@ -125,7 +125,7 @@ sceneMain::~sceneMain()
 enum {
 	LOAD,
 	INIT,
-	BIGEN,
+	BEGIN,
 	FADE_IN,
 	READY,
 	MAIN,
@@ -156,8 +156,8 @@ void	sceneMain::Update()
 		pPlayer->Init();
 		pFrame->Init();
 		pScore->Init();
-		state = BIGEN;
-	case BIGEN:
+		state = BEGIN;
+	case BEGIN:
 		//‰ŠúÝ’è
 		pMAP->Init(&st1_bg);
 		pLandScape->Init(stage_no);
@@ -186,6 +186,8 @@ void	sceneMain::Update()
 		state = FADE_IN;
 	case FADE_IN:
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
+		
+
 		state = READY;
 	case READY:
 
@@ -296,7 +298,7 @@ void	sceneMain::Render()
 	{
 	case LOAD:
 	case INIT:
-	case BIGEN:
+	case BEGIN:
 		break;
 	case FADE_IN:
 		break;

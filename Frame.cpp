@@ -277,7 +277,6 @@ void Frame::f_move() {
 
 	
 }
-static float cadd = 0;
 
 //----------------------------------------------------------------------------------------------------
 //　霊力データ更新
@@ -367,15 +366,9 @@ float Frame::getPintoSize() {
 //  霊力回復
 //----------------------------------------------------------------------------------------------------
 void Frame::add_Exorcise(float add) {
-	///////////////////////////////////
-	//
-	//
-	cadd = add;
-	//
-	////////////////////////////////////
-
+	
 	if (exorciseDwon_flg)return;
-	exorcise += add ;
+	exorcise += add;
 	if (100 < exorcise)exorcise = EXORCISE_MAX;
 	if ( 0 > exorcise)exorcise = 0;
 

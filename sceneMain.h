@@ -41,7 +41,7 @@ public:
 
 
 #define COMBO_BONUS 2 //コンボボーナススコア(ボーナススコア * コンボ数)
-#define COMBO_TIME 120 //コンボ持続タイム
+#define COMBO_TIME 100 //コンボ持続タイム
 class Score:public OBJ2D ,public Singleton<Score>
 {
 private:
