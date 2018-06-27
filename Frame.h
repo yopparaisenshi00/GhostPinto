@@ -34,6 +34,7 @@
 #define KILL_CURE (15 - (10 * (obj->sz / PINTOMODE_DEFAULT)))	//エネミー撃破時＿霊力回復量
 #define EXORCISE_AUTOHEEL (5.5)	//自然回復
 #define EXORCISE_AUTOHEEL_TIME (90)//自然回復開始時間
+#define USE_PINTOLOCK (10) //ピントロック消費量
 //----------------------------------------------------------------------
 
 
@@ -82,9 +83,9 @@ public:
 	void use_Multifocus(int);
 	void use_lockPinto();
 	float get_sz(float z);
+	float exorcise;				//霊力数値　1 ～ 100
 private:
 	float act;
-	float exorcise;				//霊力数値　1 ～ 100
 	float angle;
 	float axisx;
 	float axisy;
@@ -103,16 +104,6 @@ private:
 	int count;
 
 	D3DCOLOR light_argb; //発光用
-
-	//////////////////////////////////////
-	//振動
-	int vibTimer;
-	int vibTimerMax;
-	float vibWidth;
-	float vibX, vibY;
-	void Vib_Set(float width, int timer);
-	void Vib_Update();
-	//////////////////////////////////////
 
 };
 

@@ -58,13 +58,15 @@ struct MLT_FOCUS {
 	
 	int point;
 	int lv;
+	int old_lv;
 	void add_point(int);
 	SPR_DATA* data;
 	spr_data::CUSTOM custom;
 
 	void clear() {
 		point = 0;
-		lv = 0;
+		lv = 3;
+		old_lv = 3;
 	}
 };
 
@@ -105,11 +107,10 @@ public:
 	int jet_eff_timer;			//
 	int p_eff_timer;			//
 
-	int old_mlt;
-
 	bool damage_se_flg;
 
-	struct gage { //ゲージ用
+
+	struct gage {
 		V2 pos;
 		D3DCOLOR argb;
 		spr_data::CUSTOM custom;
@@ -130,6 +131,7 @@ public:
 	void Recoil(V2 enemy_pos, V2 enemy_spd); //ダメージ時の反動
 	D3DCOLOR Light(D3DCOLOR color);
 	void mlt_Update();
+	void Eval();
 
 	//void Deat_Enemy() {
 	//	

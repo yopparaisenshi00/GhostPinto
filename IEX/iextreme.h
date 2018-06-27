@@ -700,6 +700,7 @@ public:
 		TeleExt,
 
 		Player_eff,
+		Mulch_eff,
 
 		Number,
 		Number2,
@@ -1661,7 +1662,7 @@ private:
 };
 
 typedef iexTRIGGER TRG;
-
+#define TRG_RELEASE (0x02)
 
 
 #endif

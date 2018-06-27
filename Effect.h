@@ -46,6 +46,9 @@ public:
 	//bool shift_all_flg;
 	TRG shift_objects_trg;
 	TRG shift_all_trg;
+	TRG shift_multierror_trg;
+	TRG shift_jast_trg;
+
 
 	V2 get_shift_objects() {
 		return shift_objects;
@@ -56,6 +59,8 @@ public:
 
 	void add_all(V2);
 	void add_object(V2);
+	void add_multierror(V2);
+	void add_jast(V2);
 
 	void Init();
 	void Update();
@@ -66,6 +71,8 @@ private:
 
 	V2 shift_objects;
 	V2 shift_all;
+	V2 shift_multierror;
+	V2 shift_jast;
 };
 
 
@@ -99,8 +106,11 @@ void ComboText(Effect*);		//Comboテキストエフェクト
 void dust(Effect*);				//塵エフェクト
 void noAction(Effect*);			//スカエフェクト
 void gameclear_aggre(Effect*);		//ゲームクリア時エフェクト_集合
+void gameclear_screen_many(Effect*);//ゲームクリア時エフェクト画面全体_複数
+void gameclear_screen(Effect*);		//ゲームクリア時エフェクト画面全体
 void gameclear_kirakira(Effect*);	//ゲームクリア時エフェクトキラキラ
 void gameclear_eight(Effect*);		//ゲームクリア時エフェクト8方向
 void gameclear(Effect*);			//ゲームクリア時エフェクト
+
 
 #endif // !_EFFECT_H_

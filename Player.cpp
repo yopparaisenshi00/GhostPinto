@@ -97,8 +97,9 @@ void Player::Init() {
 	hp = 0;
 	mltfcs.clear();
 
+
 	hp = 3;
-	pos = D3DXVECTOR2(960, 270);
+	pos = D3DXVECTOR2(960, 512);
 	size = D3DXVECTOR2(PLAYER_SIZE / 8, PLAYER_SIZE / 8);
 	fear_flg = false;
 
@@ -134,22 +135,22 @@ D3DCOLOR Player::Light(D3DCOLOR color) {
 //マルチフォーカス処理
 void Player::mlt_Update() {
 	//ゲージ拡大
-	if ( old_mlt<mltfcs.lv ) {
+	if ( mltfcs.old_lv<mltfcs.lv ) {
 		g.custom.scaleMode = CENTER;
 		g.custom.scaleX = g.custom.scaleY = 3.0f;
 	}
 	//ゲージ縮小
-	else if ( old_mlt==mltfcs.lv ) {
+	else if ( mltfcs.old_lv==mltfcs.lv ) {
 		g.custom.scaleMode = CENTER;
 		g.custom.scaleX = g.custom.scaleY -= 0.2f;
 		if ( g.custom.scaleX<=1.0f ) g.custom.scaleX = g.custom.scaleY = 1.0f;
 	}
 	//使ったら発光
-	if ( old_mlt!=mltfcs.lv ) g.argb = 0xFFFFFFFF;	
+	if ( mltfcs.old_lv!=mltfcs.lv ) g.argb = 0xFFFFFFFF;	
 	if ( g.argb>=0x11FFFFFF ) g.argb -= 0x11000000;
 	else g.argb = 0x00FFFFFF;
 
-	old_mlt = mltfcs.lv;
+	mltfcs.old_lv = mltfcs.lv;
 }
 
 void Player::move() {
@@ -171,7 +172,7 @@ void Player::move() {
 		//-----------------------------------------------------------
 		//  移動
 		//----------------------------------------------------------
-		if ( hp>0 && (pScore->getKill_num()<50)/* || timer <= 0*/ ) {
+		if ( hp>0 && (pScore->getKill_num()<CLEAR_KILLNUM)/* || timer <= 0*/ ) {
 			//----------------------------
 			//Y軸
 			//----------------------------
@@ -186,14 +187,17 @@ void Player::move() {
 		//-----------------------------------------------------------
 		//  マルチフォーカス
 		//-----------------------------------------------------------
-		if (KEY_Get(MULTIFOCUS_KEY) == 3 && mltfcs.lv) {
+		if (KEY_Get(MULTIFOCUS_KEY) == 3 && (mltfcs.lv==3)) {
 			pFrame->use_Multifocus(mltfcs.lv);
 			mltfcs.lv = 0;
-			pEffect_Manager->searchSet(pos, V2(0,0), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(6.0f,0.3f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(-8.0f,0.35f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(4.0f,0.75f), Multifocus); //MF使用時エフェクト
+			pEffect_Manager->searchSet(pos, V2(-6.0f,0.8f), Multifocus); //MF使用時エフェクト
 			//mltfcs.add_point(0);
 		}
-		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv==0) ) {
-			pEffect_Manager->searchSet(V2(12, 4), V2(10, 1), Shake); //振動
+		else if ( KEY_Get(MULTIFOCUS_KEY)==3 && (mltfcs.lv<3) ) {
+			pEffect_Manager->searchSet(V2(12, 6), V2(8, 3), Shake); //振動
 		}
 
 		mlt_Update();
@@ -205,14 +209,7 @@ void Player::move() {
 		//-----------------------------------------------------------
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
-			//pEffect_Manager->searchSet(pos, V2( 3, -3),noAction);
-			//pEffect_Manager->searchSet(pos, V2( 4, -4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2( 4,  4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2(-4, -4), gameclear);
-			//pEffect_Manager->searchSet(pos, V2(-4,  4), gameclear);
-
-			//pEffect_Manager->searchSet(pos, V2(0, 0), gameclear_aggre);
-			//for (int i = 0; i<4; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%12-6),(float)(rand()%12-6)), ParticleExt_k);	//パーティクルエフェクトキラキラ
+			IEX_PlaySound(SE_LOCK, FALSE);	//LOCKのSE
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
@@ -271,7 +268,6 @@ void Player::anime() {
 		}
 	}
 
-
 	//ゲームオーバー
 	if (hp <= 0) {
 		hp = 0;
@@ -279,7 +275,7 @@ void Player::anime() {
 		data = &p_over[anime_no];
 	}
 	//ゲームクリア
-	else if ((pScore->getKill_num() >= 50)/* || timer == 0*/) {
+	else if ((pScore->getKill_num() >= CLEAR_KILLNUM)/* || timer == 0*/) {
 		if ( (anime_no==9)&&(anime_timer==1) ) {
 			pEffect_Manager->searchSet(pos, V2(5, 5), gameclear_aggre);
 			for (int i = 0; i<5; i++) pEffect_Manager->searchSet(pos, V2((float)(rand()%8-4),(float)(rand()%8-4)), ParticleExt_k);	//パーティクルエフェクトキラキラ
@@ -298,6 +294,7 @@ void Player::anime() {
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
 		//pEffect_Manager->searchSet(V2(pos.x,pos.y+(rand()%20-10)),V2(0,0),P_damage);
+		pEffect_Manager->searchSet(V2(6, 2), V2(3, 4), Shake); //ダメージ振動
 
 		if (reflect) {
 			if ( anime_no>=5 ) {
@@ -364,12 +361,12 @@ void Player::anime() {
 
 }
 
-
 void Player::Render() {
 	if (data)spr_data::Render(pos, data);
 }
 void Player::UIRender() {
-
+	//マルチフォーカス描画------------------------------------------------------
+	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < 3; i++)
 	{
 		spr_data::Render(V2(g.pos.x+custom.ef_ofsX, g.pos.y), &multi[0]); //マルチフォーカス欠
@@ -378,24 +375,24 @@ void Player::UIRender() {
 	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < mltfcs.lv; i++)
 	{
-		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2]); //マルチフォーカス満
-		//spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],g.argb,0); //白
 		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2],&g.custom,0xFFFFFFFF); //マルチフォーカス満
 		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],&g.custom,g.argb); //白
 		g.pos += V2(0, 45);
 	}
+	//---------------------------------------------------------------------------
+
 	//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 
 	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
-
 }
 
 void Player::judge() {//
 	if (s.nodamage)return;
 	Enemy** enemy = pEnemy_Manager->enemy;
 	for (int i = 0; i < ENEMY_MAX; i++) {
-		//存在チェック
-		if (!enemy[i] || !enemy[i]->init_fg)continue;
+		//存在チェック & 出現直後当たり判定なし
+		//									   enemy[i]->state == APPEARANCE
+		if (!enemy[i] || !enemy[i]->init_fg ||(enemy[i]->state == 2))continue;
 		//判定処理
 		if ((enemy[i]->noHit_flg) && Judge(this, enemy[i])) {
 			suffer_damage();

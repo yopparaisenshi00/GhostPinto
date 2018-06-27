@@ -2,7 +2,17 @@
 #define _ENEMY_H_
 
 #define ENEMY_MAX (256)
-#define DAMAGE_MAX (700) //
+#define DAMAGE_MAX (700) //iran
+
+//エネミーＨＰ群
+#define ENEMY_HP_A (700)//漂う奴
+#define ENEMY_HP_B (600)//普通の奴
+#define ENEMY_HP_C (700)//ワープする奴
+#define ENEMY_HP_D (700)//Z値移動する奴
+#define ENEMY_HP_E (1300)//でかい奴
+#define ENEMY_HP_F (900)//トンボ
+
+
 #define DAMAGE_LINE (3.6) 
 #ifndef PINTO_MAX
 
@@ -19,7 +29,7 @@
 
 #define rand_PINTO		(10000)//敵のZ値ランダム
 //#define rand_PINTO		((rand()%(PINTO_MAX*2)) -PINTO_MAX)	//敵のZ値ランダム
-#define DAMAGE (6)
+#define DAMAGE (9)
 #define JUSTPINTO_SIZE (2)
 
 //enum {
@@ -224,6 +234,7 @@ public:
 	Enemy* enemy[ENEMY_MAX];
 	int timer;
 
+
 	void searchSet(V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(Enemy*) = nullptr,float _z = 0,Enemy* parent = NULL);
 	void searchSet(void(*_move)(Enemy*), V2 &_pos = Vector2(0, 0), V2 &_spd = Vector2(0, 0), V2 &_spdAcc = Vector2(0, 0),
 		V2 &_spdMax = Vector2(0, 0), float _z = 0) {
@@ -263,7 +274,7 @@ public:
 	}
 // エネミー共通関数
 	void damage_Calculation(Enemy*);
-	void just_dragIn(Enemy*);
+	void jast_dragIn(Enemy*);
 	float get_sz(float z);//フレームとのピントの差計算
 
 protected:
@@ -290,7 +301,6 @@ void Normal(Enemy* obj);	//襲ってくる敵
 void Tombo(Enemy* obj);		//敵突進
 void zMove(Enemy* obj);		//襲ってくる敵
 void Big(Enemy* obj);		//デカイ(向かってくる)
-void Big2(Enemy* obj);		//デカイ(横移動のみ)
 
 void Aggre(Enemy* obj);			//集合体制御
 void Aggre_parent(Enemy* obj);	//集合体＿親

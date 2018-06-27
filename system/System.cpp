@@ -19,7 +19,7 @@ void	SYSTEM_Initialize()
 {
 	//	標準キー設定
 	//                 ↑　 ↓　 ←　 →　					○   ×   △   □    L1   L2   L3   R1   R2   R3   Sta        Sel
-	KEYSET	keyset = { VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 'Z', 'X', 'C', 'V',  'F', 'Q', '1', 'S', 'W', VK_SHIFT, VK_RETURN, VK_SPACE };
+	KEYSET	keyset = { VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 'Z', 'X', 'C', 'V',  'A', 'Q', '1', 'Q', 'W', VK_SHIFT, VK_RETURN, VK_SPACE };
 	KEY_Asign(keyset);
 
 	//	コントローラーセッティング(DUALSHOCK2-ELECOM JC-PS101USV)

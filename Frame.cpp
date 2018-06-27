@@ -21,7 +21,6 @@ enum {
 };
 
 
-
 //SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
 SPR_DATA spr_flame_out = { flame_out,0,0,1024,540,-512,-270 };
 SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
@@ -31,7 +30,7 @@ SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 //SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 SPR_DATA spr_pinto_a2 = { pinto_a,0,0,128,128,-64,-64 };
 
-SPR_DATA spr_exorcise_frame= { flame_out,1000,540,14,44,0,0 };
+SPR_DATA spr_exorcise_frame= { flame_out,0,32*18,32,64,0,0 };
 
 
 //SPR_DATA spr_Frame[] = {
@@ -115,7 +114,9 @@ void Frame::Update() {
 
 		if (pFrame->multifocus_timer>0 && multi_flg == true) {
 			if (pFrame->multifocus_timer % 12 == 0) { //15回に分けて(12で割った余りが0の時)
-				pinto_argb += 0x00001111; //徐々に白に
+				//pinto_argb += 0x00001111; //徐々に白に
+				if ( pinto_argb>=0xFFFFDDDD ) pinto_argb=0xFFFFFFFF;
+				else pinto_argb += 0x00001111; //徐々に白に
 			}
 		}
 
@@ -129,25 +130,10 @@ void Frame::Update() {
 		else out_argb = 0xFF000000; //黒色
 		///////////////////////////////////////////////////////////////////////////////////
 
-
-		///////////////////////////////////////////////////////////////////////////////////
-		//振動処理
-		if (pPlayer->s.old_nodamage == false && pPlayer->s.nodamage == true) { //プレイヤーがダメージを受けたら
-			Vib_Set(7, 1); //(揺れ幅,時間)
-			//s.old_nodamage=true (Player.cppで処理)
-		}
-		//if (pScore->getCombo()>2) { //
-		//	Vib_Set(7, 1); //(揺れ幅,時間)
-		//}
-
 		//pD_TEXT->set_Text(V2(600, 200), "PL_trg_t", lockPinto_trg == true, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 216), "PL_trg_f", lockPinto_trg == false, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 232), "PL_trg_02", lockPinto_trg == 0x02, 0xFFFFFFFF);
 		//pD_TEXT->set_Text(V2(600, 248), "PL_trg_01", lockPinto_trg == 0x01, 0xFFFFFFFF);
-
-
-		Vib_Update();
-		///////////////////////////////////////////////////////////////////////////////////
 
 		break;
 	default:
@@ -167,6 +153,8 @@ D3DCOLOR Light(D3DCOLOR color) {
 
 void Frame::Render() {
 
+	spr_data::Render(V2((int)(pPlayer->pos.x + 30-2), (int)(pPlayer->pos.y-40-4)), &spr_exorcise_frame );
+
 	//iexPolygon::Rect(160,30,exorcise*2,30,0,0xFFFFFF00,0); //霊力ゲージ描画(上にずらした)
 	//iexPolygon::Rect(20,180,30,exorcise*2,0,0xFFFFFF00,0); //霊力ゲージ描画(縦 ※sceneMain変更)
 	if (!pFrame->exorciseDwon_flg) {
@@ -176,15 +164,15 @@ void Frame::Render() {
 		//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
 	}
 
-	if ( multifocus_flg ) {
-		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
-		light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
-	}
-	else light_argb = 0xCCFFFFFF;							//マルチフォーカスを使ったら発光
+	//if ( multifocus_flg ) {
+	//	iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
+	//	light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
+	//}
+	//else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 
-	spr_data::Render(V2((SCREEN_WIDTH / 2) + vibX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
+	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
 	if (pFrame->exorciseDwon_flg) {
 		iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0x3F000000, 0);
 	}
@@ -312,10 +300,10 @@ void Frame::exorcise_Update() {
 		if (axisy < 100)axisy = 0;					// スティック感度以下なら0
 		axisy *= 0.001f;							// スティック情報 0～1に正規化 
 		{
-			pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
 
 			float Ex = (PINTO_COST_S)*(axisy);//  
-			pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
+			//pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
 
 			//if (0 > Ex) { Ex *= -1; }
 			exorcise -= Ex;
@@ -354,10 +342,6 @@ void Frame::exorcise_Update() {
 	}
 	old_exorcise = exorcise; //変化前の霊力ゲージを保存
 	//******************************************************************************************************
-
-
-	old_exorcise = exorcise;
-
 
 	//UIダウンタイマー更新
 	//pD_TEXT->set_Text(V2(400, 260), "multiF_timer", multifocus_timer, 0xFFFFFFFF);
@@ -413,45 +397,17 @@ void Frame::use_Multifocus(int power) {
 		break;
 	}
 }
-#define USE_PINTOLOCK (20)
+
 //----------------------------------------------------------------------------------------------------
 //  ピントロック使用、設定
 //----------------------------------------------------------------------------------------------------
 void Frame::use_lockPinto() {
 	if(!exorciseDwon_flg){
-		exorcise -= USE_PINTOLOCK;
+		//exorcise -= USE_PINTOLOCK; //Enemy_Manager::damage_Calculationに移行
 		lockPinto_trg = true;
 	}
 }
 
-
-
-//*****************************************************************************
-//		振動
-//*****************************************************************************
-
-void Frame::Vib_Set(float width, int timer) {
-	vibWidth = width;		//-width ～ +widthの幅で揺れる
-	vibTimer = 0;
-	vibTimerMax = timer;
-}
-
-
-void Frame::Vib_Update() {
-	//振動が継続中かのチェック
-	if (vibTimer >= vibTimerMax)
-	{
-		vibTimer = vibTimerMax;
-		vibX = vibY = 0.0f;		//ずれ幅をリセット
-		return;
-	}
-
-	//ずれ幅の計算
-	vibX = ((rand() % 201) - 100)*0.01f * vibWidth;
-	vibY = ((rand() % 201) - 100)*0.01f * vibWidth;
-	vibTimer++;
-
-}
 
 float Frame::get_sz(float z) {
 	float sz = 0;
