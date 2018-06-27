@@ -77,6 +77,7 @@ public:
 		animeNO = 0;
 		animeData = nullptr;
 		anime_timer = 0;
+		
 	}
 
 	virtual void animation() {
