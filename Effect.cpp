@@ -126,6 +126,13 @@ static SPR_DATA gameclear_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,
 static SPR_DATA multi_data = SPR_DATA{spr_data::Mulch_eff,0,0,128,128,-64,-64};
 
 
+//lineデータ
+//static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128+2,3*6,2,2,-2/1,-2/1 };
+static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128,60,4,4,-2,-2 }; //4×4
+//static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128,60,2,2,-1,-1 }; //2×2
+
+
+
 //static SPR_DATA p_eff_data[] = {
 //	SPR_DATA{spr_data::Player_eff, 128, 0*6,	 6,	6, -6/2,-6/2,1}, //p_eff1
 //	SPR_DATA{spr_data::Player_eff, 128, 4*6,	 9, 9, -9/2,-9/2,2}, //p_eff1*1.5
@@ -911,10 +918,14 @@ void gameclear_screen_many(Effect*obj) {
 	switch ( obj->state ) {
 		case INIT:
 		case MOVE:
-			pEffect_Manager->searchSet(V2(			 0+300,  			 0+250), V2(0,0), gameclear_screen);
-			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  			 0+250), V2(0,0), gameclear_screen);
-			pEffect_Manager->searchSet(V2(			 0+300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
-			pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
+			//pEffect_Manager->searchSet(V2(			 0+300,  			 0+250), V2(0,0), gameclear_screen);
+			//pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  			 0+250), V2(0,0), gameclear_screen);
+			//pEffect_Manager->searchSet(V2(			 0+300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
+			//pEffect_Manager->searchSet(V2(SCREEN_WIDTH-300,  SCREEN_HEIGHT-100), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH/4*1, SCREEN_HEIGHT/4*1), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH/4*3, SCREEN_HEIGHT/4*1), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH/4*1, SCREEN_HEIGHT/4*3), V2(0,0), gameclear_screen);
+			pEffect_Manager->searchSet(V2(SCREEN_WIDTH/4*3, SCREEN_HEIGHT/4*3), V2(0,0), gameclear_screen);
 		case CLEAR:
 			obj->clear();
 			break;
@@ -931,7 +942,7 @@ void gameclear_screen(Effect*obj) {
 			obj->custom.scaleMode = CENTER;
 			obj->custom.scaleX = obj->custom.scaleY = 3.0f;
 			obj->custom.argb = 0xFFFFFFFF;
-			obj->alpha = (int)(255*0.55f);
+			obj->alpha = (int)(255*0.6f);
 			obj->timer = 0;
 			obj->i_work[6] = 0; //色
 			obj->f_work[1] = obj->pos.x;
@@ -942,16 +953,20 @@ void gameclear_screen(Effect*obj) {
 			//obj->custom.scaleX = obj->custom.scaleY =(float)(rand()%10)/10.0f+2.0f;	//大きさ変更(1.0～2.0倍)
 			//obj->custom.scaleX = obj->custom.scaleY =(float)(rand()%3)+2.0f;	//大きさ変更(2.0～4.0倍)
 			obj->i_work[6] = obj->timer % 20+1;
-			     if (obj->i_work[6] <= 4) obj->custom.argb = 0xFFD68D8D;	//赤色
-			else if (obj->i_work[6] <= 8) obj->custom.argb = 0xFF86ace8;	//青色
-			else if (obj->i_work[6] <= 12) obj->custom.argb = 0xFFE2E268;	//黄色
-			else if (obj->i_work[6] <= 16) obj->custom.argb = 0xFFc577ef;	//紫色
-			else if (obj->i_work[6] <= 20) obj->custom.argb = 0xFFa2f783;	//緑色
+			if (obj->i_work[6] <= 4) obj->custom.argb = 0xFFffa5a5;	//赤色
+			else if (obj->i_work[6] <= 8) obj->custom.argb = 0xFFb2d0ff;	//青色
+			else if (obj->i_work[6] <= 12) obj->custom.argb = 0xFFffffa3;	//黄色
+			else if (obj->i_work[6] <= 16) obj->custom.argb = 0xFFdfa5ff;	//紫色
+			else if (obj->i_work[6] <= 20) obj->custom.argb = 0xFFcaffb7;	//緑色
 
-			//obj->pos.x = obj->f_work[1]+rand()%20;
-			//obj->pos.y = obj->f_work[2]+rand()%20;
+			if ( (obj->timer%2+1)<=1 ) {
+				obj->pos.x = obj->f_work[1]+rand()%200-100;
+				obj->pos.y = obj->f_work[2]+rand()%200-100;
+			}
 
-			if (obj->timer>120) {	//指定時間経ったら
+			if (obj->timer>40) {	//指定時間経ったら
+				obj->alpha -= 60;
+				if ( obj->alpha<0 ) obj->alpha = 0;
 				obj->state = CLEAR;		//消去処理へ
 			}
 			obj->timer++;
@@ -1262,6 +1277,39 @@ void P_particle(Effect* obj) {
 	}
 }
 
+
+
+//lineエフェクト
+void line(Effect* obj) {
+	switch ( obj->state ) {
+		case INIT:
+			obj->data = &line_data;
+			obj->timer = 0;
+			obj->alpha = (int)(255*0.5f);
+			//obj->custom.scaleMode = CENTER;
+			//obj->custom.scaleX = obj->custom.scaleY = 2.0f;
+			obj->custom.argb = 0xFFd6fff9;
+			obj->state=MOVE;
+			//break;
+		case MOVE:
+			//点滅
+			//if ( (obj->timer%2)<1 )  obj->custom.argb = 0xFFFF0000;
+			//if ( (obj->timer%2)>=1 ) obj->custom.argb = 0xFFFFFFFF;
+			//if ( (obj->timer%2)<1 )  obj->alpha=(int)(255*0.2f);
+			//if ( (obj->timer%2)>=1 ) obj->alpha=(int)(255*0.7f);
+			if ( obj->timer>=1 ) {
+				obj->timer = 0;
+				obj->state = CLEAR;
+			}
+			obj->timer++;
+			break;
+		case CLEAR:
+			obj->clear();
+			break;
+		default:
+			break;
+	}
+}
 
 //フェードイン
 void fade_In(Effect* obj) {

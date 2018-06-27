@@ -111,6 +111,6 @@ void gameclear_screen(Effect*);		//ゲームクリア時エフェクト画面全体
 void gameclear_kirakira(Effect*);	//ゲームクリア時エフェクトキラキラ
 void gameclear_eight(Effect*);		//ゲームクリア時エフェクト8方向
 void gameclear(Effect*);			//ゲームクリア時エフェクト
-
+void line(Effect*);					//ラインエフェクト
 
 #endif // !_EFFECT_H_

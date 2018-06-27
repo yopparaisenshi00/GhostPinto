@@ -35,6 +35,7 @@ enum {
 
 	DEAD,	//死亡処理
 	DEAD2,	//
+	DEAD3,	//
 	EFFECT, //エフェクト
 	CLEAR,	//初期化
 };
@@ -363,6 +364,29 @@ void Enemy_Manager::Update() {
 		}
 	}
 }
+static SPR_DATA line_data_e = SPR_DATA{ spr_data::Player_eff,128,60,4,4,-2,-2 }; //4×4
+
+//敵と主人公の間の線
+void Enemy::DotLine() {
+	if ( 20<Dot_timer ) {
+		Dot_alpha -= 255/7;
+		if ( Dot_alpha<0 ) Dot_alpha = 0;
+	}
+	if ( /*0<Dot_alpha*/ Dot_timer<30 ) {
+		V2 e_p;
+		float len = 20;
+		for ( int i = 4; i<((int)len-2); i++ )
+		{
+			D3DXVec2Lerp(&e_p,&pos,&pPlayer->pos,i/len);
+			pEffect_Manager->searchSet(e_p, V2(alpha, 0), line);
+			//Dot_argb = (Dot_alpha << 24 | Dot_argb << 8 >> 8);
+			//spr_data::Render(e_p, &line_data_e,Dot_argb,0);
+		}
+		//ID3DXLine::Draw
+	}
+	Dot_timer++;
+}
+
 
 void Enemy::UIUpdate() {
 	if (sz < JUSTPINTO_SIZE) { //ジャストピントなら
@@ -388,7 +412,11 @@ void Enemy::UIUpdate() {
 		count = 0;
 	}
 	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
+
+
 }
+
+
 void Enemy_Manager::stageUpdate()
 {
 	timer++;
@@ -478,6 +506,9 @@ void Enemy::clear() {
 	flash_timer = 0;
 	noHit_flg = 1;
 	Anime_Box = nullptr;
+	Dot_timer = 0;
+	Dot_argb = 0xFFFFFFFF;
+
 	for (int i = 0; i < 16; i++) {
 		f_work[i] = 0;
 	}
@@ -582,7 +613,14 @@ inline void Enemy_Update(Enemy* obj) {
 	obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
 	if (obj->rangeflg) {
 		pEnemy_Manager->damage_Calculation(obj);
+		//破線描画
+		if ( obj->sz<JUSTPINTO_SIZE ) obj->DotLine();	 //ジャストピント
+		else if ( obj->damageflg==true ) obj->DotLine(); //通常ダメージ
 	}
+
+
+
+
 	//反転チェック
 	if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
 	else obj->custom.reflectX = false;
@@ -641,6 +679,18 @@ void Combo(Enemy* obj) {
 	}
 }
 
+
+//死亡前敵拡大
+void Enemy_Dead_ready(Enemy* obj) {
+	obj->animeData = obj->Anime_Box[normal];
+	obj->custom.scaleX = obj->custom.scaleY += 0.7f;
+	if ( obj->custom.scaleX>5.0f ) obj->custom.scaleX = obj->custom.scaleY = 5.0f;
+	if ( 4.0f<=obj->custom.scaleX )obj->alpha -= 255/4;
+	if ( obj->alpha<0 ) {
+		obj->alpha = 0;
+		obj->state = DEAD2;
+	}
+}
 
 //死亡エフェクト＆消去処理
 void Enemy_Dead(Enemy* obj) {
@@ -788,10 +838,12 @@ void Teleport(Enemy* obj) {
 			obj->timer = 0;
 		}
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_blue++;
-
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;
@@ -826,11 +878,12 @@ void Normal(Enemy* obj) {
 			obj->pos -= E_P(obj, pPlayer, obj->spd); //移動処理
 		}
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
 		pEnemy_Kill->kill_num_pink++;
-
-
 		break;
 	default:
 		break;
@@ -928,9 +981,12 @@ void Tombo(Enemy* obj) {
 			obj->timer = 0;
 		}
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_green++;
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;
@@ -977,10 +1033,12 @@ void zMove(Enemy* obj) {
 		}
 		//ダメージ処理
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_white++;
-
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;
@@ -1016,10 +1074,12 @@ void Big(Enemy* obj) {
 			obj->pos -= E_P(obj, pPlayer, obj->spd); //移動処理
 		}
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_kari++;
-
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;
@@ -1239,10 +1299,12 @@ void Rotation(Enemy* obj) {
 			}
 		}
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_yellow++;
-
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;
@@ -1432,8 +1494,12 @@ void tuto_multifocus(Enemy* obj) {
 		if (obj->damage > obj->damageMAX) obj->state = DEAD;
 
 		break;
-	case DEAD: //死亡処理
+	case DEAD:
+		Enemy_Dead_ready(obj);
+		break;
+	case DEAD2:
 		Enemy_Dead(obj);
+		pEnemy_Kill->kill_num_pink++;
 		break;
 	default:
 		break;

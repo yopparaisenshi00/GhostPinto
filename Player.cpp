@@ -375,8 +375,8 @@ void Player::UIRender() {
 	g.pos = D3DXVECTOR2(960-30, 420);
 	for (int i = 0; i < mltfcs.lv; i++)
 	{
-		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[2],&g.custom,0xFFFFFFFF); //マルチフォーカス満
-		spr_data::Render(V2(g.pos.x,g.pos.y),&multi[1],&g.custom,g.argb); //白
+		spr_data::Render(V2(g.pos.x+custom.ef_ofsX,g.pos.y),&multi[2],&g.custom,0xFFFFFFFF); //マルチフォーカス満
+		spr_data::Render(V2(g.pos.x+custom.ef_ofsX,g.pos.y),&multi[1],&g.custom,g.argb); //白
 		g.pos += V2(0, 45);
 	}
 	//---------------------------------------------------------------------------

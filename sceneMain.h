@@ -70,6 +70,7 @@ public:
 	int kill_num;
 	int addscore;		//コンボリザルト_撮影スコア
 	int eval_justpinto; //コンボリザルト_ジャストピント数
+	int comboscore;		//コンボリザルト_コンボ分スコア
 
 	//初期設定
 	void Init() {
@@ -95,8 +96,10 @@ public:
 	}
 	//スコア加算(倒した後)
 	void add_KillScore(int add) {
-		score += add + (combo * COMBO_BONUS);
+		score += add + (combo * COMBO_BONUS)/*+(eval_justpinto*200)*/;
+		comboscore += add+(combo * COMBO_BONUS);
 		combotimer = 0;
+		//eval_justpinto = 0;
 		combo++;
 		kill_num++;
 	}
@@ -125,10 +128,15 @@ public:
 	int getEval_justpinto() {
 		return eval_justpinto;
 	}
+	//コンボリザルト_コンボ分スコア
+	int getcomboscore() {
+		return comboscore;
+	}
 	//コンボリザルト_コンボタイマー
 	int getcombotimer() {
 		return combotimer;
 	}
+
 
 	void Render() {
 		int x = 800;
