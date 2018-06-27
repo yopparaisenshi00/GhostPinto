@@ -613,13 +613,12 @@ inline void Enemy_Update(Enemy* obj) {
 	obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
 	if (obj->rangeflg) {
 		pEnemy_Manager->damage_Calculation(obj);
+		//破線描画
+		if ( obj->sz<JUSTPINTO_SIZE ) obj->DotLine();	 //ジャストピント
+		else if ( obj->damageflg==true ) obj->DotLine(); //通常ダメージ
 	}
 
 
-	//ジャストピントなら破線描画
-	if ( obj->sz<JUSTPINTO_SIZE ) obj->DotLine();
-	//ダメージを受けているとき破線描画
-	else if ( obj->damageflg==true ) obj->DotLine();
 
 
 	//反転チェック
