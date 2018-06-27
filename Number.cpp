@@ -151,7 +151,7 @@ void Number::Frash_Color_rainbow(Number* obj,int num,
 //•]‰¿—pŠÖ”
 void Number::eval_agree() {
 
-	if ( pScore->getcombotimer()>=COMBO_TIME /*&& (pScore->getCombo()>=5)*/ ) {
+	if ( pScore->getcombotimer()>=COMBO_TIME && (pScore->getCombo()>=5) ) {
 		eval.addscore = pScore->getAddscore();				//•Û‘¶
 		eval.combo = pScore->getCombo();				//•Û‘¶
 		int comboscore = pScore->getcomboscore();
@@ -282,7 +282,7 @@ void Number::Render() {
 	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//Œ‚”j”
 
-	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ /*&& (eval.combo>=5)*/ ) {
+	if ( eval.flg && (pScore->getKill_num() < CLEAR_KILLNUM)/* || timer <= 0*/ && (eval.combo>=5) ) {
 		eval.custom.argb = (eval.alpha << 24 | custom.argb << 8 >> 8);
 		eval_addscore.custom.argb= (eval.alpha << 24 | eval_addscore.custom.argb << 8 >> 8);
 		eval_combo.custom.argb = (eval.alpha << 24 | eval_combo.custom.argb << 8 >> 8);
