@@ -10,9 +10,9 @@
 #define NUM_DIGIT_1LINE		5	//数字画像の1列に並んでいる数
 #define DIGIT_CHANGE_TIMER	2
 
-#define RED		(UINT)0xFFff5656
-#define YELLOW	(UINT)0xFFfff549
-#define WHITE	(UINT)0xFFFFFFFF
+#define RED		(UINT)0xFFff5656 //赤色
+#define YELLOW	(UINT)0xFFfff549 //黄色
+#define WHITE	(UINT)0xFFFFFFFF //白色
 
 #define RB1 (UINT)0xFFe65ffc	//紫色
 #define RB2 (UINT)0xFFff8426	//オレンジ色
@@ -21,6 +21,8 @@
 #define RB5 (UINT)0xFF58eaef	//水色
 #define RB6 (UINT)0xFF5e9bff	//青色
 
+#define FRASHSPD1 10
+#define FRASHSPD2 5
 
 class Number : public OBJ2DEX, public Singleton<Number>
 {

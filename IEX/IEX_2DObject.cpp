@@ -279,6 +279,7 @@ void iex2DObj::customRender(float DstX, float DstY, float DstW, float DstH, floa
 
 	if (!shader || !tech )iexPolygon::Render2D(v, 2, this, dwFlags);
 	else iexPolygon::Render2D(v, 2, this, shader, tech);
+
 }
 
 //void iex2DObj::Render( int DstX, int DstY, int DstW, int DstH, int SrcX, int SrcY, int width, int height, iexShader* shader, char* tech, DWORD color, float z )

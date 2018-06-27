@@ -150,6 +150,9 @@ public:
 	bool noHit_flg;
 	bool zlock_flg;
 
+	int Dot_timer;
+	int Dot_alpha;
+	D3DCOLOR Dot_argb;
 
 	SPR_DATA**	Anime_Box;
 	int flash_timer;
@@ -187,6 +190,7 @@ public:
 	// 
 	//-----------------------------------------------------
 	virtual void UIUpdate();//UIï`âÊçXêV
+	virtual void DotLine();//îjê¸ï`âÊ
 
 
 	virtual void animation() {
