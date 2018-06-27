@@ -843,7 +843,7 @@ void Teleport(Enemy* obj) {
 		break;
 	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_pink++;
+		pEnemy_Kill->kill_num_blue++;
 		break;
 	default:
 		break;
@@ -986,7 +986,7 @@ void Tombo(Enemy* obj) {
 		break;
 	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_pink++;
+		pEnemy_Kill->kill_num_green++;
 		break;
 	default:
 		break;
@@ -1038,7 +1038,7 @@ void zMove(Enemy* obj) {
 		break;
 	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_pink++;
+		pEnemy_Kill->kill_num_white++;
 		break;
 	default:
 		break;
@@ -1079,7 +1079,7 @@ void Big(Enemy* obj) {
 		break;
 	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_pink++;
+		pEnemy_Kill->kill_num_kari++;
 		break;
 	default:
 		break;
@@ -1304,7 +1304,7 @@ void Rotation(Enemy* obj) {
 		break;
 	case DEAD2:
 		Enemy_Dead(obj);
-		pEnemy_Kill->kill_num_pink++;
+		pEnemy_Kill->kill_num_yellow++;
 		break;
 	default:
 		break;
