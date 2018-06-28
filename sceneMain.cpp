@@ -67,7 +67,7 @@ static IMG_DATA IMG_Main[] = {
 	{ spr_data::Number,"DATA\\Public\\number.png" },
 	{ spr_data::FADE_IN1 ,"DATA\\Public\\delta.png" },
 	{ spr_data::FADE_OUT1,"DATA\\Public\\delta.png" },
-	{ spr_data::FADE_IN2 ,"DATA\\Public\\black.png" },
+	{ spr_data::FADE_IN2 ,"DATA\\Public\\white.png" },
 	{ spr_data::FADE_OUT2,"DATA\\Public\\black.png" },
 
 	{ spr_data::GAMECLEAR,"DATA\\Scene\\GAME_CLEAR.png" },
@@ -104,6 +104,7 @@ bool sceneMain::Initialize()
 	state = 0;
 	count_down = 0;
 	scene_timer = 0;
+	fade_argb = 0x00000000;
 
 	//pPlayer;
 	//pFrame;
@@ -186,8 +187,6 @@ void	sceneMain::Update()
 		state = FADE_IN;
 	case FADE_IN:
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
-		
-
 		state = READY;
 	case READY:
 
@@ -238,19 +237,27 @@ void	sceneMain::Update()
 		}
 		else timer--;
 
-		if (KEY_Get(KEY_SPACE) == 3) state = GAMEOVER;
-		else if (KEY_Get(KEY_ENTER) == 3) state = GAMECLEAR;
+		//デバッグ用
+		//if (KEY_Get(KEY_SPACE) == 3) state = GAMEOVER;
+		//else if (KEY_Get(KEY_ENTER) == 3) state = GAMECLEAR;
 
 		if ( timer<=0 )timer = 0;
 		break;
 
 	case GAMEOVER:
-		MainFrame->ChangeScene(new sceneOver());
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneOver());
+		}
 		break;
 	case GAMECLEAR:
-		MainFrame->ChangeScene(new sceneClear());
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneClear());
+		}
 		break;
-
 	default:
 		break;
 	}
@@ -308,8 +315,12 @@ void	sceneMain::Render()
 	case MAIN:
 	case FADE_OUT:
 	case GAMEOVER:
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //暗転
+		break;
 	case GAMECLEAR:
-default:
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //暗転
+		break;
+	default:
 		break;
 	}
 

@@ -29,6 +29,7 @@ bool sceneOver::Initialize()
 	spr_data::Load(img_over);
 	state = 0;
 	timer = 0;
+	fade_over = 0xDD000000;
 	return TRUE;
 }
 
@@ -54,7 +55,16 @@ void sceneOver::Update()
 void sceneOver::Render()
 {
 	switch (state) {
-		case 0:
+		case 0: //フェードイン
+			spr_data::Render(V2(0,0), &over_back); //ゲームクリア画面
+			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,fade_over,0); //フェードイン
+			fade_over = pMain->fade_in(fade_over,0x11000000);
+			if ( fade_over<=0x11000000 ) {
+				fade_over = 0x00000000;
+				state++;
+			}
+			break;
+		case 1:
 			//spr_data::Render(V2(200, 200), &over); //ゲームオーバー文字
 			spr_data::Render(V2(0, 0), &over_back); //ゲームオーバー画面
 			//PushStartButton----------------------------------------------------

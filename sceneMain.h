@@ -7,9 +7,9 @@
 #define _SCENE_MAIN_H_
 #include "system\\Scene.h"
 
-#define CLEAR_KILLNUM (60)
+#define CLEAR_KILLNUM (4)
 #define COUNT_DOWN_TIME (2)
-class	sceneMain : public Scene
+class	sceneMain : public Scene ,public Singleton<sceneMain>
 {
 private:
 	iexView*	view;
@@ -19,6 +19,7 @@ private:
 	int count_down;
 	int scene_timer;
 	int stage_no;
+	UINT fade_argb;
 public:
 
 	//MAP*		map;
@@ -36,7 +37,20 @@ public:
 	void Update();	//	çXêV
 	void Render();	//	ï`âÊ
 
+
+	UINT fade_out(UINT argb,UINT spd) {
+		//argb += 0x11000000;
+		argb += spd;
+		return argb;
+	}
+	UINT fade_in(UINT argb,UINT spd) {
+		//argb -= 0x11000000;
+		argb -= spd;
+		return argb;
+	}
 };
+#define pMain (sceneMain::getInstance())
+
 
 
 
