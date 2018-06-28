@@ -540,10 +540,10 @@ float Enemy_Manager::get_sz(float z) {
 	else {
 		sz = (ez) - (fz);
 	}
-	sz -= pFrame->getPintoSize();
-	if (sz < 0) {
-		sz = 0;
-	}
+	//sz -= pFrame->getPintoSize();
+	//if (sz < 0) {
+	//	sz = 0;
+	//}
 	//	if (sz > 90)sz = 180 - sz;
 	return sz;
 }
