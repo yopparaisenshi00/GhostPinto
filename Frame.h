@@ -91,6 +91,7 @@ public:
 			exorcise -= add;
 		}
 	}
+	D3DCOLOR Frash_Color_pinto(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1,D3DCOLOR argb2,D3DCOLOR argb3);
 
 	float exorcise;				//—ì—Í”’l@1 ` 100
 private:
@@ -113,6 +114,7 @@ private:
 	int count;
 
 	D3DCOLOR light_argb; //”­Œõ—p
+
 };
 
 

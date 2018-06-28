@@ -31,7 +31,8 @@ SPR_DATA ui_data[] = {
 	{ spr_data::UI6,  0,64*12,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//TIMETOSHOOT
 	{ spr_data::UI6,  0,64*13,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//COMBO COUNT
 	{ spr_data::UI6,  0,64*14,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//JUST COUNT
-	{ spr_data::UI6,  0,64*15,  32*7,40,  0,0,  (int)((32*7)*0.75f),(int)(40*0.6f) },//TOTAL SCORE
+	{ spr_data::UI6,  0,64*15,  32*7,40,  0,0,  (int)((32*7)*0.90f),(int)(40*0.75f) },//TOTAL SCORE
+	{ spr_data::Number,  64*2,64*2,64,64,-32,-32,48,48 },//スラッシュ
 };
 
 
@@ -73,7 +74,7 @@ Number::Number() {
 	eval_addscore.SetSize((int)(32 * 0.7f));
 	eval_combo.SetSize((int)(32 * 0.7f));
 	eval_justpinto.SetSize((int)(32 * 0.7f));
-	eval_total.SetSize((int)(32 * 0.7f));
+	eval_total.SetSize((int)(32 * 0.9f));
 
 	//右下
 	//eval.result_pos =	V2(680,320+0);
@@ -87,7 +88,7 @@ Number::Number() {
 	eval.time_pos =		V2(-10,200+40);
 	eval.combo_pos =	V2(-10,200+80);
 	eval.just_pos =		V2(-10,200+120);
-	eval.total_pos =	V2(-10,200+160);
+	eval.total_pos =	V2(5,200+160);
 
 	//左上
 	//eval.result_pos =	V2(150,20+0);
@@ -274,7 +275,8 @@ void Number::Render() {
 	score.Render(790, 60, 5);								//スコア描画
 	gametimer.Render3(400, 15, 2, gametimer_argb);			//ゲームタイマー (上2ケタ)描画
 	gametimer2.Render3(400 + 125, 39, 2, gametimer_argb);	//ゲームタイマー2(下2ケタ)描画
-	crushnum.Render(770, 124, 2);							//撃破数描画
+	crushnum.Render(750, 124, 2);							//撃破数描画
+	//spr_data::Render(V2(865, 175), &ui_data[7]);			//スラッシュ
 	crushnum2.Render(875, 150, 2);							//撃破数描画
 	if (pFrame->exorciseDwon_timer>0) {						//霊力タイマー
 		exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画
@@ -288,10 +290,10 @@ void Number::Render() {
 		eval_combo.custom.argb = (eval.alpha << 24 | eval_combo.custom.argb << 8 >> 8);
 		eval_justpinto.custom.argb = (eval.alpha << 24 | eval_justpinto.custom.argb << 8 >> 8);
 		eval_total.custom.argb = (eval.alpha << 24 | eval_total.custom.argb << 8 >> 8);
-		eval_addscore.Render3(	eval.time_pos.x  +180,  eval.time_pos.y	-14,3,eval_addscore.custom.argb);
-		eval_combo.Render3(		eval.combo_pos.x +180,  eval.combo_pos.y-14,2,eval_combo.custom.argb);
-		eval_justpinto.Render3(	eval.just_pos.x  +180,  eval.just_pos.y	-14,2,eval_justpinto.custom.argb);
-		eval_total.Render3(		eval.total_pos.x +180,  eval.total_pos.y-14,4,eval_total.custom.argb);
+		eval_addscore.Render3(	eval.time_pos.x  +205+5,  eval.time_pos.y	-14,3,eval_addscore.custom.argb);
+		eval_combo.Render3(		eval.combo_pos.x +205+5,  eval.combo_pos.y-14,2,eval_combo.custom.argb);
+		eval_justpinto.Render3(	eval.just_pos.x  +205+5,  eval.just_pos.y	-14,2,eval_justpinto.custom.argb);
+		eval_total.Render3(		eval.total_pos.x +190+5,  eval.total_pos.y-14,4,eval_total.custom.argb);
 		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);//コンボリザルト------------------------
 		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval_addscore.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
 		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval_combo.custom.argb);	//COMBO COUNT：倒した数

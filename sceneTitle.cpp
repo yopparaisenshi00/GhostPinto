@@ -185,7 +185,10 @@ void sceneTitle::Update()
 
 
 
-		if ( KEY_Get(KEY_SPACE)==3 ) key_flg = true;
+		if ( KEY_Get(KEY_SPACE)==3 ) {
+			IEX_PlaySound(SE_JUSTPINTO, FALSE); //START‚ð‰Ÿ‚µ‚½‚Æ‚«‚ÌSE
+			key_flg = true;
+		}
 		if ( key_flg ) timer++;
 
 		if ( timer>=50 ) {

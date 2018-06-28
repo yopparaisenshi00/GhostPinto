@@ -130,6 +130,7 @@ static SPR_DATA multi_data = SPR_DATA{spr_data::Mulch_eff,0,0,128,128,-64,-64};
 //static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128+2,3*6,2,2,-2/1,-2/1 };
 static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128,60,4,4,-2,-2 }; //4~4
 //static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,128,60,2,2,-1,-1 }; //2~2
+//static SPR_DATA line_data = SPR_DATA{ spr_data::Player_eff,320-64,0,8,8,-4,-4 };
 
 
 
@@ -1287,7 +1288,7 @@ void line(Effect* obj) {
 			obj->timer = 0;
 			obj->alpha = (int)(255*0.5f);
 			//obj->custom.scaleMode = CENTER;
-			//obj->custom.scaleX = obj->custom.scaleY = 2.0f;
+			//obj->custom.scaleX = obj->custom.scaleY = 0.7f;
 			obj->custom.argb = 0xFFd6fff9;
 			obj->state=MOVE;
 			//break;
