@@ -311,7 +311,7 @@ void sceneTitle::Render()
 		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
 	}
 	if ( state==TUTORIAL ) {
-		pPlayer->Render();
+		//pPlayer->Render();
 		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
 	}
 
