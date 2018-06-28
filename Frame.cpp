@@ -334,6 +334,7 @@ void Frame::exorcise_Update() {
 		else {
 			f_timer &= 0;
 		}
+
 		break;
 	}
 
@@ -420,6 +421,7 @@ void Frame::use_Multifocus(int power) {
 //----------------------------------------------------------------------------------------------------
 void Frame::use_lockPinto() {
 	if(!exorciseDwon_flg){
+		f_timer &= 0;
 		//exorcise -= USE_PINTOLOCK; //Enemy_Manager::damage_Calculation�Ɉڍs
 		lockPinto_trg = true;
 	}
