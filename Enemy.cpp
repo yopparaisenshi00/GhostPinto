@@ -1388,22 +1388,8 @@ void tuto_rock(Enemy* obj) {
 		//break;
 	case BEGIN:
 		//ダメージ処理
-		if (!obj->zlock_flg) {
-			obj->sz = pEnemy_Manager->get_sz(obj->z);
-		}
-		if (obj->sz < pFrame->getPintoSize())
-		{
-
-			if (pFrame->lockPinto_trg == true) {
-				pEffect_Manager->searchSet(obj->pos, V2(0, 0), pinto_lock); //ピントロックエフェクト
-				pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
-				obj->zlock_flg = true;
-			}
-		}
-		obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
-		if (obj->rangeflg) {
-			pEnemy_Manager->damage_Calculation(obj);
-		}
+	
+		Enemy_Update(obj);
 		if (!obj->zlock_flg) {
 			obj->damage = 0;
 		}
