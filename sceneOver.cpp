@@ -64,11 +64,14 @@ void sceneOver::Render()
 				fade_argb = 0x00000000;
 				state++;
 			}
-			IEX_PlaySound(SE_GAMEOVER, FALSE);//ゲームオーバーSE
 			break;
 		case 1:
 			//spr_data::Render(V2(200, 200), &over); //ゲームオーバー文字
 			spr_data::Render(V2(0, 0), &over_back); //ゲームオーバー画面
+			if (gameover_se_flg == false) {
+				IEX_PlaySound(SE_GAMEOVER, FALSE);//ゲームオーバーSE
+				gameover_se_flg = true;
+			}
 			//PushStartButton----------------------------------------------------
 			if ( timer>=20 ) {
 				if ( (timer%70*2)>=70 ) over_psb_argb = 0xFFFFFFFF;
