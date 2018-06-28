@@ -6,6 +6,7 @@ static enum {
 	BGM_MAIN = 0,	//メインBGM
 	BGM_TITLE,	//タイトルBGM
 
+	SE_COUNT,	//スタートカウント
 	SE_LOCK,	//ロックした時
 	SE_PINTO,	//ピントが合った時
 	SE_JUSTPINTO,	//ジャストピントで敵を倒した時

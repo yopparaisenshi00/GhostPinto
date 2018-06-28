@@ -190,6 +190,7 @@ void	sceneMain::Update()
 		fade_argb = fade_in(fade_argb,0x11000000);
 		if ( fade_argb<0x11000000 ) {
 			fade_argb = 0x00000000;
+			IEX_PlaySound(SE_COUNT, FALSE);	//カウントダウン
 			state = READY;
 		}
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
@@ -200,6 +201,7 @@ void	sceneMain::Update()
 		if (count_down_timer > 60) {
 			count_down--;
 			count_down_timer = 0;
+			if (count_down >= 0)IEX_PlaySound(SE_COUNT, FALSE);	//カウントダウン
 		}
 		if (count_down < 0)state = MAIN;
 		//pPlayer->R_Update();
