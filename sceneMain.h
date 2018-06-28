@@ -7,7 +7,7 @@
 #define _SCENE_MAIN_H_
 #include "system\\Scene.h"
 
-#define CLEAR_KILLNUM (4)
+#define CLEAR_KILLNUM (60)
 #define COUNT_DOWN_TIME (2)
 class	sceneMain : public Scene ,public Singleton<sceneMain>
 {
