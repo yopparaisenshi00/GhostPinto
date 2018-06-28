@@ -105,10 +105,7 @@ void Frame::Update() {
 		exorcise_Update();
 
 		//マルチフォーカス処理
-		if (multifocus_flg == true && multi_flg == false) {
-			pinto_argb = 0xFFFF0000; //赤にする
-			multi_flg = true;
-		}
+		if (multifocus_flg == true && multi_flg == false) multi_flg = true;
 		if (multifocus_flg == false && multi_flg == true) {
 			pinto_argb = 0xFFFFFFFF; //falseなら白にする
 			multi_flg = false;

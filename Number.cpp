@@ -32,7 +32,7 @@ SPR_DATA ui_data[] = {
 	{ spr_data::UI6,  0,64*13,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//COMBO COUNT
 	{ spr_data::UI6,  0,64*14,  32*6,40,  0,0,  (int)((32*6)*0.75f),(int)(40*0.6f) },//JUST COUNT
 	{ spr_data::UI6,  0,64*15,  32*7,40,  0,0,  (int)((32*7)*0.90f),(int)(40*0.75f) },//TOTAL SCORE
-	{ spr_data::Number,  64*2,64*2,64,64,-32,-32,48,48 },//スラッシュ
+	{ spr_data::Number,  64*2,64*2,64,64,-32,-32,42,42 },//スラッシュ
 };
 
 
@@ -276,7 +276,7 @@ void Number::Render() {
 	gametimer.Render3(400, 15, 2, gametimer_argb);			//ゲームタイマー (上2ケタ)描画
 	gametimer2.Render3(400 + 125, 39, 2, gametimer_argb);	//ゲームタイマー2(下2ケタ)描画
 	crushnum.Render(750, 124, 2);							//撃破数描画
-	//spr_data::Render(V2(865, 175), &ui_data[7]);			//スラッシュ
+	spr_data::Render(V2(865, 180), &ui_data[7]);			//スラッシュ
 	crushnum2.Render(875, 150, 2);							//撃破数描画
 	if (pFrame->exorciseDwon_timer>0) {						//霊力タイマー
 		exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画

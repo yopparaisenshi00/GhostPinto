@@ -1068,7 +1068,7 @@ void Big(Enemy* obj) {
 		obj->damageMAX = ENEMY_HP_E;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = B_scale;
-		obj->size = V2(40, 40);
+		obj->size = V2(32, 32);
 		obj->score = 200;
 		obj->state = APPEARANCE;
 		//break;
