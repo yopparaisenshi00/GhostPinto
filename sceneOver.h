@@ -20,6 +20,7 @@ public:
 	bool Initialize();
 	void Update();
 	void Render();
+	bool gameover_se_flg;
 };
 
 //*****************************************************************************
