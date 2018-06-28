@@ -88,7 +88,6 @@ IMG_DATA img_title[] = {
 //‰Šú‰»
 bool sceneTitle::Initialize()
 {
-	
 	timer = 0;
 	state = 0;
 	dust_timer = 150;
