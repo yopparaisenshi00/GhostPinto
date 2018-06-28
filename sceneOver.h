@@ -15,6 +15,7 @@ private:
 	int timer;
 
 	D3DCOLOR over_psb_argb;
+	D3DCOLOR fade_over;
 public:
 	~sceneOver();
 	bool Initialize();

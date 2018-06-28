@@ -84,7 +84,7 @@ bool sceneClear::Initialize()
 	time_pos = V2(640+f, 475+g);		//timeの位置
 	totl_pos = V2(640+f, 525+g);		//totlの位置
 	clear_psb_argb = 0xFFFFFFFF;		//PushStartButtonの色
-	dim_argb = 0x11000000;				//暗転の色
+	dim_argb = 0xDD000000;				//フェードイン,暗転の色
 
 	return TRUE;
 }
@@ -113,8 +113,16 @@ void sceneClear::Update()
 void sceneClear::Render()
 {
 	switch (state) {
-		case 0: //ゲームクリア画面表示
-			//spr_data::Render(V2(200,200), &clear); //ゲームクリア文字
+		case 0: //フェードイン
+			spr_data::Render(V2(0,0), &clear_back); //ゲームクリア画面
+			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0); //フェードイン
+			dim_argb = pMain->fade_in(dim_argb,0x11000000);
+			if ( dim_argb<0x11000000 ) {
+				dim_argb = 0x00000000;
+				state++;
+			}
+			break;
+		case 1: //ゲームクリア画面表示
 			spr_data::Render(V2(0,0), &clear_back); //ゲームクリア画面
 			//PushStartButton--------------------------------------------------------------
 			if ( timer++>=40 ) {
@@ -128,24 +136,21 @@ void sceneClear::Render()
 				state++;
 			}
 			break;
-		case 1: //暗転
-			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0);
-			if ( timer++>6 ) {
-				state++;
-				timer = 0;
-			}
+		case 2: //暗転
+			spr_data::Render(V2(0,0), &clear_back); //ゲームクリア画面
+			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0); //暗転
+			dim_argb = pMain->fade_out(dim_argb,0x11000000);
+			if ( dim_argb>0x77000000 ) state++;
 			break;
-		case 2:
+		case 3:
 			if ( timer++>10 ) {
 				state++;
 				timer = 0;
 			}
 			break;
-		case 3:
+		case 4:
 			spr_data::Render(V2(0,0), &clear_back); //ゲームクリア画面
-			dim_argb = 0x66000000;
 			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0); //暗転
-
 			spr_data::Render(V2(SCREEN_WIDTH/2, 50), &clear_result); //RESULT文字
 
 			//enemy
@@ -244,7 +249,7 @@ void sceneClear::Render()
 
 			timer++;
 			break;
-		case 4:
+		case 5:
 			spr_data::Render(V2(0,0), &clear_back); //ゲームクリア画面
 			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0); //暗転
 			 //ランキング描画-----------------------------------------------------------------------------------
@@ -259,10 +264,22 @@ void sceneClear::Render()
 				else clear_psb_argb = 0x0000000;
 				spr_data::Render(V2(480,500),&clear_psb,clear_psb_argb,0);
 				//-----------------------------------------------------------------------------
-				if (KEY_Get(KEY_SPACE) == 3 || timer>60*20 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+				if ( KEY_Get(KEY_SPACE)==3||timer>60*20 ) {
+					MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+					//state++;
+					//dim_argb = 0x00000000;
+				}
 			}
 			timer++;
 			break;
+		//case 6: //フェードアウト
+		//	iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,dim_argb,0);
+		//	dim_argb = pMain->fade_out(dim_argb);
+		//	if ( dim_argb>0xEE000000 ) {
+		//		dim_argb = 0xFF000000;
+		//		MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+		//	}
+		//	break;
 		default:
 			break;
 	}

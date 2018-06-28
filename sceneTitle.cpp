@@ -88,7 +88,6 @@ IMG_DATA img_title[] = {
 //‰Šú‰»
 bool sceneTitle::Initialize()
 {
-	
 	timer = 0;
 	state = 0;
 	dust_timer = 150;
@@ -160,10 +159,9 @@ void sceneTitle::Update()
 
 		//break;
 	case FADE_IN:
-		//		pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
-
-				// ƒƒCƒ“ˆ—‚Ö
+		//pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
 		state = MAIN;
+
 		//break;
 	case MAIN:
 

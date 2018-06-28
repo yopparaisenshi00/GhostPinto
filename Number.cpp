@@ -155,7 +155,7 @@ void Number::eval_agree() {
 		eval.addscore = pScore->getAddscore();				//保存
 		eval.combo = pScore->getCombo();				//保存
 		int comboscore = pScore->getcomboscore();
-		//eval.just = pScore->getEval_justpinto();			//保存
+		eval.just = pScore->getEval_justpinto();			//保存
 		eval.total = eval.addscore+comboscore/*+eval.just*200*/;	//TOTAL計算
 
 		eval_addscore.SetNum(eval.addscore,3);	//撮影スコア（映してる間増加するスコア）

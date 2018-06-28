@@ -5,7 +5,7 @@
 #define DAMAGE_MAX (700) //iran
 
 //ƒGƒlƒ~[‚g‚oŒQ
-#define ENEMY_HP_A (22700)//•Y‚¤“z
+#define ENEMY_HP_A (700)//•Y‚¤“z
 #define ENEMY_HP_B (600)//•’Ê‚Ì“z
 #define ENEMY_HP_C (700)//ƒ[ƒv‚·‚é“z
 #define ENEMY_HP_D (700)//Z’lˆÚ“®‚·‚é“z
@@ -29,7 +29,7 @@
 
 #define rand_PINTO		(10000)//“G‚ÌZ’lƒ‰ƒ“ƒ_ƒ€
 //#define rand_PINTO		((rand()%(PINTO_MAX*2)) -PINTO_MAX)	//“G‚ÌZ’lƒ‰ƒ“ƒ_ƒ€
-#define DAMAGE (9)
+#define DAMAGE (10)
 #define JUSTPINTO_SIZE (2)
 
 //enum {
