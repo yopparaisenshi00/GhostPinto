@@ -520,7 +520,7 @@ void Enemy::Init() {
 }
 void Enemy::Update()
 {
-	animation();
+	animetion();
 }
 
 

@@ -60,7 +60,7 @@ public:
 		move_y_ok,
 		//
 	};
-
+	int timer;
 	OBJ2D operater;
 	OBJ2D master_char;
 	OBJ2D suboperater;

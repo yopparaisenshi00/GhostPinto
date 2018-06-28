@@ -68,17 +68,42 @@ public:
 	bool init_fg;
 	float sz;
 	float z;
-	
-
+	V2 reduced;
+	Animetion* animetion_data;
 
 	void clear() {
 		OBJ2DEX::clear();
 		wpos = V2(0,0);
 		init_fg = 0;
 		move = nullptr;
+		animetion_data = nullptr;
 		sz = 0;
 		z = 0;
+		reduced = V2(1, 1);
 	}
+
+	virtual void animetion() {
+		aframe++;
+		if (animetion_data)
+		{
+			if (aframe > animetion_data[animeNO].frameNum)
+			{
+				aframe = 0;
+				animeNO++;
+				//if (animeData[animeNO].no < 0)
+				//{
+				//	animeNO = 0;
+				//}
+				switch (animetion_data[animeNO].frameNum)
+				{
+				case ANIM_FLG_STOP:	animeNO--;	break;
+				case ANIM_FLG_LOOP:	animeNO = 0;break;
+				}
+			}
+			data = animetion_data[animeNO].data;
+		}
+	}
+
 	V2 wpos;//ƒ[ƒ‹ƒhÀ•W
 
 	void Init();
@@ -209,6 +234,8 @@ void BG_Display_a(LAND_SCAPE_OBJ*);
 void BG_Display_b(LAND_SCAPE_OBJ*);
 void BG_Display_c(LAND_SCAPE_OBJ*);
 void BG_Display_d(LAND_SCAPE_OBJ*);
+void BG_Fly_capsule_l_break(LAND_SCAPE_OBJ*);
+void CircleExt(LAND_SCAPE_OBJ*);
 
 #define pLandScape (LandScape::getInstance())
 

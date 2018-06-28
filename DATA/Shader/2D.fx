@@ -182,49 +182,49 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 	} 
 	else if(0.5 > z){
 		//sample
-		//tpos = float2(round((In.Tex.x) * 1000) / 1000, round((In.Tex.y) * 1000) / 1000);
-		//tpos2 = float2(round((In.Tex.x) * 1000) / 1000, round((In.Tex.y) * 1000) / 1000);
+		//tpos = float2(trunc((In.Tex.x) * 1000) / 1000, trunc((In.Tex.y) * 1000) / 1000);
+		//tpos2 = float2(trunc((In.Tex.x) * 1000) / 1000, trunc((In.Tex.y) * 1000) / 1000);
 		int Reduced = 1000 * (1 - z);
 
 		Color2 = tex2D(DecaleSamp, In.Tex);
-		tpos = float2(round(In.Tex.x * Reduced )/ Reduced ,round(In.Tex.y * Reduced )/Reduced );
+		tpos = float2(trunc(In.Tex.x * Reduced )/ Reduced ,trunc(In.Tex.y * Reduced )/Reduced );
 		temp0 = tex2D(DecaleSamp, tpos);
 		
-		tpos = float2(round((In.Tex.x + 0.002f) * Reduced ) / Reduced ,round(In.Tex.y * Reduced ) / Reduced );
-		tpos2= float2(round((In.Tex.x - 0.002f) * Reduced ) / Reduced , round(In.Tex.y * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x + 0.002f) * Reduced ) / Reduced ,trunc(In.Tex.y * Reduced ) / Reduced );
+		tpos2= float2(trunc((In.Tex.x - 0.002f) * Reduced ) / Reduced , trunc(In.Tex.y * Reduced ) / Reduced );
 		temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 		
-		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x + 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y) * Reduced ) / Reduced );
 		temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 		
-		tpos = float2(round((In.Tex.x + 0.008f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced ) / Reduced , round((In.Tex.y) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x + 0.008f) * Reduced ) / Reduced , trunc((In.Tex.y) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced ) / Reduced , trunc((In.Tex.y) * Reduced ) / Reduced );
 		temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 		//	c	14t
 		
-		tpos = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y +  0.002f) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y - 0.002f) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x ) * Reduced ) / Reduced , trunc((In.Tex.y +  0.002f) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x ) * Reduced ) / Reduced , trunc((In.Tex.y - 0.002f) * Reduced ) / Reduced );
 		temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-		tpos = float2(round((In.Tex.x ) * Reduced) / Reduced, round((In.Tex.y +   0.004) * Reduced) / Reduced);
-		tpos2 = float2(round((In.Tex.x ) * Reduced ) / Reduced , round((In.Tex.y - 0.004) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x ) * Reduced) / Reduced, trunc((In.Tex.y +   0.004) * Reduced) / Reduced);
+		tpos2 = float2(trunc((In.Tex.x ) * Reduced ) / Reduced , trunc((In.Tex.y - 0.004) * Reduced ) / Reduced );
 		temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 
-		tpos = float2(round((In.Tex.x )* Reduced ) / Reduced , round((In.Tex.y +  0.008f) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x) * Reduced ) / Reduced , round((In.Tex.y - 0.008f) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x )* Reduced ) / Reduced , trunc((In.Tex.y +  0.008f) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x) * Reduced ) / Reduced , trunc((In.Tex.y - 0.008f) * Reduced ) / Reduced );
 		temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 		//	ã‰¡	8t	
-		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y  + 0.004f) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y + 0.004f) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x + 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y  + 0.004f) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y + 0.004f) * Reduced ) / Reduced );
 		temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 		//Color += temp[] * 2;     //84
 		//	‰º‰¡	8t
-		tpos = float2(round((In.Tex.x + 0.004f) * Reduced ) / Reduced , round((In.Tex.y - 0.004f) * Reduced ) / Reduced );
-		tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced ) / Reduced , round((In.Tex.y - 0.004f) * Reduced ) / Reduced );
+		tpos = float2(trunc((In.Tex.x + 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y - 0.004f) * Reduced ) / Reduced );
+		tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced ) / Reduced , trunc((In.Tex.y - 0.004f) * Reduced ) / Reduced );
 		temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 		int count = 0 ;
 
@@ -285,44 +285,44 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 			int Reduced = 1000 * (1 - z);
 
 			Color2 = tex2D(DecaleSamp, In.Tex);
-			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos = float2(trunc(In.Tex.x * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
 			temp0 = tex2D(DecaleSamp, tpos);
 
-			tpos = float2(round((In.Tex.x +  0.002f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.002f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x +  0.002f) * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.002f) * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
 			temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x + 0.004f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.004f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
 			temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x +  0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x +  0.008f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
 			temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			//	c	14t
 
-			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y +  0.002f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.002f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y +  0.002f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y - 0.002f) * Reduced) / Reduced);
 			temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y +	0.004) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.004) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y +	0.004) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y - 0.004) * Reduced) / Reduced);
 			temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 
-			tpos = float2(round((In.Tex.x)* Reduced) / Reduced, round((In.Tex.y +   0.008f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x)* Reduced) / Reduced, trunc((In.Tex.y +   0.008f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y - 0.008f) * Reduced) / Reduced);
 			temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			//	ã‰¡	8t	
-			tpos = float2(round((In.Tex.x +  0.004f) * Reduced) / Reduced, round((In.Tex.y + 0.004f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y + 0.004f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x +  0.004f) * Reduced) / Reduced, trunc((In.Tex.y + 0.004f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced) / Reduced, trunc((In.Tex.y + 0.004f) * Reduced) / Reduced);
 			temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 			//Color += temp[] * 2;     //84
 			//	‰º‰¡	8t
-			tpos = float2(round((In.Tex.x + 0.004f) * Reduced) / Reduced, round((In.Tex.y - 0.004f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round((In.Tex.y - 0.004f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.004f) * Reduced) / Reduced, trunc((In.Tex.y - 0.004f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced) / Reduced, trunc((In.Tex.y - 0.004f) * Reduced) / Reduced);
 			temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 			int count = 0;
 
@@ -365,43 +365,43 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 			
 			int Reduced = 1000 * z;
 
-			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos = float2(trunc(In.Tex.x * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
 			temp0 = tex2D(DecaleSamp, tpos);
 
-			tpos = float2(round((In.Tex.x +	0.004f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.004f) * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x +	0.004f) * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.004f) * Reduced) / Reduced, trunc(In.Tex.y * Reduced) / Reduced);
 			temp1 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.008f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
 			temp2 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x + 0.012f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.012f) * Reduced) / Reduced, round((In.Tex.y) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.010f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.010f) * Reduced) / Reduced, trunc((In.Tex.y) * Reduced) / Reduced);
 			temp3 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			//	c	14t
-			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y + 0.004f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y + 0.004f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced) / Reduced, trunc((In.Tex.y - 0.008f) * Reduced) / Reduced);
 			temp4 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
-			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y + 0.008) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.008) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y + 0.008) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y - 0.008) * Reduced) / Reduced);
 			temp5 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 
-			tpos = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y + 0.012f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x) * Reduced) / Reduced, round((In.Tex.y - 0.012f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y + 0.010f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x) * Reduced) / Reduced, trunc((In.Tex.y - 0.010f) * Reduced) / Reduced);
 			temp6 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			//	ã‰¡	8t	
-			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y + 0.008f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.008f) * Reduced) / Reduced, trunc((In.Tex.y + 0.008f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced) / Reduced, trunc((In.Tex.y + 0.008f) * Reduced) / Reduced);
 			temp7 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 			//Color += temp[] * 2;     //84
 			//	‰º‰¡	8t
-			tpos = float2(round((In.Tex.x + 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
-			tpos2 = float2(round((In.Tex.x - 0.008f) * Reduced) / Reduced, round((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			tpos = float2(trunc((In.Tex.x + 0.008f) * Reduced) / Reduced, trunc((In.Tex.y - 0.008f) * Reduced) / Reduced);
+			tpos2 = float2(trunc((In.Tex.x - 0.008f) * Reduced) / Reduced, trunc((In.Tex.y - 0.008f) * Reduced) / Reduced);
 			temp8 = tex2D(DecaleSamp2, tpos) + tex2D(DecaleSamp2, tpos2);
 
 			int count2 = 0;

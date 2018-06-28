@@ -2,11 +2,10 @@
 #ifndef _OBJ2D_H_
 #define _OBJ2D_H_ 
 
-class Animetion {
-	Animetion() {}
-
+struct Animetion {
+	public:
 	SPR_DATA* data;
-
+	int frameNum;
 };
 
 class OBJ2D
@@ -27,7 +26,6 @@ public:
 	int				timer;		// タイマー（使い方は自由）
 	int				type;
 	SPR_DATA*		data;
-	SPR_DATA**		data_box;
 
 
 	int sc_w;
@@ -67,6 +65,7 @@ public:
 	int anime_timer;
 
 	SPR_DATA* animeData;
+	SPR_DATA**	data_box;
 
 	//OBJ2DEX() {clear();};
 	//virtual ~OBJ2DEX() {clear();};
@@ -77,15 +76,13 @@ public:
 		animeNO = 0;
 		animeData = nullptr;
 		anime_timer = 0;
-		
+		data_box = nullptr;
 	}
 
-	virtual void animation() {
+	virtual void animetion() {
 		aframe++;
-
 		if (animeData)
 		{
-			//aframe++;
 			if (aframe > animeData[animeNO].frameNum)
 			{
 				aframe = 0;
@@ -102,7 +99,8 @@ public:
 			}
 			data = &animeData[animeNO];
 		}
-	};
+	}
+
 };
 
 #define	SPR_STOP		SPR_DATA{ ANIM_FLG_STOP,	   0, 0,  0,  0,   0,   0 }

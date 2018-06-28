@@ -31,8 +31,8 @@ static SPR_DATA anime_Jet_data[] = {
 
 //敵消滅エフェクト素材
 static SPR_DATA anime_circleext_data[] = {
-	SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,0 },
-	SPR_DATA{ spr_data::Circle, 128 * 1, 0, 128, 128, -64, -64,1 },
+	SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,2 },
+	SPR_DATA{ spr_data::Circle, 128 * 1, 0, 128, 128, -64, -64,2 },
 	SPR_DATA{ spr_data::Circle, 128 * 4, 0, 128, 128, -64, -64,2 },
 	SPR_DATA{ spr_data::Circle, 128 * 6, 0, 128, 128, -64, -64,3 },
 	SPR_LOOP };
@@ -166,7 +166,7 @@ void Effect::Update()
 	//if (move)
 	//{
 	//	move(this);
-	animation();
+	animetion();
 	//}
 }
 
@@ -465,13 +465,12 @@ void kemuri(Effect *obj)
 	}
 }
 
-
-////消滅エフェクト
+//消滅エフェクト
 //void CircleExt(Effect *obj)
 //{
 //	switch (obj->state)
 //	{
-//	case 0:
+//	case INIT:
 //		obj->animeData = anime_ext_data;
 //		obj->data = &obj->animeData[0];
 //		obj->custom.scaleMode = CENTER;
@@ -479,23 +478,24 @@ void kemuri(Effect *obj)
 //		obj->timer = 0;
 //		obj->alpha = (int)(255 * 0.7f);
 //		obj->state++;
+//		
 //		//break;
-//	case 1:
+//	case MOVE:
 //		//if ( obj->timer++>12 ) {
-//		//	obj->state = 2; //消去処理へ
+//		//	obj->state = CLEAR; //消去処理へ
 //		//}
-//		if (obj->timer++>7) {
-//			obj->state = 2; //消去処理へ
+//		if (obj->timer++>15) {
+//			obj->state = CLEAR; //消去処理へ
 //		}
 //
 //		//if ( obj->data->no < 0 ) {	//アニメーションが最後なら
-//		//	obj->state = 2;			//消去処理へ
+//		//	obj->state = CLEAR;			//消去処理へ
 //		//}
 //		//if ( obj->data->frameNum>4 ) {	//frameNumが4以上なら
-//		//	obj->state = 2;				//消去処理へ
+//		//	obj->state = CLEAR;				//消去処理へ
 //		//}
 //		break;
-//	case 2:
+//	case CLEAR:
 //		obj->clear();
 //		break;
 //	default:

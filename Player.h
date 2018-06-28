@@ -79,7 +79,7 @@ public:
 	struct Status {
 		bool nodamage;
 		bool old_nodamage;
-		bool ground;
+		bool gtrunc;
 	};
 	
 	~Player();

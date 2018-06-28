@@ -29,6 +29,9 @@
 #include	"sceneTutorial.h"		//	シーンチュートリアル
 #include	"tutorial_move.h"		//　チュートリアル行動関数
 
+#define DELAY_TIME (60)
+
+
 static IMG_DATA IMG_Tutorial[] = {
 	{ spr_data::BG1,"DATA\\BG\\bg.png" },
 	{ spr_data::BG2,"DATA\\BG\\bg_case.png" },
@@ -89,7 +92,6 @@ bool sceneTutorial::Initialize()
 	state = 0;
 	count_down = 0;
 	scene_timer = 0;
-
 	//pPlayer;
 	//pFrame;
 	//pNumber;
@@ -155,7 +157,7 @@ void	sceneTutorial::Update()
 		
 		pEnemy_Manager->Init(stage_no);
 		pEnemy_Kill->Init();
-		//pMAP->SetCenter(&center);
+		pMAP->SetCenter(&center);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN, TRUE); //BGM
@@ -315,7 +317,7 @@ void TutoOperater::Update() {
 		operater.clear();
 		suboperater.clear();
 		master_char.clear();
-
+		timer = 0;
 		state = BEGIN;
 	case BEGIN:
 		////////////////////////////////
@@ -333,10 +335,13 @@ void TutoOperater::Update() {
 		operater.pos = V2(SCREEN_WIDTH - 156, SCREEN_HEIGHT - 32);
 		//画像設定 (未設定)
 		operater.data = NULL;
-		
+		//一秒後に
 		//ステート切り替え(ゲームルール説明)
-		state = GAMERULE_BEGIN;
-		//break;
+		if (timer++ > 60) {
+			state = GAMERULE_BEGIN;
+		}
+
+		break;
 	case GAMERULE_BEGIN:
 		//画像設定(ゲームルール説明)
 		operater.data = spr_gamerulr;
@@ -354,6 +359,7 @@ void TutoOperater::Update() {
 		//プレイヤー移動説明
 		suboperater.move = &move_key;
 		operater.data = spr_player_move;
+		timer = 0;
 		state = PLAYER_MOVE;
 		//break;
 	case PLAYER_MOVE:
@@ -375,7 +381,9 @@ void TutoOperater::Update() {
 		}
 		
 		if (iwork[move_x_ok] && iwork[move_y_ok]) {
-			state = PINTO_MOVE_BEGIN;
+			if (timer++ > DELAY_TIME) {
+				state = PINTO_MOVE_BEGIN;
+			}
 		}
 		
 		pagenext();
@@ -384,6 +392,7 @@ void TutoOperater::Update() {
 		ZeroMemory(iwork, sizeof(iwork));
 		operater.data = spr_pinto_move;
 		state = PINTO_MOVE;
+		timer = 0;
 		//break;
 	case PINTO_MOVE:
 		
@@ -397,7 +406,9 @@ void TutoOperater::Update() {
 		}
 
 		if (iwork[move_x_ok] && iwork[move_y_ok] && iwork[messege_end]) {
-			state = ENEMY_DWON_BEGIN;
+			if (timer++ > DELAY_TIME) {
+				state = ENEMY_DWON_BEGIN;
+			}
 		}
 
 		pagenext();

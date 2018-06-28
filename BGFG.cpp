@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Frame.h"
+#include "Effect.h"
 #include "MAP.h"
 #include "BGFG.h"
 #include "stage_data.h"
@@ -81,8 +82,8 @@ SPR_DATA spr_Fly_mini_capsule_m = { Fly_mini_capsule_m,1536,0,113,337,-57,-169 }
 //ディスプレイ類
 SPR_DATA spr_Display_a = { Display_a,1280,384,128,93,-128 / 2,-93 / 2 };
 SPR_DATA spr_Display_b = { Display_b,1408,384,128,75,-128 / 2,-75 / 2 };
-SPR_DATA spr_Display_c = { Display_c,1536,384,128,97,-128 / 2,-97 / 2 };
-SPR_DATA spr_Display_d = { Display_d,  1664,384,128,97,-128 / 2,-97 / 2 };
+SPR_DATA spr_Display_c = { Display_c,1536,384,128,97,-128 / 2,-97 / 2,2 };
+SPR_DATA spr_Display_d = { Display_d,  1664,384,128,97,-128 / 2,-97 / 2 ,2};
 
 LAND_SCAPE_DATA* bg_effect[] = {
 	{ tutorial_bg_effect },
@@ -93,13 +94,13 @@ enum {
 	INIT = 0,	//初期設定
 	BEGIN,	//
 	BEGIN2,	//
-	
+
 	MOVE,	//移動処理
 	MOVE2,	//
 	MOVE3,	//
 	MOVE4,	//
 	MOVE5,	//
-
+	BREAK,
 	CLEAR,	//初期化
 };
 
@@ -190,13 +191,13 @@ void LandScape::stage_update() {
 }
 
 void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
-	ReducedObj* Box;
+	ReducedObj* reducedObj;
 	if (z > -1) { //0以上なら背景、以下なら前景
 		//エラーチェック// 配列サイズに収まっているか
 		if (z < 0 || z > BG_REDUCED_LV_MAX) {
 			z = (BG_REDUCED_LV_MAX-1);
 		}
-		Box = &BG_RenderBox[z];
+		reducedObj = &BG_RenderBox[z];
 	}
 	else {
 		z *= -1;
@@ -205,13 +206,13 @@ void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
 		if (z < 0 || z < FG_REDUCED_LV_MAX) {
 			z = (FG_REDUCED_LV_MAX - 1);
 		}
-		Box = &FG_RenderBox[z];
+		reducedObj = &FG_RenderBox[z];
 	}
 
-	Box->data[Box->count] = obj;
-	Box->count++;
-	obj->custom.scaleX = 1 / Box->Reduced_level;
-	obj->custom.scaleY = 1 / Box->Reduced_level;
+	reducedObj->data[reducedObj->count] = obj;
+	reducedObj->count++;
+	obj->custom.scaleX = 1 / reducedObj->Reduced_level;
+	obj->custom.scaleY = 1 / reducedObj->Reduced_level;
 
 }
 
@@ -382,10 +383,13 @@ void LAND_SCAPE_OBJ::Init() {
 	custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 }
 void LAND_SCAPE_OBJ::Update() {
+
+	//custom.scaleX = 1.0;
+	//custom.scaleY = 1.0;
+
 	if (move)move(this);
 
-
-	animation();
+	animetion();
 	Reduced(this);
 
 
@@ -740,7 +744,6 @@ void BG_Mini_capsule_l(LAND_SCAPE_OBJ* obj) {
 
 		obj->data = &spr_Mini_capsule_l;
 		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
-
 		obj->state = BEGIN;
 
 		break;
@@ -759,16 +762,19 @@ void BG_Mini_capsule_d(LAND_SCAPE_OBJ* obj) {//ダーク
 
 		obj->data = &spr_Mini_capsule_d;
 		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
-		obj->state = BEGIN;
+		obj->state = MOVE;
 
 		break;
-	case BEGIN:
+	case MOVE:
+		
+
 
 	default:
 		break;
 	}
 
 }
+
 
 //ディスプレイ
 void BG_Display_a(LAND_SCAPE_OBJ* obj) {
@@ -779,9 +785,11 @@ void BG_Display_a(LAND_SCAPE_OBJ* obj) {
 		obj->data = &spr_Display_a;
 		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 
-		obj->state = BEGIN;
+		obj->state = MOVE;
 		break;
-	case BEGIN:
+	case MOVE:
+
+		break;
 	default:
 		break;
 	}
@@ -801,12 +809,24 @@ void BG_Display_b(LAND_SCAPE_OBJ* obj) {
 		break;
 	}
 }
+
+Animetion anime_Display_cd[] = {
+	{ &spr_Display_c,300 },
+	{ &spr_Display_d,16 },
+	{ &spr_Display_d,2 },
+	{ &spr_Display_c,2 },
+	{ &spr_Display_d,2 },
+	{ NULL,	ANIM_FLG_LOOP },
+};
+
+
+
 void BG_Display_c(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
-
+		obj->animetion_data = anime_Display_cd;
 		obj->data = &spr_Display_c;
 		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
 		obj->state = BEGIN;
@@ -831,3 +851,96 @@ void BG_Display_d(LAND_SCAPE_OBJ* obj) {
 		break;
 	}
 }
+
+
+
+//static SPR_DATA anime_circleext[] = {
+//	SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 1, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 2, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 3, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 4, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 5, 0, 128, 128, -64, -64,2 },
+//	SPR_DATA{ spr_data::Circle, 128 * 6, 0, 128, 128, -64, -64,3 },
+//	SPR_STOP
+//};
+//
+//static Animetion anime_circleext_data[] = {
+//	{ &anime_circleext[0],4 },
+//	{ &anime_circleext[1],4 },
+//	{ &anime_circleext[2],4 },
+//	{ &anime_circleext[3],4 },
+//	{ &anime_circleext[4],4 },
+//	{ &anime_circleext[5],4 },
+//	{ &anime_circleext[6],4 },
+//	{ NULL,ANIM_FLG_LOOP }
+//};
+//
+////空中大カプセル破裂
+//void BG_Fly_capsule_l_break(LAND_SCAPE_OBJ* obj) {
+//	switch (obj->state)
+//	{
+//	case INIT:
+//		obj->custom.scaleMode = SCALE_MODE::CENTER;
+//		obj->data = &spr_Fly_capsule_l;
+//		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+//
+//		obj->state = BEGIN;
+//		break;
+//	case BEGIN:
+//		obj->timer++;
+//		if (obj->timer > 300) {
+//			obj->state = BREAK;
+//			pLandScape->searchSet(obj->type, obj->wpos, V2(5,1), CircleExt, NULL, obj->z);
+//		}
+//		break;
+//	case BREAK:
+//		//pLandScape->searchSet(obj->type, obj->wpos + V2(64,-256), V2(0.2,0), CircleExt, NULL, obj->z);
+//		//pLandScape->searchSet(obj->type, obj->wpos + V2(-64, -256), V2(0.2, 0), CircleExt, NULL, obj->z);
+//
+//		if (obj->timer++ > 60) {
+//			obj->timer = 0;
+//			{
+//				V2 ofs;
+//				ofs.x = (rand() % 200) - 100;
+//				ofs.y = (rand() % 200) - 100;
+//				pLandScape->searchSet(obj->type, obj->wpos + ofs, V2(0.6,0.7), CircleExt, NULL, obj->z);
+//			}
+//
+//		}
+//		obj->wpos.y ++;
+//		break;
+//
+//	default:
+//		break;
+//	}
+//}
+//
+//void CircleExt(LAND_SCAPE_OBJ *obj)
+//{
+//	switch (obj->state)
+//	{
+//	case INIT:
+//		
+//		obj->animetion_data = anime_circleext_data;
+//		//obj->data = &obj->animeData[0];
+//		obj->custom.scaleMode = CENTER;
+//		
+//		obj->timer = 0;
+//		obj->custom.argb = 0x00FFFFFF | ((int)(255 * obj->spd.y)) << 24;
+//		obj->state = MOVE;
+//		//break;
+//	case MOVE:
+//		obj->custom.scaleX = obj->custom.scaleY = obj->spd.x;
+//		if (obj->timer++>15) {
+//			obj->state = CLEAR; //消去処理へ
+//		}
+//
+//		break;
+//	case CLEAR:
+//		obj->clear();
+//		break;
+//	default:
+//		break;
+//	}
+//}

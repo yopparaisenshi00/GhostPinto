@@ -200,7 +200,7 @@ public:
 	virtual void DotLine();//”jü•`‰æ
 
 
-	virtual void animation() {
+	virtual void animetion() {
 		anime_timer++;
 		if (anime_timer > 3) {
 			//anime_no++;
