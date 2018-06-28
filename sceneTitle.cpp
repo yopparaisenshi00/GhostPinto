@@ -290,9 +290,7 @@ void sceneTitle::Render()
 		//spr_data::Render(V2(s_Enemy_s->ofsx, s_Enemy_s.->ofsy) + EMIN_POS, s_Enemy_s, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
 	if (ppsk.data) {
-		float sz = pFrame->get_sz((float)ppsk.data->frameNum);
-		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		ppsk.Render("depth");
+		ppsk.Render();
 		//spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
 

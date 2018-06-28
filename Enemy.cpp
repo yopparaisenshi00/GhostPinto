@@ -612,6 +612,11 @@ inline void Enemy_Update(Enemy* obj) {
 		obj->sz = pEnemy_Manager->get_sz(obj->z);
 		obj->u.angle = (obj->z > pFrame->Get_f_z() ? obj->sz : -obj->sz);
 	}
+	else {
+		if (obj->sz > pFrame->getPintoSize()) {
+			obj->zlock_flg = NULL;
+		}
+	}
 	obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
 	if (obj->rangeflg) {
 		pEnemy_Manager->damage_Calculation(obj);
