@@ -298,7 +298,7 @@ void	sceneMain::Render()
 	pNumber->Render();
 	pUI->Render();
 
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 
 
 	switch (state)
@@ -324,7 +324,7 @@ void	sceneMain::Render()
 		break;
 	}
 
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 
 	if ( (pScore->getKill_num()>=CLEAR_KILLNUM)||timer<=0 ) {
 		spr_data::Render(V2(200,100),&clear); //GAMECLEAR•¶Žš

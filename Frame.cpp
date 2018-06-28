@@ -230,9 +230,8 @@ void Frame::f_move() {
 	if (!move_flg) {
 		if (axisx < PINTO_SENSITIVE && axisx > -PINTO_SENSITIVE && axisy < PINTO_SENSITIVE && axisy > -PINTO_SENSITIVE) 
 		{ 
-			
-		
-			move_flg = false; 		}
+			move_flg = false; 		
+		}
 		else move_flg = true;
 	}
 	else {
@@ -314,7 +313,7 @@ void Frame::exorcise_Update() {
 			IEX_PlaySound(SE_LOSS, FALSE);			//—ì—Í‚ª0‚ÌSE
 
 		}
-		if (move_flg) {
+		if (!move_flg) {
 			if (f_timer++ > EXORCISE_AUTOHEEL_TIME) {
 				f_timer &= 0x0000FFFF;
 				add_Exorcise(EXORCISE_AUTOHEEL);
@@ -421,10 +420,10 @@ float Frame::get_sz(float z) {
 	float fz = pFrame->Get_f_z();
 
 	if (fz > ez) {
-		sz = (fz + 90) - (ez + 90);
+		sz = (fz) - (ez);
 	}
 	else {
-		sz = (ez + 90) - (fz + 90);
+		sz = (ez) - (fz);
 	}
 
 	return sz;

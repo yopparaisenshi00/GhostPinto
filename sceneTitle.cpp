@@ -194,7 +194,6 @@ void sceneTitle::Update()
 			//			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
 			
-			bg.data = &s_tutorial;
 			ppsk.clear();
 			titleChar.clear();
 			titleName.clear();
@@ -230,9 +229,7 @@ void sceneTitle::Update()
 
 
 	case TUTORIAL:
-		if (KEY_Get(KEY_SPACE) == 3){
-			MainFrame->ChangeScene(new sceneMain);
-		}
+		MainFrame->ChangeScene(new sceneTutorial);
 
 		pPlayer->Update();
 		break;
@@ -245,9 +242,6 @@ void sceneTitle::Update()
 		break;
 	}
 
-	if (KEY_Get(KEY_START) == 3) {
-		MainFrame->ChangeScene(new sceneTutorial);
-	}
 }
 
 //•`‰æ
@@ -289,9 +283,7 @@ void sceneTitle::Render()
 		//spr_data::Render(V2(s_Enemy_s->ofsx, s_Enemy_s.->ofsy) + EMIN_POS, s_Enemy_s, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
 	if (ppsk.data) {
-		float sz = pFrame->get_sz((float)ppsk.data->frameNum);
-		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		ppsk.Render("depth");
+		ppsk.Render();
 		//spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
 
@@ -299,7 +291,7 @@ void sceneTitle::Render()
 
 	if ( state==MAIN ) pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 }
 
 //ƒ^ƒCƒgƒ‹

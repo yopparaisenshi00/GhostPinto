@@ -5,7 +5,7 @@
 #define DAMAGE_MAX (700) //iran
 
 //エネミーＨＰ群
-#define ENEMY_HP_A (700)//漂う奴
+#define ENEMY_HP_A (22700)//漂う奴
 #define ENEMY_HP_B (600)//普通の奴
 #define ENEMY_HP_C (700)//ワープする奴
 #define ENEMY_HP_D (700)//Z値移動する奴
@@ -146,9 +146,9 @@ public:
 	int score; //スコア
 
 	float z;		//ピント座標
-
 	struct ui {
 		D3DCOLOR argb; //UI_ARGB
+		float angle;//UI_angle
 		spr_data::CUSTOM custom;
 	};
 	ui u;
@@ -184,7 +184,6 @@ public:
 	float ANGLEspd; //回転速度
 	float RADIUS;   //半径
 	float sz;		//フレームとのピント差
-
 	//関数
 	//OBJ継承関数---------------------------------------
 	virtual void Init(); //

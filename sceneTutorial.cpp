@@ -158,7 +158,7 @@ void	sceneTutorial::Update()
 		//pMAP->SetCenter(&center);
 		pNumber->Init();
 		IEX_StopSound(BGM_TITLE);
-		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
+		IEX_PlaySound(BGM_MAIN, TRUE); //BGM
 		tuto_operator.Init();
 
 		count_down = COUNT_DOWN_TIME;
@@ -188,7 +188,10 @@ void	sceneTutorial::Update()
 		//pD_TEXT->set_Text(center.pos, "cpos", center.pos, 0xFFFF0000);
 
 		timer--;
-		
+		if (tuto_operator.State() == TutoOperater::END) {
+			MainFrame->ChangeScene(new sceneMain());
+		}
+
 		//if () {
 		//	
 		//}
@@ -249,7 +252,7 @@ void	sceneTutorial::Render()
 		break;
 	}
 
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 
 }
 
@@ -303,6 +306,7 @@ void TutoOperater::Update() {
 	if(state > 0 && KEY_Get(KEY_SELECT) == 3){
 		state = END;
 	}
+	pPlayer->hp = P_HP_MAX;
 
 	switch (state)
 	{
@@ -444,7 +448,7 @@ void TutoOperater::Update() {
 		//break;
 	case EXORCISE:
 		pFrame->add_Exorcise(-(EXORCISE_MAX+1));
-		
+		pFrame->exorciseDwon_timer = 0;
 		if (iwork[messege_end] && KEY_Get(KEY_C) == 3) {
 			state = MULTIFOCUS_BEGIN;
 			pFrame->exorciseDwon_flg = false;
@@ -490,10 +494,7 @@ void TutoOperater::Update() {
 	default:
 		break;
 	}
-	if (state == END) {
-		MainFrame->ChangeScene(new sceneMain());
-	}
-	pD_TEXT->set_Text(V2(200,100),"state",state,0xFFFFFF0000);
+	//pD_TEXT->set_Text(V2(200,100),"state",state,0xFFFFFF0000);
 }
 void TutoOperater::Render() {
 	operater.Render();
