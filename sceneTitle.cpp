@@ -300,7 +300,7 @@ void sceneTitle::Render()
 
 	if ( state==MAIN ) pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 }
 
 //ƒ^ƒCƒgƒ‹

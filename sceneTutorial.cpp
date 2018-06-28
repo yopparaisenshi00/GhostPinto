@@ -249,7 +249,7 @@ void	sceneTutorial::Render()
 		break;
 	}
 
-	pD_TEXT->Render();
+	//pD_TEXT->Render();
 
 }
 
@@ -493,7 +493,7 @@ void TutoOperater::Update() {
 	if (state == END) {
 		MainFrame->ChangeScene(new sceneMain());
 	}
-	pD_TEXT->set_Text(V2(200,100),"state",state,0xFFFFFF0000);
+	//pD_TEXT->set_Text(V2(200,100),"state",state,0xFFFFFF0000);
 }
 void TutoOperater::Render() {
 	operater.Render();
