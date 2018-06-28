@@ -36,6 +36,7 @@
 //#define SCROLL_LEFT (960/1)
 //#define SCROLL_RIGHT (960/3)
 
+#define P_HP_MAX (3)
 
 
 //#define FARE_MAX (900)//ã∞ï|ìxç≈ëÂíl

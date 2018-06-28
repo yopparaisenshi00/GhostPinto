@@ -282,7 +282,7 @@ float4 PS_pass4(VS_OUTPUT_G In) : COLOR
 
 		//COLOR1
 		{
-			int Reduced = 1000 * (1.1 - z);
+			int Reduced = 1000 * (1 - z);
 
 			Color2 = tex2D(DecaleSamp, In.Tex);
 			tpos = float2(round(In.Tex.x * Reduced) / Reduced, round(In.Tex.y * Reduced) / Reduced);

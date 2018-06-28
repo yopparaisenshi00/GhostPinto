@@ -281,7 +281,8 @@ void Enemy_Manager::damage_Calculation(Enemy* obj) {
 		if ( (pFrame->lockPinto_trg==true) && (obj->zlock_flg==false)) {
 			pEffect_Manager->searchSet(obj->pos, V2(0, 0), pinto_lock); //ピントロックエフェクト
 			pEffect_Manager->searchSet(V2(obj->pos.x, obj->pos.y - 50), V2(0, 0), Lock); //Lockエフェクト
-			pFrame->exorcise -= USE_PINTOLOCK;
+			//pFrame->exorcise -= USE_PINTOLOCK;
+			pFrame->lockPinto_exorcise(USE_PINTOLOCK);
 			obj->zlock_flg = true;
 		}
 		if ( obj->damage>(obj->damageMAX-obj->damageMAX/4) ) Frash_white(obj,11); //白点滅(早)

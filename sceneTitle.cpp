@@ -195,7 +195,6 @@ void sceneTitle::Update()
 			//			pEffect_Manager->searchSet(V2(960, 0), V2(0, 0), fade_Out);
 			timer = 0;
 			
-			bg.data = &s_tutorial;
 			ppsk.clear();
 			titleChar.clear();
 			titleName.clear();
@@ -231,9 +230,7 @@ void sceneTitle::Update()
 
 
 	case TUTORIAL:
-		if (KEY_Get(KEY_SPACE) == 3){
-			MainFrame->ChangeScene(new sceneMain);
-		}
+		MainFrame->ChangeScene(new sceneTutorial);
 
 		pPlayer->Update();
 		break;
@@ -246,9 +243,6 @@ void sceneTitle::Update()
 		break;
 	}
 
-	if (KEY_Get(KEY_START) == 3) {
-		MainFrame->ChangeScene(new sceneTutorial);
-	}
 }
 
 //•`‰æ
