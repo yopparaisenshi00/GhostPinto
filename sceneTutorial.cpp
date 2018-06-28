@@ -330,7 +330,7 @@ void TutoOperater::Update() {
 		//////////////////////////
 
 		//ˆÊ’uİ’è (‰æ–Ê‰E‰º)
-		operater.pos = V2(SCREEN_WIDTH - 156, SCREEN_HEIGHT - 32);
+		operater.pos = V2(SCREEN_WIDTH - 176, SCREEN_HEIGHT - 32);
 		//‰æ‘œİ’è (–¢İ’è)
 		operater.data = NULL;
 		
