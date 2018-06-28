@@ -444,7 +444,7 @@ void TutoOperater::Update() {
 		//break;
 	case EXORCISE:
 		pFrame->add_Exorcise(-(EXORCISE_MAX+1));
-		
+		pFrame->exorciseDwon_flg = TRUE;
 		if (iwork[messege_end] && KEY_Get(KEY_C) == 3) {
 			state = MULTIFOCUS_BEGIN;
 			pFrame->exorciseDwon_flg = false;

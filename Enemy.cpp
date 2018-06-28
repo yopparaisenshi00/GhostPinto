@@ -552,6 +552,7 @@ float Enemy_Manager::get_sz(float z) {
 void Enemy::Render() {
 	if (!data)return;
 	custom.argb = (alpha << 24 | custom.argb << 8 >> 8);
+	
 	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
 }
@@ -562,7 +563,7 @@ void Enemy::UIRender() {
 			if ( state!=APPEARANCE ) {
 				spr_data::Render(pos, &spr_pinto_s, u.argb, 0);
 				//spr_data::Render(pos, &spr_pinto_s, &u.custom, u.argb);
-				spr_data::Render(pos, &spr_pinto_a, 0xFFFFFFFF, /*z + pFrame->Get_f_z()   */z > pFrame->Get_f_z() ? sz : -sz);
+				spr_data::Render(pos, &spr_pinto_a, 0xFFFFFFFF, /*z + pFrame->Get_f_z()   */ u.angle);
 				//iexPolygon::Rect((SCREEN_WIDTH / 2) + z - DAMAGE_SIZE, PINTO_POSY, DAMAGE_SIZE + DAMAGE_SIZE, 20, 0, 0xFF00FFFF);// Z
 			}
 		}
@@ -609,6 +610,7 @@ inline void Enemy_Update(Enemy* obj) {
 	//ダメージ処理
 	if (!obj->zlock_flg) {
 		obj->sz = pEnemy_Manager->get_sz(obj->z);
+		obj->u.angle = (obj->z > pFrame->Get_f_z() ? obj->sz : -obj->sz);
 	}
 	obj->rangeflg = E_lenge(obj, pFrame, FRAME_SIZE / 2);
 	if (obj->rangeflg) {
@@ -1271,7 +1273,7 @@ void Rotation(Enemy* obj) {
 		obj->data = &obj->animeData[0];
 
 		//親設定(制御に自身の存在を渡す)
-		obj->damageMAX = DAMAGE_MAX;
+		obj->damageMAX = ENEMY_HP_A ;
 		obj->size = V2(20 / 2, 20 / 2);
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = N_scale;
