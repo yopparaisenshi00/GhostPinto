@@ -420,11 +420,11 @@ float Frame::get_sz(float z) {
 	float fz = pFrame->Get_f_z();
 
 	if (fz > ez) {
-		sz = (fz) - (ez );
+		sz = (fz) - (ez);
 	}
 	else {
-		sz = (ez) - (fz );
+		sz = (ez) - (fz);
 	}
-	sz += 90;
+
 	return sz;
 }

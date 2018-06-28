@@ -63,10 +63,12 @@ public:
 	void R_Update();
 
 	bool lock_flg;
+
 	bool exorciseDwon_flg;
 	bool multifocus_flg;
 	TRG lockPinto_trg;
-//-----------------------------------------------------
+	TRG lockPinto_exorciseDwon;
+	//-----------------------------------------------------
 //
 // ピント用変数、関数
 //
@@ -83,6 +85,13 @@ public:
 	void use_Multifocus(int);
 	void use_lockPinto();
 	float get_sz(float z);
+	void lockPinto_exorcise(int add) {
+		if (lockPinto_exorciseDwon == false) {
+			lockPinto_exorciseDwon = TRUE;
+			exorcise -= add;
+		}
+	}
+
 	float exorcise;				//霊力数値　1 ～ 100
 private:
 	float act;
@@ -104,7 +113,6 @@ private:
 	int count;
 
 	D3DCOLOR light_argb; //発光用
-
 };
 
 

@@ -18,24 +18,23 @@ class TutoOperater
 public:
 	TutoOperater();
 	~TutoOperater();
-private:
 	enum STATE {
 		INIT = 0,			//初期化
 		BEGIN,				//初期データ入力
-		MOVE, 
-		
+		MOVE,
+
 		//ゲーム概要説明
 		GAMERULE_BEGIN,
-		GAMERULE,			
+		GAMERULE,
 		//プレイヤー操作移動説明
 		PLAYER_MOVE_BEGIN,
-		PLAYER_MOVE,	
+		PLAYER_MOVE,
 		//ピント操作説明
 		PINTO_MOVE_BEGIN,
-		PINTO_MOVE,	
+		PINTO_MOVE,
 		//敵の倒し方説明
 		ENEMY_DWON_BEGIN,
-		ENEMY_DWON,	
+		ENEMY_DWON,
 		//ピントロック説明
 		PINTO_LOCK_BEGIN,
 		PINTO_LOCK,
@@ -50,6 +49,8 @@ private:
 		REGAMERULE,
 		END,
 	};
+
+	private:
 	enum IWORK {
 		state_up_flg = 0,
 		messege_end,
@@ -168,6 +169,10 @@ public:
 	void Update();
 	void Render();
 	void clear();
+	//
+	int State() {
+		return state;
+	}
 private:
 
 	void TutoOperater::pagenext();
