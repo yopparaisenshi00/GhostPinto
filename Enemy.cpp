@@ -560,8 +560,12 @@ float Enemy_Manager::get_sz(float z) {
 void Enemy::Render() {
 	if (!data)return;
 	custom.argb = (alpha << 24 | custom.argb << 8 >> 8);
-	
-	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+	float fp = sz - pFrame->getPintoSize();
+	if (fp < 0) {
+		fp = 0;
+	}
+
+	shader2D->SetValue("FPower", fp > 90 ? (180 - fp) / 90 : fp / 90);
 	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
 }
 
@@ -619,6 +623,12 @@ inline void Enemy_Update(Enemy* obj) {
 	if (!obj->zlock_flg) {
 		obj->sz = pEnemy_Manager->get_sz(obj->z);
 		obj->u.angle = (obj->z > pFrame->Get_f_z() ? obj->sz : -obj->sz);
+
+		//obj->sz -= pFrame->getPintoSize();
+		//if (obj->sz < 0) {
+		//	obj->sz = 0;
+		//}
+
 	}
 	else {
 		if (obj->sz > pFrame->getPintoSize()) {

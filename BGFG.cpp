@@ -436,7 +436,11 @@ int check_behind_obj(OBJ2D* obj)
 
 void LAND_SCAPE_OBJ::Render() {
 	if (!data)return;
-	sz = pEnemy_Manager->get_sz(z);
+	sz =  pEnemy_Manager->get_sz(z) - pFrame->getPintoSize();
+	if (sz < 0) {
+		sz = 0;
+	}
+
 	shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 	spr_data::Render(pos, data, &custom, custom.argb, shader2D, "depth");
 	//line_rect(pos,V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
