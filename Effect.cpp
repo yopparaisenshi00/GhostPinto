@@ -116,7 +116,20 @@ static SPR_DATA combo_text = SPR_DATA{ spr_data::UI6,0,125,120,40,-60,-20  };
 
 
 //塵エフェクト
-static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2 };
+//static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2 };
+static SPR_DATA dust_data = SPR_DATA{ spr_data::Player_eff,128,51,9,9,0,0 };
+static SPR_DATA anime_dust_data[] = {
+	SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2,0 },
+	SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2,0 },
+	SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2,0 },
+	SPR_DATA{ spr_data::Player_eff,128,3*6,6,6,-6/2,-6/2,0 },
+	SPR_DATA{ spr_data::Player_eff,128,51,9,9,-9/2,-9/2,1 },
+	SPR_DATA{ spr_data::Player_eff,128,51,9,9,-9/2,-9/2,1 },
+	SPR_DATA{ spr_data::Player_eff,128,51,9,9,-9/2,-9/2,1 },
+	SPR_DATA{ spr_data::Player_eff,128,51,9,9,-9/2,-9/2,1 },
+	SPR_LOOP
+};
+
 
 //ゲームクリア時エフェクト
 static SPR_DATA gameclear_data = SPR_DATA{ spr_data::Player_eff,128,32,9,9,-9/2,-9/2 };
@@ -829,6 +842,12 @@ void dust(Effect* obj) {
 	switch ( obj->state ) {
 		case INIT:
 			obj->data = &dust_data;
+			//obj->animeData = anime_dust_data;
+			//obj->data = &obj->animeData[0];
+			obj->custom.scaleMode = CENTER;
+			if(obj->spd.y==-1.0f) obj->custom.scaleX = obj->custom.scaleY = 0.8f;
+			if(obj->spd.y==-2.0f) obj->custom.scaleX = obj->custom.scaleY = 0.6f;
+			if(obj->spd.y==-3.0f) obj->custom.scaleX = obj->custom.scaleY = 0.4f;
 			obj->timer = 0;
 			obj->alpha = 0;
 			obj->state=MOVE;

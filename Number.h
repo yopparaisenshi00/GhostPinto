@@ -10,8 +10,8 @@
 #define NUM_DIGIT_1LINE		5	//数字画像の1列に並んでいる数
 #define DIGIT_CHANGE_TIMER	2
 
-#define RED		(UINT)0xFFff5656 //赤色
-#define YELLOW	(UINT)0xFFfff549 //黄色
+#define RED		(UINT)0xFFff5e5e //赤色
+#define YELLOW	(UINT)0xFFe2d600 //黄色
 #define WHITE	(UINT)0xFFFFFFFF //白色
 
 #define RB1 (UINT)0xFFe65ffc	//紫色

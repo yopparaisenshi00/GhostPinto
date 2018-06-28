@@ -25,7 +25,7 @@ SPR_DATA clear_result = { 1,0,380,295,68,-295/2,-68/2 };	//RESULT
 SPR_DATA clear_LIFE = { 1,0,64*9,64+20,36,0,0 };		//LIFE
 SPR_DATA clear_MAXCOMBO = { 1,0,64*7,64*3-12,36,0,0 };	//MAXCOMBO
 SPR_DATA clear_TIME = { 1,0,64*8,86,36,0,0 };		//TIME
-SPR_DATA clear_TOTAL = { 1,0,64*10,64*2,36,0,0 };		//TOTAL
+SPR_DATA clear_TOTAL = { 1,0,64*10,115,36,0,0,(int)((115)*1.45f),(int)(36*1.3f) };		//TOTAL
 SPR_DATA clear_psb = { 7,0,1120,474,98,-474/2,-98/2}; //PushStartButton
 SPR_DATA clear_back = { 8,0,0,960,540,0,0 }; //ゲームクリア画面
 SPR_DATA clear_number[10] = {
@@ -82,7 +82,7 @@ bool sceneClear::Initialize()
 	life_pos = V2(640+f, 375+g);		//lifeの位置
 	comb_pos = V2(640+f, 425+g);		//combの位置
 	time_pos = V2(640+f, 475+g);		//timeの位置
-	totl_pos = V2(640+f, 525+g);		//totlの位置
+	totl_pos = V2(640+f, 528+g);		//totlの位置
 	clear_psb_argb = 0xFFFFFFFF;		//PushStartButtonの色
 	fade_argb = 0xDD000000;				//フェード用,暗転の色
 
@@ -205,9 +205,9 @@ void sceneClear::Render()
 				time_pos.y-=4; //30上に行く
 			}
 			if ( timer>340 ) {
-				if ( life_pos.y<(480-120) ) life_pos.y += 10;
-				if ( comb_pos.y<(480-120) ) comb_pos.y += 10;
-				if ( time_pos.y<(480-120) ) time_pos.y += 10;
+				if ( life_pos.y<(480-115) ) life_pos.y += 10;
+				if ( comb_pos.y<(480-115) ) comb_pos.y += 10;
+				if ( time_pos.y<(480-115) ) time_pos.y += 10;
 			}
 			//--------------------------------------------------------
 

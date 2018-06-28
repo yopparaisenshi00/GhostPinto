@@ -198,8 +198,8 @@ void	sceneTutorial::Update()
 		timer--;
 		if (tuto_operator.State() == TutoOperater::END) {
 			fade_argb = fade_out(fade_argb,0x11000000);
-			if ( fade_argb>0xCC000000 ) {
-				fade_argb = 0xDD000000;
+			if ( fade_argb>0xEE000000 ) {
+				fade_argb = 0xFF000000;
 				MainFrame->ChangeScene(new sceneMain());
 			}
 			//MainFrame->ChangeScene(new sceneMain());
@@ -211,8 +211,8 @@ void	sceneTutorial::Update()
 		break;
 	case GAMEOVER:
 		fade_argb = fade_out(fade_argb,0x11000000);
-		if ( fade_argb>0xCC000000 ) {
-			fade_argb = 0xDD000000;
+		if ( fade_argb>0xEE000000 ) {
+			fade_argb = 0xFF000000;
 			MainFrame->ChangeScene(new sceneOver());
 		}
 
@@ -221,8 +221,8 @@ void	sceneTutorial::Update()
 		break;
 	case GAMECLEAR:
 		fade_argb = fade_out(fade_argb,0x11000000);
-		if ( fade_argb>0xCC000000 ) {
-			fade_argb = 0xDD000000;
+		if ( fade_argb>0xEE000000 ) {
+			fade_argb = 0xFF000000;
 			MainFrame->ChangeScene(new sceneMain());
 		}
 		//MainFrame->ChangeScene(new sceneMain());

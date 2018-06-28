@@ -191,7 +191,7 @@ void sceneTitle::Update()
 
 
 		if ( KEY_Get(KEY_SPACE)==3 ) {
-			IEX_PlaySound(SE_JUSTPINTO, FALSE); //START‚ğ‰Ÿ‚µ‚½‚Æ‚«‚ÌSE
+			if ( key_flg==false ) IEX_PlaySound(SE_JUSTPINTO,FALSE); //START‚ğ‰Ÿ‚µ‚½‚Æ‚«‚ÌSE
 			key_flg = true;
 		}
 		if ( key_flg ) timer++;
@@ -272,17 +272,21 @@ void sceneTitle::Render()
 	//	spr_data::Render(V2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), bg, 0xFFFFFFFF, (float)0, shader2D, "depth");	
 	//spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
 
+	if (titleName.data) {
+		float sz = pFrame->get_sz(titleName.data->frameNum);
+		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
+		titleName.Render("depth");
+	}
+
+	pEffect_Manager->Render();
+
 	if (titleChar.data) {
 		float sz = pFrame->get_sz(titleChar.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 		titleChar.Render();
 	}
 
-	if (titleName.data) {
-		float sz = pFrame->get_sz(titleName.data->frameNum);
-		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
-		titleName.Render("depth");
-	}
+
 
 	//spr_data::Render(V2(SCREEN_WIDTH + titleName->ofsx, titleName->dh + titleName->ofsy), titleName, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	
@@ -311,7 +315,7 @@ void sceneTitle::Render()
 		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
 	}
 
-	if ( state==MAIN ) pEffect_Manager->Render();
+	//if ( state==MAIN ) pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);
 	//pD_TEXT->Render();
 }
