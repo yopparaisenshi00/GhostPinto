@@ -61,7 +61,7 @@ void Frame::clear() {
 	f_timer = 0;
 	exorciseDwon_flg = 0;
 	exorciseDwon_timer = 0;
-
+	move_flg = 0;
 	argb = 0xFFFFFF00;	//霊力ゲージ点滅用
 	old_exorcise = 0;	//霊力ゲージ点滅用
 	flash_timer = 0;	//霊力ゲージ点滅用
@@ -71,6 +71,11 @@ void Frame::clear() {
 	multi_flg = false;
 	out_argb = 0xFF000000; //黒
 	count = 0;
+	multifocus_timer = 0;
+
+	
+
+	D3DCOLOR light_argb = 0; //発光用
 
 }
 void Frame::Init() {
