@@ -16,6 +16,7 @@ static enum {
 	SE_DAMAGE,	//ダメージ
 	SE_MULCH_FIRE,	//マルチフォーカス使用時
 	SE_MULCH_STOCK,	//マルチフォーカスが溜まった時
+	SE_GAMEOVER,//そのまんま
 };
 
 

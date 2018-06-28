@@ -7,6 +7,7 @@
 #include "sceneOver.h"
 #include "Enemy.h"
 #include "Ranking.h"
+#include "Sound.h"
 
 
 SPR_DATA over = { 0,192,192,640,128,0,0,600,90 }; //GAMEOVER文字
@@ -63,6 +64,7 @@ void sceneOver::Render()
 				fade_argb = 0x00000000;
 				state++;
 			}
+			IEX_PlaySound(SE_GAMEOVER, FALSE);//ゲームオーバーSE
 			break;
 		case 1:
 			//spr_data::Render(V2(200, 200), &over); //ゲームオーバー文字
