@@ -628,7 +628,6 @@ inline void Enemy_Update(Enemy* obj) {
 		//if (obj->sz < 0) {
 		//	obj->sz = 0;
 		//}
-
 	}
 	else {
 		if (obj->sz > pFrame->getPintoSize()) {
@@ -641,6 +640,9 @@ inline void Enemy_Update(Enemy* obj) {
 		//破線描画
 		if ( obj->sz<JUSTPINTO_SIZE ) obj->DotLine();	 //ジャストピント
 		else if ( obj->damageflg==true ) obj->DotLine(); //通常ダメージ
+	}
+	else {
+		obj->animeData = obj->Anime_Box[normal];
 	}
 
 	//反転チェック
