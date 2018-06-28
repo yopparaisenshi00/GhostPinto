@@ -242,6 +242,11 @@ void	sceneMain::Update()
 		else if (KEY_Get(KEY_ENTER) == 3) state = GAMECLEAR;
 
 		if ( timer<=0 )timer = 0;
+		
+		if (KEY_Get(KEY_SPACE) && KEY_Get(KEY_ENTER)) {
+			MainFrame->ChangeScene(new sceneTitle());
+		}
+
 		break;
 
 	case GAMEOVER:
