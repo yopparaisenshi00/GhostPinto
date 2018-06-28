@@ -34,7 +34,7 @@
 #define KILL_CURE (5 + (10 * (obj->sz / PINTOMODE_DEFAULT)))	//エネミー撃破時＿霊力回復量
 #define EXORCISE_AUTOHEEL (5.5)	//自然回復
 #define EXORCISE_AUTOHEEL_TIME (90)//自然回復開始時間
-#define USE_PINTOLOCK (10) //ピントロック消費量
+#define USE_PINTOLOCK (15) //ピントロック消費量
 //----------------------------------------------------------------------
 
 
@@ -91,6 +91,7 @@ public:
 			exorcise -= add;
 		}
 	}
+	D3DCOLOR Frash_Color_pinto(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1,D3DCOLOR argb2,D3DCOLOR argb3);
 
 	float exorcise;				//霊力数値　1 ～ 100
 private:
@@ -113,6 +114,7 @@ private:
 	int count;
 
 	D3DCOLOR light_argb; //発光用
+
 };
 
 

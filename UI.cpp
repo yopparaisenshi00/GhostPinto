@@ -23,7 +23,9 @@ SPR_DATA P_Status[4] = {
 
 UI::UI()
 {
-
+	custom.scaleMode = LEFTTOP;
+	h.old_hp = 3;
+	h.flg = false;
 }
 
 UI::~UI()
@@ -33,11 +35,37 @@ UI::~UI()
 
 
 void UI::Init() {
-
+	custom.scaleMode = LEFTTOP;
+	h.old_hp = 3;
+	h.flg = false;
 }
 void UI::Update() {
 
+	HP_Update();
+
 }
+
+void UI::HP_Update() {
+
+	if ( h.old_hp!=pPlayer->hp ) { //hpが減ったら
+		h.custom.scaleX = h.custom.scaleY = 1.3f; //拡大
+		h.flg = true;
+	}
+	else { //それ以外
+		if ( h.custom.scaleX>1.0f ) h.custom.scaleX = h.custom.scaleY -= 0.03f;  //拡大されていたら縮小
+
+		if ( h.flg==true ) {
+			if ( h.custom.scaleX<1.0f ) {
+				h.custom.scaleX = h.custom.scaleY = 1.15f; //さらに拡大
+				h.flg = false;
+			}
+		}
+	}
+
+	h.old_hp = pPlayer->hp;
+
+}
+
 void UI::Render() {
 	//spr_data::Render(V2(-2,-2),&P_Status); //プレイヤー+緑リング
 
@@ -58,7 +86,8 @@ void UI::Render() {
 
 
 
-	spr_data::Render(V2(-2, -2), &P_Status[pPlayer->hp]); //プレイヤーHP
+	//spr_data::Render(V2(-2, -2), &P_Status[pPlayer->hp]); //プレイヤーHP
+	spr_data::Render(V2(-2, -2), &P_Status[pPlayer->hp],&h.custom,0xFFFFFFFF); //プレイヤーHP
 
 
 }

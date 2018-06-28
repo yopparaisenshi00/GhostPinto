@@ -210,6 +210,7 @@ void Player::move() {
 		if (KEY_Get(PINTOLOCK_KEY) == 3) {
 			pFrame->use_lockPinto();
 			IEX_PlaySound(SE_LOCK, FALSE);	//LOCKのSE
+			pEffect_Manager->searchSet(pos, V2(-6.0f,0.8f), noAction); //
 		}
 		//-----------------------------------------------------------
 		//pD_TEXT->set_Text(pos + V2(40,40),"PintoSize",pFrame->getPintoSize(),0xFFFFFFFF);
@@ -270,7 +271,11 @@ void Player::anime() {
 
 	//ゲームオーバー
 	if (hp <= 0) {
-		hp = 0;
+		//hp = 0;
+		if ( damage_se_flg==false ) {
+			IEX_PlaySound(SE_DAMAGE,FALSE); //ダメージ
+			damage_se_flg = true;
+		}
 		if (anime_no >=4) anime_no = 0;
 		data = &p_over[anime_no];
 	}
@@ -414,6 +419,7 @@ void Player::clear() {
 
 	jimen_flg = false;
 	fear_flg = false;
+	damage_se_flg = false;
 
 	jet_eff_timer = 0;
 	p_eff_timer = 0;
@@ -427,6 +433,7 @@ void Player::SetMain() {
 
 void Player::suffer_damage() {
 	hp -= 1;
+	if ( hp<0 ) hp = 0;
 	s.nodamage = true;
 	nodamage_timer = NODAMEGE_TIME;
 }

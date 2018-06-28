@@ -10,9 +10,16 @@ public:
 	
 	void Init();
 	void Update();
+	void HP_Update();
 	void Render();
 
-	
+	struct HP {
+		spr_data::CUSTOM custom;
+		int old_hp;
+		bool flg;
+	};
+	HP h;
+
 private:
 	//float angle;
 };

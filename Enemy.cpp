@@ -365,23 +365,30 @@ void Enemy_Manager::Update() {
 		}
 	}
 }
-static SPR_DATA line_data_e = SPR_DATA{ spr_data::Player_eff,128,60,4,4,-2,-2 }; //4×4
+
+//static SPR_DATA line_data_e = SPR_DATA{ spr_data::Player_eff,128,60,4,4,-2,-2 }; //4×4
 
 //敵と主人公の間の線
 void Enemy::DotLine() {
-	if ( 20<Dot_timer ) {
-		Dot_alpha -= 255/7;
-		if ( Dot_alpha<0 ) Dot_alpha = 0;
-	}
+	//if ( 20<Dot_timer ) {
+	//	Dot_alpha -= 255/7;
+	//	if ( Dot_alpha<0 ) Dot_alpha = 0;
+	//}
 	if ( /*0<Dot_alpha*/ Dot_timer<30 ) {
 		V2 e_p;
+		//float x = pos.x-size.x/2; //左
+		//float x2 = pos.x+size.x/2; //右
+		//float y = pos.y-size.y/2; //上
+		//float y2 = pos.y+size.y/2; //下
 		float len = 20;
 		for ( int i = 4; i<((int)len-2); i++ )
 		{
-			D3DXVec2Lerp(&e_p,&pos,&pPlayer->pos,i/len);
-			pEffect_Manager->searchSet(e_p, V2(alpha, 0), line);
-			//Dot_argb = (Dot_alpha << 24 | Dot_argb << 8 >> 8);
-			//spr_data::Render(e_p, &line_data_e,Dot_argb,0);
+			//if ( e_p.x<x && e_p.y<y || x2<e_p.x ) { //敵の半径外なら描画
+				D3DXVec2Lerp(&e_p,&pos,&pPlayer->pos,i/len);
+				pEffect_Manager->searchSet(e_p, V2(alpha, 0), line);
+				//Dot_argb = (Dot_alpha << 24 | Dot_argb << 8 >> 8);
+				//spr_data::Render(e_p, &line_data_e,Dot_argb,0);
+			//}
 		}
 		//ID3DXLine::Draw
 	}
@@ -412,9 +419,6 @@ void Enemy::UIUpdate() {
 		u.custom.scaleX = u.custom.scaleY = 1.0f;
 		count = 0;
 	}
-	//line_rect(pos, V2(size.x * custom.scaleX, size.y * custom.scaleY), 0xFFFFFFFF, custom.scaleMode);
-
-
 }
 
 
@@ -625,9 +629,6 @@ inline void Enemy_Update(Enemy* obj) {
 		if ( obj->sz<JUSTPINTO_SIZE ) obj->DotLine();	 //ジャストピント
 		else if ( obj->damageflg==true ) obj->DotLine(); //通常ダメージ
 	}
-
-
-
 
 	//反転チェック
 	if ((obj->pos.x - pPlayer->pos.x)<0) obj->custom.reflectX = true;
@@ -1067,7 +1068,7 @@ void Big(Enemy* obj) {
 		obj->damageMAX = ENEMY_HP_E;
 		obj->custom.scaleMode = CENTER;
 		obj->custom.scaleX = obj->custom.scaleY = B_scale;
-		obj->size = V2(40, 40);
+		obj->size = V2(32, 32);
 		obj->score = 200;
 		obj->state = APPEARANCE;
 		//break;

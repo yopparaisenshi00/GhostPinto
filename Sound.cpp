@@ -9,6 +9,9 @@ void Sound_Load() {
 	//IEX_SetWAV(BGM_MAIN,		"DATA\\Sound\\BGM\\tw028.wav"); 
 	IEX_SetWAV(BGM_TITLE,		"DATA\\Sound\\BGM\\title.wav"); 
 
+	IEX_SetWAV(SE_GAMEOVER, "DATA\\Sound\\SE\\gameover.wav");
+
+	IEX_SetWAV(SE_COUNT, "DATA\\Sound\\SE\\Select0003.wav");
 	IEX_SetWAV(SE_RETURN, "DATA\\Sound\\SE\\Alarm0031.wav");
 	//IEX_SetWAV(SE_RETURN,		"DATA\\Sound\\SE\\Alarm0032.wav"); 
 	//IEX_SetWAV(SE_PINTO,		"DATA\\Sound\\SE\\Cancel0019.wav"); 

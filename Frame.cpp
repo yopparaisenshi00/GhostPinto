@@ -23,7 +23,9 @@ enum {
 
 //SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
 SPR_DATA spr_flame_out = { flame_out,0,0,1024,540,-512,-270 };
-SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
+SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774/2,-774/2 };
+//SPR_DATA spr_pinto_l_MF = { pinto_l,0,0,774,774,-(int)(774*1.08f)/2,-(int)(774*1.08f)/2,(int)(774*1.08f),(int)(774*1.08f) }; //大
+SPR_DATA spr_pinto_l_MF = { pinto_l,0,0,774,774,-(int)(774*0.92f)/2,-(int)(774*0.92f)/2,(int)(774*0.92f),(int)(774*0.92f) }; //小
 
 
 
@@ -103,22 +105,23 @@ void Frame::Update() {
 		exorcise_Update();
 
 		//マルチフォーカス処理
-		if (pFrame->multifocus_flg == true && multi_flg == false) {
-			pinto_argb = 0xFFFF0000; //赤にする
-			multi_flg = true;
-		}
-		if (pFrame->multifocus_flg == false && multi_flg == true) {
+		if (multifocus_flg == true && multi_flg == false) multi_flg = true;
+		if (multifocus_flg == false && multi_flg == true) {
 			pinto_argb = 0xFFFFFFFF; //falseなら白にする
 			multi_flg = false;
 		}
 
-		if (pFrame->multifocus_timer>0 && multi_flg == true) {
-			if (pFrame->multifocus_timer % 12 == 0) { //15回に分けて(12で割った余りが0の時)
-				//pinto_argb += 0x00001111; //徐々に白に
-				if ( pinto_argb>=0xFFFFDDDD ) pinto_argb=0xFFFFFFFF;
-				else pinto_argb += 0x00001111; //徐々に白に
-			}
+		if (multifocus_timer>0 && multi_flg == true) {
+			//if (multifocus_timer % 12 == 0) { //15回に分けて(12で割った余りが0の時)
+			//	//pinto_argb += 0x00001111; //徐々に白に
+			//	if ( pinto_argb>=0xFFFFDDDD ) pinto_argb=0xFFFFFFFF;
+			//	else pinto_argb += 0x00001111; //徐々に白に
+			//}
+			//pinto_argb = Frash_Color_pinto(multifocus_timer,30,pinto_argb,0xFFff5151,0xFFff7051,0xFFff7f51,0xFFff7051);
+			if(60<=multifocus_timer) pinto_argb = Frash_Color_pinto(multifocus_timer,35,pinto_argb,0xFFff1111,0xFFff6666,0xFFffa0a0);
+			else pinto_argb = Frash_Color_pinto(multifocus_timer,10,pinto_argb,0xFFff1111,0xFFff6666,0xFFffa0a0);
 		}
+
 
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +152,14 @@ D3DCOLOR Light(D3DCOLOR color) {
 	return color;
 }
 
+D3DCOLOR Frame::Frash_Color_pinto(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1,D3DCOLOR argb2,D3DCOLOR argb3) {
+	int work = timer%num*4+1;
+	     if ( work<=num*1 ) argb = argb1;
+	else if ( work<=num*2 ) argb = argb2;
+	else if ( work<=num*3 ) argb = argb3;
+	else if ( work<=num*4 ) argb = argb2;
+	return argb;
+}
 
 
 void Frame::Render() {
@@ -171,6 +182,7 @@ void Frame::Render() {
 	//else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
+	if(0<multifocus_timer)spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l_MF, pinto_argb, pFrame->Get_f_z() * 0.25f);
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_flame_out, out_argb, 0);
 	if (pFrame->exorciseDwon_flg) {
