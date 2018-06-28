@@ -24,7 +24,6 @@ private:
 	V2 time_pos;
 	V2 totl_pos;
 	D3DCOLOR clear_psb_argb;
-	D3DCOLOR dim_argb;
 
 	float f,g,h,j,m,n;
 

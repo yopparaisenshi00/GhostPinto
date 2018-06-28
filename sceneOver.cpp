@@ -29,7 +29,7 @@ bool sceneOver::Initialize()
 	spr_data::Load(img_over);
 	state = 0;
 	timer = 0;
-	fade_over = 0xDD000000;
+	fade_argb = 0xDD000000;		//フェード用
 	return TRUE;
 }
 
@@ -57,10 +57,10 @@ void sceneOver::Render()
 	switch (state) {
 		case 0: //フェードイン
 			spr_data::Render(V2(0,0), &over_back); //ゲームクリア画面
-			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,fade_over,0); //フェードイン
-			fade_over = pMain->fade_in(fade_over,0x11000000);
-			if ( fade_over<=0x11000000 ) {
-				fade_over = 0x00000000;
+			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,fade_argb,0); //フェードイン
+			fade_argb = fade_in(fade_argb,0x11000000);
+			if ( fade_argb<=0x11000000 ) {
+				fade_argb = 0x00000000;
 				state++;
 			}
 			break;
@@ -74,8 +74,27 @@ void sceneOver::Render()
 				spr_data::Render(V2(480,500),&over_psb,over_psb_argb,0);
 			}
 			//-------------------------------------------------------------------
-			if ( KEY_Get(KEY_SPACE)==3 || timer>60*20 ) MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+			if ( KEY_Get(KEY_SPACE)==3||timer>60*20 ) {
+				//MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+				state++;
+				timer = 0;
+				fade_argb = 0x22000000;
+			}
 			timer++;
+			break;
+		case 2: //フェードアウト
+			iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,fade_argb,0);
+			if ( timer>=25 ) {
+				MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+				timer = 0;
+			}
+			timer++;
+			//iexPolygon::Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,fade_argb,0);
+			//fade_argb = fade_out(fade_argb,0x11000000);
+			//if ( fade_argb>=0xEE000000 ) {
+			//	fade_argb = 0xFF000000;
+			//	MainFrame->ChangeScene(new sceneTitle()); //タイトルへ
+			//}
 			break;
 		default:
 			break;

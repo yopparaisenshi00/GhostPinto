@@ -92,6 +92,7 @@ bool sceneTitle::Initialize()
 	state = 0;
 	dust_timer = 150;
 	key_flg = false;
+	fade_argb = 0xFF000000;
 	iexLight::SetFog(800, 1000, 0);
 	spr_data::Load(img_title);
 	bg.clear();
@@ -159,10 +160,14 @@ void sceneTitle::Update()
 
 		//break;
 	case FADE_IN:
+		fade_argb = fade_in(fade_argb,0x11000000);
+		if ( fade_argb<0x11000000 ) {
+			fade_argb = 0x00000000;
+			state = MAIN;
+		}
 		//pEffect_Manager->searchSet(V2(0,0),V2(0,0),fade_In);
-		state = MAIN;
-
-		//break;
+		//state = MAIN;
+		break;
 	case MAIN:
 
 		//oƒGƒtƒFƒNƒg
@@ -231,15 +236,25 @@ void sceneTitle::Update()
 
 
 	case TUTORIAL:
-		MainFrame->ChangeScene(new sceneTutorial);
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneTutorial);
+		}
+		//MainFrame->ChangeScene(new sceneTutorial);
 
 		pPlayer->Update();
 		break;
 	case FADE_OUT:
 //		pEffect_Manager->Update();
 //		if (timer++ > 120) {
-			MainFrame->ChangeScene(new sceneMain);
+//			MainFrame->ChangeScene(new sceneMain);
 //		}
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneMain());
+		}
 	default:
 		break;
 	}
@@ -288,8 +303,13 @@ void sceneTitle::Render()
 		ppsk.Render();
 		//spr_data::Render(V2(ppsk->ofsx, ppsk->ofsy) + PPSK_POS, ppsk, 0xFFFFFFFF, (float)0, shader2D, "depth");
 	}
-
-	if(state == TUTORIAL)pPlayer->Render();
+	if ( state==FADE_IN||state==FADE_OUT ) {
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
+	}
+	if ( state==TUTORIAL ) {
+		pPlayer->Render();
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
+	}
 
 	if ( state==MAIN ) pEffect_Manager->Render();
 	iexPolygon::Rect(0,0, 960, 540,0x00000000,0);

@@ -104,7 +104,7 @@ bool sceneMain::Initialize()
 	state = 0;
 	count_down = 0;
 	scene_timer = 0;
-	fade_argb = 0x00000000;
+	fade_argb = 0xDD000000;
 
 	//pPlayer;
 	//pFrame;
@@ -187,8 +187,13 @@ void	sceneMain::Update()
 		//	KEY_Vibration(200,200);
 		state = FADE_IN;
 	case FADE_IN:
+		fade_argb = fade_in(fade_argb,0x11000000);
+		if ( fade_argb<0x11000000 ) {
+			fade_argb = 0x00000000;
+			state = READY;
+		}
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
-		state = READY;
+		//state = READY;
 	case READY:
 
 		count_down_timer++;
@@ -307,6 +312,9 @@ void	sceneMain::Render()
 
 	//pD_TEXT->Render();
 
+	if ( (pScore->getKill_num()>=CLEAR_KILLNUM)||timer<=0 ) {
+		spr_data::Render(V2(200,100),&clear); //GAMECLEAR•¶Žš
+	}
 
 	switch (state)
 	{
@@ -314,16 +322,13 @@ void	sceneMain::Render()
 	case INIT:
 	case BEGIN:
 		break;
-	case FADE_IN:
-		break;
 	case READY:
 		pNumber->RenderFree(480 - 32, 270 - 96, count_down+1, 1, 64, 0xFFFFFFFF);
 		break;
 	case MAIN:
+	case FADE_IN:
 	case FADE_OUT:
 	case GAMEOVER:
-		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
-		break;
 	case GAMECLEAR:
 		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
 		break;
@@ -333,9 +338,6 @@ void	sceneMain::Render()
 
 	//pD_TEXT->Render();
 
-	if ( (pScore->getKill_num()>=CLEAR_KILLNUM)||timer<=0 ) {
-		spr_data::Render(V2(200,100),&clear); //GAMECLEAR•¶Žš
-	}
 
 }
 

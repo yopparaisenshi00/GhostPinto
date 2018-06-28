@@ -9,6 +9,8 @@
 
 class Scene {
 public:
+	UINT fade_argb; //フェード用
+
 	//	生成・解放
 	Scene(){}
 	virtual ~Scene(){}
@@ -39,9 +41,22 @@ public:
 			spr_data::Render(V2(pos.x+count*32,pos.y),&data[_num]); //カウント分右に描画
 			count--;
 		} while ( num>0 );
-
 	}
+
+	UINT fade_out(UINT argb,UINT spd) {
+		//argb += 0x11000000;
+		argb += spd;
+		return argb;
+	}
+	UINT fade_in(UINT argb,UINT spd) {
+		//argb -= 0x11000000;
+		argb -= spd;
+		return argb;
+	}
+
 };
+
+
 
 //class Fade_In :public Singleton<Fade_In>
 //{

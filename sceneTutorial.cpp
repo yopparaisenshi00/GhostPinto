@@ -94,6 +94,8 @@ bool sceneTutorial::Initialize()
 	//pFrame;
 	//pNumber;
 
+	fade_argb = 0xFF000000;
+
 	return true;
 }
 
@@ -169,8 +171,14 @@ void	sceneTutorial::Update()
 		//	KEY_Vibration(200,200);
 		state = FADE_IN;
 	case FADE_IN:
+		fade_argb = fade_in(fade_argb,0x11000000);
+		if ( fade_argb<0x11000000 ) {
+			fade_argb = 0x00000000;
+			state = MAIN;
+		}
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
-		state = READY;
+		//state = READY;
+		break;
 	case READY:
 		state = MAIN;
 	case MAIN:
@@ -189,7 +197,12 @@ void	sceneTutorial::Update()
 
 		timer--;
 		if (tuto_operator.State() == TutoOperater::END) {
-			MainFrame->ChangeScene(new sceneMain());
+			fade_argb = fade_out(fade_argb,0x11000000);
+			if ( fade_argb>0xCC000000 ) {
+				fade_argb = 0xDD000000;
+				MainFrame->ChangeScene(new sceneMain());
+			}
+			//MainFrame->ChangeScene(new sceneMain());
 		}
 
 		//if () {
@@ -197,11 +210,22 @@ void	sceneTutorial::Update()
 		//}
 		break;
 	case GAMEOVER:
-		MainFrame->ChangeScene(new sceneOver());
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneOver());
+		}
+
+		//MainFrame->ChangeScene(new sceneOver());
 		
 		break;
 	case GAMECLEAR:
-		MainFrame->ChangeScene(new sceneMain());
+		fade_argb = fade_out(fade_argb,0x11000000);
+		if ( fade_argb>0xCC000000 ) {
+			fade_argb = 0xDD000000;
+			MainFrame->ChangeScene(new sceneMain());
+		}
+		//MainFrame->ChangeScene(new sceneMain());
 
 		break;
 
@@ -246,7 +270,17 @@ void	sceneTutorial::Render()
 	switch (state)
 	{
 	case READY:
-		pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
+		//pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
+		break;
+	case FADE_IN:
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
+		break;
+	case MAIN:
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
+		break;
+	case GAMEOVER:
+	case GAMECLEAR:
+		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //ˆÃ“]
 		break;
 	default:
 		break;
