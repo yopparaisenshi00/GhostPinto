@@ -33,7 +33,7 @@
 
 
 static IMG_DATA IMG_Tutorial[] = {
-	{ spr_data::BG1,"DATA\\BG\\bg.png" },
+	{ spr_data::BG1,"DATA\\BG\\bg_0.png" },
 	{ spr_data::BG2,"DATA\\BG\\bg_case.png" },
 	{ spr_data::BG3,"DATA\\BG\\bg_pc.png" },
 	{ spr_data::BG4,"DATA\\BG\\bg_pipe.png" },
