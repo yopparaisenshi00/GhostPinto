@@ -98,13 +98,13 @@ STAGE_DATA stage1_kill[] = {
 	STAGE_DATA(45,		Tombo,		V2(1220,452),	V2(0.3f, 0.3f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(45,		Big,		V2(680, 512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
 	STAGE_DATA(45,		Big,		V2(1040,512),	V2(0.7f, 0.7f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(45,		zMove,		V2(1260,762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
-	STAGE_DATA(50,		zMove,		V2(660, 762),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(50,		zMove,		V2(1160,662),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(50,		zMove,		V2(760, 662),	V2(1.0f, 1.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(50,		Normal,		V2(600, 652),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
-	STAGE_DATA(50,		Normal,		V2(1400, 652),	V2(1.5f, 1.5f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(1260,762),	V2(1.2f, 1.2f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(660, 762),	V2(1.2f, 1.2f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(1160,662),	V2(1.2f, 1.2f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		zMove,		V2(760, 662),	V2(1.2f, 1.2f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		Normal,		V2(800, 622),	V2(2.0f, 2.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
+	STAGE_DATA(50,		Normal,		V2(1200, 622),	V2(2.0f, 2.0f), V2(0,-1), V2(0,-2),	rand_PINTO),
 
 	//末端データ
 	STAGE_DATA(-1,		nullptr,	V2(600, 250),	V2(0, 0),		V2(0,-1), V2(0,-2),	rand_PINTO),
