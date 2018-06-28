@@ -243,7 +243,7 @@ void sceneTitle::Update()
 		}
 		//MainFrame->ChangeScene(new sceneTutorial);
 
-		pPlayer->Update();
+		//pPlayer->Update();
 		break;
 	case FADE_OUT:
 //		pEffect_Manager->Update();
