@@ -100,7 +100,9 @@ public:
 		comboscore += add+(combo * COMBO_BONUS);
 		combotimer = 0;
 		//eval_justpinto = 0;
-		combo++;
+		//combo++;
+		//if ( pFrame->exorciseDwon_flg == false ) combo++; //霊力ゲージが0以上ならカウント
+		if ( pFrame->exorciseDwon_timer==0 ) combo++; //霊力ゲージが0以上ならカウント
 		kill_num++;
 	}
 

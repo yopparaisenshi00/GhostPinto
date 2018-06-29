@@ -250,7 +250,7 @@ void sceneClear::Render()
 			spr_data::Render(V2(320, 40), &clear_ranking);
 			drawRankings(SCREEN_WIDTH / 2, SCREEN_HEIGHT/2 -100, ranks, ranks_update_info, &clear_number[0]);
 			//--------------------------------------------------------------------------------------------------
-			spr_data::Render(V2(280,425), &clear_TOTAL); //TOTAL
+			spr_data::Render(V2(275,425), &clear_TOTAL); //TOTAL
 			Scene::Render2(V2(480,490-30), &clear_number[0], newscore); //今回のスコア
 			if (timer>=40) {	//一定時間経ったら
 				//PushStartButton--------------------------------------------------------------

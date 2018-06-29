@@ -267,7 +267,7 @@ void Number::Update(int timer) {
 
 	if ( (pFrame->exorciseDwon_timer==180) || (pFrame->exorciseDwon_timer==120) ||
 		(pFrame->exorciseDwon_timer==60) ) {
-		exorcise_argb = 0xFFFF0000;
+		exorcise_argb = 0xFFFF3333;
 	}
 	//if ( (pFrame->exorciseDwon_timer!=180) || (pFrame->exorciseDwon_timer!=120) ||
 	//	(pFrame->exorciseDwon_timer!=60) ) {
