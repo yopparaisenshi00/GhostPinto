@@ -724,7 +724,7 @@ void Enemy_Dead(Enemy* obj) {
 	pScore->add_KillScore(obj->score);		//スコア,コンボ,kill数加算
 	//if ( pFrame->exorciseDwon_timer==0 ) pScore->combo=0; //ゲージ切れていたらコンボリセット
 	if ( obj->sz<JUSTPINTO_SIZE ) pScore->eval_justpinto++; //コンボリザルト_ジャストピント数
-	Combo(obj);						//コンボ表示
+	if ( pFrame->exorciseDwon_timer==0 ) Combo(obj);						//コンボ表示
 	if (obj->sz < JUSTPINTO_SIZE)	IEX_PlaySound(SE_JUSTPINTO, FALSE);	//消滅時のSE(ジャストピント)
 	else IEX_PlaySound(SE_EXT, FALSE);	//消滅時のSE
 	pPlayer->mltfcs.add_point(1);
