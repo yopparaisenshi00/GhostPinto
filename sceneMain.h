@@ -6,6 +6,7 @@
 #ifndef _SCENE_MAIN_H_
 #define _SCENE_MAIN_H_
 #include "system\\Scene.h"
+#include "Frame.h"
 
 #define CLEAR_KILLNUM (60)
 #define COUNT_DOWN_TIME (2)
@@ -103,6 +104,7 @@ public:
 		//combo++;
 		//if ( pFrame->exorciseDwon_flg == false ) combo++; //霊力ゲージが0以上ならカウント
 		if ( pFrame->exorciseDwon_timer==0 ) combo++; //霊力ゲージが0以上ならカウント
+		if (pFrame->exorciseDwon_flg == true) combotimer=100; //霊力ゲージが0ならコンボタイマーカット
 		kill_num++;
 	}
 
