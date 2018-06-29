@@ -38,6 +38,7 @@ private:
 	int front = 0;
 	int after = 0;
 	D3DCOLOR gametimer_argb;
+	D3DCOLOR exorcise_argb;
 
 
 	struct EVAL {

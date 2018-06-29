@@ -264,6 +264,24 @@ void Number::Update(int timer) {
 	crushnum.AddScale(pScore->getKill_num(),1.7f);	//撃破数加算時の拡大表示
 	crushnum.SetNum(pScore->getKill_num(), 2);	//撃破数処理
 	crushnum2.SetNum(60, 2);					//撃破数処理(ステージに応じて変更)
+
+	if ( (pFrame->exorciseDwon_timer==180) || (pFrame->exorciseDwon_timer==120) ||
+		(pFrame->exorciseDwon_timer==60) ) {
+		exorcise_argb = 0xFFFF0000;
+	}
+	//if ( (pFrame->exorciseDwon_timer!=180) || (pFrame->exorciseDwon_timer!=120) ||
+	//	(pFrame->exorciseDwon_timer!=60) ) {
+	//	exorcise_argb += 0x00001111;
+	//	//if ( exorcise_argb>=0xFFFFBBBB ) exorcise_argb = WHITE;
+	//	if ( exorcise_argb==WHITE ) exorcise_argb = WHITE;
+	//}
+	else {
+		//exorcise_argb += 0x00001111;
+		//if ( exorcise_argb>=0xFFFFBBBB ) exorcise_argb = WHITE;
+		if ( exorcise_argb==WHITE ) exorcise_argb = WHITE;
+		else exorcise_argb += 0x00001111;
+	}
+
 	exorcisetimer.SetNum(pFrame->exorciseDwon_timer / 60 + 1, 1);	//霊力タイマー処理
 	eval_agree();
 	n_timer = timer;
@@ -279,7 +297,7 @@ void Number::Render() {
 	spr_data::Render(V2(865, 180), &ui_data[7]);			//スラッシュ
 	crushnum2.Render(875, 150, 2);							//撃破数描画
 	if (pFrame->exorciseDwon_timer>0) {						//霊力タイマー
-		exorcisetimer.Render(450, 150, 1);					//霊力タイマー描画
+		exorcisetimer.Render3(450, 150, 1,exorcise_argb);					//霊力タイマー描画
 	}
 	spr_data::Render(V2(750, 20), &ui_data[0]);		//SCORE
 	spr_data::Render(V2(750, 100), &ui_data[1]);	//撃破数
