@@ -212,7 +212,7 @@ void Number::eval_agree() {
 	}
 
 	//•¶šF(”’)
-	if( 60<eval.timer ){
+	if( 60<=eval.timer ){
 		eval.alpha = (int)(255*1.0f);
 		custom.argb = 0xFFFFFFFF;
 		eval_addscore.custom.argb = 0xFFFFFFFF;
