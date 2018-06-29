@@ -178,7 +178,7 @@ void	sceneMain::Update()
 		IEX_StopSound(BGM_TITLE);
 		IEX_PlaySound(BGM_MAIN, FALSE); //BGM
 
-		count_down = 4;
+		count_down = 2;
 		count_down_timer = 0;
 		//-------------------------------------------------------------------
 		timer = 80 * 60;
@@ -191,6 +191,7 @@ void	sceneMain::Update()
 		if ( fade_argb<0x11000000 ) {
 			fade_argb = 0x00000000;
 			IEX_PlaySound(SE_COUNT, FALSE);	//カウントダウン
+			count_down_timer = 0;
 			state = READY;
 		}
 		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
