@@ -178,7 +178,7 @@
     <ClInclude Include="system\Framework.h" />
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\System.h" />
-    <ClInclude Include="Template.h" />
+    <ClInclude Include="Misc\Template.h" />
     <ClInclude Include="UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
