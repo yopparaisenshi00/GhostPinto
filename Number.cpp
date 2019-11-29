@@ -6,8 +6,8 @@
 #include "iextreme.h"
 #include "system\System.h"
 #include "Game.h"
-#include "Player.h"
-#include "Frame.h"
+#include "Player/Player.h"
+#include "Player/Frame.h"
 #include "Number.h"
 #include "sceneMain.h"
 

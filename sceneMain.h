@@ -6,7 +6,7 @@
 #ifndef _SCENE_MAIN_H_
 #define _SCENE_MAIN_H_
 #include "system\\Scene.h"
-#include "Frame.h"
+#include "Player\Frame.h"
 
 #define CLEAR_KILLNUM (60)
 #define COUNT_DOWN_TIME (2)

@@ -1,9 +1,9 @@
 #include "iextreme.h"
 #include "Game.h"
-#include "Player.h"
+#include "Player/Player.h"
+#include "Player/Frame.h"
 #include "Enemy.h"
 #include "MAP.h"
-#include "Frame.h"
 #include "Effect.h"
 
 enum {

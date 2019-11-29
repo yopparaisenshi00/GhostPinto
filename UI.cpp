@@ -1,8 +1,8 @@
 #include	"iextreme.h"			//	IEXライブラリ(全般)
 #include	"system/system.h"		//	IEXライブラリ(システム)
 #include	"Game.h"				//	ゲーム汎用
-#include	"Player.h"				//	プレイヤー
-#include	"Frame.h"				//	ピント
+#include	"Player/Player.h"				//	プレイヤー
+#include	"Player/Frame.h"				//	ピント
 #include	"Enemy.h"				//　敵用
 #include	"MAP.h"					//  マップチップ
 #include	"UI.h"

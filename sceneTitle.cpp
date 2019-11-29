@@ -3,10 +3,10 @@
 #include "system\Framework.h"
 
 #include "Game.h"
-#include "Player.h"
+#include "Player/Player.h"
+#include "Player/Frame.h"
 #include "MAP.h"
 #include "Effect.h"
-#include "Frame.h"
 #include "BGFG.h"
 #include "Sound.h"
 #include "sceneMain.h"

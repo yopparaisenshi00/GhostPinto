@@ -1,7 +1,7 @@
 #include "iextreme.h"
 #include "system\System.h"
 #include "Game.h"
-#include "Frame.h"
+#include "Player/Frame.h"
 #include "Enemy.h"
 #include "BGFG.h"
 #include "stage_data.h"

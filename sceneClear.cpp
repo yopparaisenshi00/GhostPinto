@@ -7,7 +7,7 @@
 #include "sceneClear.h"
 #include "Enemy.h"
 #include "Number.h"
-#include "Player.h"
+#include "Player/Player.h"
 #include "Ranking.h"
 
 

@@ -7,8 +7,8 @@
 //******************************************************************************
 #include "iextreme.h"
 #include "Game.h"
-#include "Player.h"
-#include "Frame.h"
+#include "Player/Player.h"
+#include "Player/Frame.h"
 #include "Enemy.h"
 #include "Effect.h"
 #include "BGFG.h"
