@@ -7,7 +7,7 @@
 int saveData(char *filename, int _score);
 int loadData(char *filename, int rank[]);
 
-void drawRankings(int _x,int _y,int ranks[],int _rank_update_info,SPR_DATA* data);
+void drawRankings(float _x, float _y,int ranks[],int _rank_update_info,SPR_DATA* data);
 //void Render3(V2 pos,SPR_DATA* data,int num);
 void Render3(V2 pos,SPR_DATA* data,int num,D3DCOLOR color);
 

@@ -174,7 +174,7 @@ void sceneTitle::Update()
 		if ( dust_timer++>=150 ) {
 			for ( int i = 0; i<4; i++ ){
 				pEffect_Manager->searchSet(
-					V2(250*i+(rand()%50+100), SCREEN_HEIGHT-(rand()%200)),				//x=400*i-600*i,y=440-540
+					V2((float)(250*i+(rand()%50+100)), (float)(SCREEN_HEIGHT-(rand()%200))),				//x=400*i-600*i,y=440-540
 					V2((float)(rand()%2)/100.0f+0.02f, -(float)(rand()%2+1)), dust);	//x=0.04f-0.07f,y=-(1-3)
 			}
 			dust_timer = 0;
@@ -209,25 +209,6 @@ void sceneTitle::Update()
 			pFrame->clear();
 		}
 
-		//{
-		//	static int moveobj_data_no = 0;
-		//	OBJ2D* moveObj;
-		//	if (KEY_Get(KEY_C) == 3) {
-		//		moveobj_data_no++;
-		//		if (moveobj_data_no > 5)moveobj_data_no = 0;
-		//	}
-		//	moveObj = moveobj_data[moveobj_data_no];
-
-		//	if (moveObj)
-		//	{
-		//		if (KEY_Get(KEY_UP))moveObj->pos.y += 2;
-		//		if (KEY_Get(KEY_DOWN))moveObj->pos.y -= 2;
-		//		if (KEY_Get(KEY_LEFT))moveObj->pos.x += 2;
-		//		if (KEY_Get(KEY_RIGHT))moveObj->pos.x -= 2;
-		//	}
-		//	pD_TEXT->set_Text(moveObj->pos, "pos", moveObj->pos, 0xFFFFFFFF);
-		//}
-
 		pEffect_Manager->Update();
 		pFrame->f_move();
 
@@ -241,15 +222,8 @@ void sceneTitle::Update()
 			fade_argb = 0xDD000000;
 			MainFrame->ChangeScene(new sceneTutorial);
 		}
-		//MainFrame->ChangeScene(new sceneTutorial);
-
-		//pPlayer->Update();
 		break;
 	case FADE_OUT:
-//		pEffect_Manager->Update();
-//		if (timer++ > 120) {
-//			MainFrame->ChangeScene(new sceneMain);
-//		}
 		fade_argb = fade_out(fade_argb,0x11000000);
 		if ( fade_argb>0xCC000000 ) {
 			fade_argb = 0xDD000000;
@@ -273,7 +247,7 @@ void sceneTitle::Render()
 	//spr_data::Render(V2(titleChar->dw + titleChar->ofsx, SCREEN_HEIGHT + titleChar->ofsy), titleChar);
 
 	if (titleName.data) {
-		float sz = pFrame->get_sz(titleName.data->frameNum);
+		float sz = pFrame->get_sz((float)titleName.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 		titleName.Render("depth");
 	}
@@ -281,7 +255,7 @@ void sceneTitle::Render()
 	pEffect_Manager->Render();
 
 	if (titleChar.data) {
-		float sz = pFrame->get_sz(titleChar.data->frameNum);
+		float sz = pFrame->get_sz((float)titleChar.data->frameNum);
 		shader2D->SetValue("FPower", sz > 90 ? (180 - sz) / 90 : sz / 90);
 		titleChar.Render();
 	}
@@ -320,33 +294,3 @@ void sceneTitle::Render()
 	//pD_TEXT->Render();
 }
 
-//ƒ^ƒCƒgƒ‹
-void Base(OBJ2D* obj) {
-	switch (obj->state)
-	{
-	case INIT:	//‰Šúİ’è
-		obj->Init();
-		break;
-	case 1: //€–Sˆ—
-		break;
-	default:
-		break;
-	}
-}
-void Sin(OBJ2D* obj) {
-	switch (obj->state)
-	{
-	case INIT:	//‰Šúİ’è
-		break;
-	case 1: //€–Sˆ—
-		obj->key++;
-		while (obj->key > 360) {
-			obj->key -= 360;
-		}
-		sinf(obj->key);
-		obj->key /= 0.01745;
-		break;
-	default:
-		break;
-	}
-}

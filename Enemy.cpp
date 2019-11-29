@@ -213,7 +213,7 @@ void Frash_white(Enemy* obj,int num) {
 
 	if ( (obj->flash_timer%(num*2))<=4 ) { //01234
 		obj->animeData = obj->Anime_Box[Damage];
-		obj->alpha = 255*0.75f;
+		obj->alpha = (int)(255 * 0.75f);
 	}
 	else if ( (obj->flash_timer%(num*2))<=9 ) { //56789
 		obj->animeData = obj->Anime_Box[normal];
@@ -221,7 +221,7 @@ void Frash_white(Enemy* obj,int num) {
 	}
 	else if ( (obj->flash_timer%(num*2))<=14 ) { //1011121314
 		obj->animeData = obj->Anime_Box[Damage];
-		obj->alpha = 255*0.75f;
+		obj->alpha = (int)(255*0.75f);
 	}
 	else {
 		obj->animeData = obj->Anime_Box[normal];
@@ -246,8 +246,8 @@ D3DCOLOR Frash_Color(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1, D3DCOLOR ar
 //Ç»Ç…Ç≈îªífÇ∑ÇÈÇ©,ä‘äu,ì_ñ≈Ç≥ÇπÇΩÇ¢alpha,î{ó¶ÇP,î{ó¶ÇQ,Ç¢Ç¬Ç‹Ç≈
 int Frash_Alpha(int timer, int num, int alpha, float alpha1, float alpha2, int end) {
 	if (timer<end) {
-		if ((timer % (num * 2)) <  num) alpha = 255 * alpha1;
-		if ((timer % (num * 2)) >= num) alpha = 255 * alpha2;
+		if ((timer % (num * 2)) <  num) alpha = (int)(255 * alpha1) ;
+		if ((timer % (num * 2)) >= num) alpha = (int)(255 * alpha2);
 	}
 	else alpha = 255;
 	return alpha;
@@ -707,7 +707,7 @@ void Combo(Enemy* obj) {
 		int _combo = combo;
 		int count = 0;
 		int n = 0;
-		int pos_x = 0;
+		float pos_x = 0;
 
 		//åÖêîÇí≤Ç◊ÇÈ-----------------------------------
 		while ( _combo>=10 ) { //10à»è„Ç»ÇÁ

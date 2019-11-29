@@ -20,7 +20,7 @@
 
 #define MLTFCS_MAXLV (3)
 //#define PINTO_ACT (5.0f)
-#define PINTO_ACT (2.5 * (f_spd * f_spd))
+#define PINTO_ACT (2.5f * (f_spd * f_spd))
 
 #define PINTO_POSY (480)
 #define PINTO_MAX (90)

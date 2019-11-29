@@ -97,12 +97,6 @@ void Frame::Update() {
 		}
 
 		if (multifocus_timer>0 && multi_flg == true) {
-			//if (multifocus_timer % 12 == 0) { //15回に分けて(12で割った余りが0の時)
-			//	//pinto_argb += 0x00001111; //徐々に白に
-			//	if ( pinto_argb>=0xFFFFDDDD ) pinto_argb=0xFFFFFFFF;
-			//	else pinto_argb += 0x00001111; //徐々に白に
-			//}
-			//pinto_argb = Frash_Color_pinto(multifocus_timer,30,pinto_argb,0xFFff5151,0xFFff7051,0xFFff7f51,0xFFff7051);
 			if(60<=multifocus_timer) pinto_argb = Frash_Color_pinto(multifocus_timer,35,pinto_argb,0xFFff1111,0xFFff6666,0xFFffa0a0);
 			else pinto_argb = Frash_Color_pinto(multifocus_timer,10,pinto_argb,0xFFff1111,0xFFff6666,0xFFffa0a0);
 		}
@@ -149,22 +143,11 @@ D3DCOLOR Frame::Frash_Color_pinto(int timer,int num,D3DCOLOR argb,D3DCOLOR argb1
 
 void Frame::Render() {
 
-	spr_data::Render(V2((int)(pPlayer->pos.x + 30-2), (int)(pPlayer->pos.y-40-4)), &spr_exorcise_frame );
-
-	//iexPolygon::Rect(160,30,exorcise*2,30,0,0xFFFFFF00,0); //霊力ゲージ描画(上にずらした)
-	//iexPolygon::Rect(20,180,30,exorcise*2,0,0xFFFFFF00,0); //霊力ゲージ描画(縦 ※sceneMain変更)
-	if (!pFrame->exorciseDwon_flg) {
-		iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y-40) + (50-exorcise/2)), 10, (int)(exorcise/2), 0, argb, 0); //霊力ゲージ描画(プレイヤー右上)
-		//spr_data::Render(V2((int)(pPlayer->pos.x + 30),(int)(pPlayer->pos.y-40)), &spr_exorcise_frame); //霊力ゲージ枠
-		//iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y - 40) + (200 - exorcise * 2)), 10, (int)(exorcise / 2), 0, argb, 0); //霊力ゲージ描画(プレイヤー右上)
-		//iexPolygon::Rect((int)pos.x, (int)pos.y, 1, 1, 0, 0xFFFF0000);
+	spr_data::Render(V2(pPlayer->pos.x + 30-2, pPlayer->pos.y-40-4), &spr_exorcise_frame );
+	if (!pFrame->exorciseDwon_flg) 
+	{
+		iexPolygon::Rect((int)(pPlayer->pos.x + 30), (int)((pPlayer->pos.y - 40) + (50 - exorcise / 2)), 10, (int)(exorcise / 2), 0, argb , 0); //霊力ゲージ描画(プレイヤー右上)
 	}
-
-	//if ( multifocus_flg ) {
-	//	iexPolygon::Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, light_argb, 0); //白
-	//	light_argb = Light(light_argb);	//マルチフォーカスを使ったら発光
-	//}
-	//else light_argb = 0xCCFFFFFF;	//マルチフォーカスを使ったら発光
 
 	spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l, pinto_argb, pFrame->Get_f_z() * 0.25f);
 	if(0<multifocus_timer)spr_data::Render(V2((SCREEN_WIDTH / 2) +custom.ef_ofsX, (SCREEN_HEIGHT / 2)), &spr_pinto_l_MF, pinto_argb, pFrame->Get_f_z() * 0.25f);

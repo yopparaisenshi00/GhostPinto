@@ -27,7 +27,6 @@ public:
 	int				type;
 	SPR_DATA*		data;
 
-
 	int sc_w;
 	int sc_h;
 

@@ -104,11 +104,20 @@ enum {
 	CLEAR,	//èâä˙âª
 };
 
+// äKëw ÉåÉxÉã å„ÇÎ
 float BG_REDUCED_DATA[] = {
-	1,1.2,1.4,2,4,6
+	1,
+	1.2f,
+	1.4f,
+	2,
+	4,
+	6
 };
+
+// äKëw ÉåÉxÉã ëO
 float FG_REDUCED_DATA[] = {
-	0.5,0.7,
+	0.5f,
+	0.7f,
 };
 
 //=====================
@@ -167,17 +176,12 @@ void LandScape::Update() {
 	}
 
 }
-static int d_txt_x = 0;
-static int d_txt_y = 0;
-
 
 //==========================================
 //  ï`âÊ
 //==========================================
 void LandScape::RenderBG() {
 	bg.Render();
-	d_txt_y = 0;
-	d_txt_x = 0;
 	for (int i = BG_REDUCED_LV_MAX -1; i >= 0; i--) {
 		BG_RenderBox[i].Render();
 	}
@@ -335,80 +339,6 @@ void LandScape::ReducedObj::Render() {
 
 }
 
-
-//---------------------------------------------------------------
-//
-// îwåi :: îpé~
-//
-//---------------------------------------------------------------
-
-//BG::BG()
-//{
-//
-//}
-//
-//BG::~BG()
-//{
-//			
-//}
-//
-//void BG::Init() {
-//	
-//	for (int i = 0; i < BG_MAX; i++) {
-//		if (obj[i])obj[i]->Init();
-//	}
-//}
-//
-//
-//
-//void BG::Update() {
-//	for (int i = 0; i < BG_MAX; i++) {
-//		if (obj[i] && obj[i]->move)
-//			obj[i]->Update();
-//	}
-//}
-//void BG::Render() {
-//	for (int i = 0; i < BG_MAX;i++ ) {
-//		if(obj[i])obj[i]->Render();
-//	}
-//}
-
-//---------------------------------------------------------------
-//
-//	ëOåi::îpé~
-//
-//---------------------------------------------------------------
-
-//FG::FG()
-//{
-//	}
-//
-//FG::~FG()
-//{
-//
-//}
-//
-//void FG::Init() {
-//	for (int i = 0; i < BG_MAX; i++) {
-//		if (obj[i])obj[i]->Init();
-//	}
-//
-//}
-//
-//void FG::Update() {
-//
-//	for (int i = 0; i < BG_MAX; i++) {
-//		if (obj[i] && obj[i]->move)
-//			obj[i]->Update();
-//	}
-//}
-//void FG::Render() {
-//	for (int i = 0; i < BG_MAX; i++) {
-//		if (obj[i])obj[i]->Render();
-//	}
-//}
-
-
 //*********************************************************************************
 //
 // îwåiObj
@@ -427,17 +357,16 @@ void LAND_SCAPE_OBJ::Init() {
 }
 void LAND_SCAPE_OBJ::Update() {
 
-	//custom.scaleX = 1.0;
-	//custom.scaleY = 1.0;
-
+	// 
 	if (move)move(this);
 
 	animetion();
+	
+	// äKëwçXêV
 	Reduced(this);
 
-
+	// ÉLÉÉÉâÉNÉ^Å[Ç…îÌÇ≥ÇÈÇ∆îñÇ≠Ç»ÇÈ
 	if (z < 0) {
-		
 		int alpha = custom.argb >> 24;
 		if (check_behind_obj(this))
 		{
@@ -447,8 +376,7 @@ void LAND_SCAPE_OBJ::Update() {
 		}
 		else {
 			if (alpha >= 0xFF) {
-				alpha & 0xFF;
-				alpha | 0xFF;
+				alpha = 0xFF;
 			}
 			else {
 				alpha += ALPHA_ACT;
@@ -456,8 +384,11 @@ void LAND_SCAPE_OBJ::Update() {
 		}
 		custom.argb = (custom.argb & 0x00FFFFFF) | (alpha << 24);
 	}
+
 }
 
+
+// ÉqÉbÉgÉ`ÉFÉbÉN
 int check_behind_obj(OBJ2D* obj)
 {
 	if(Judge(obj, pPlayer)){ return TRUE; }
@@ -475,8 +406,9 @@ int check_behind_obj(OBJ2D* obj)
 }
 
 
-
-
+//==========================================
+// ï`âÊ
+//==========================================
 void LAND_SCAPE_OBJ::Render() {
 	if (!data)return;
 	sz =  pEnemy_Manager->get_sz(z) - pFrame->getPintoSize();
@@ -492,9 +424,11 @@ void LAND_SCAPE_OBJ::Render() {
 }
 
 
-
+//==========================================
+// äKëwçXêV
+//==========================================
 void Reduced(LAND_SCAPE_OBJ* obj) {
-	int scale = obj->z / 10;
+	int scale = (int)obj->z / 10;
 	//int ScrollX = pMAP->getScrollX();
 	//int ScrollY = pMAP->getScrollY();
 	V2 Scroll(pMAP->getScrollX(), pMAP->getScrollY());
@@ -558,14 +492,12 @@ void Reduced(LAND_SCAPE_OBJ* obj) {
 //---------------------------------------------------------------
 // å¬ï ìÆçÏä÷êî
 //---------------------------------------------------------------
-
+// Base //
 void MainBG(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
 	case INIT:
-
 	case BEGIN:
-		
 	default:
 		break;
 	}
@@ -577,10 +509,9 @@ void BG_pc(LAND_SCAPE_OBJ* obj) {
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 		//obj->animeData = spr_pc;
-		obj->data = &spr_pc[0];
 		obj->state = BEGIN;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
-
+		obj->data = &spr_pc[0];
+		obj->size = V2((float)obj->data->dw/2, (float)obj->data->dh / 2);
 		break;
 	case BEGIN:
 		obj->state = MOVE;
@@ -602,7 +533,7 @@ void BG_container(LAND_SCAPE_OBJ* obj) {
 
 		obj->animeData = spr_container;
 		obj->data = &spr_container[0];
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -622,9 +553,7 @@ void BG_Capsule_l(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Capsule_l;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
-
-		obj->size = V2(obj->data->dw/2, obj->data->dh/2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -642,7 +571,7 @@ void BG_Capsule_d(LAND_SCAPE_OBJ* obj) {//É_Å[ÉN
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Capsule_d;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -661,7 +590,7 @@ void BG_Fly_capsule_l(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Fly_capsule_l;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -678,7 +607,7 @@ void BG_Fly_capsule_d(LAND_SCAPE_OBJ* obj) {//É_Å[ÉN
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_capsule_d;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -695,7 +624,7 @@ void BG_Fly_capsule_m(LAND_SCAPE_OBJ* obj) {//ÉÅÉ^Éã
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_capsule_m;
-		obj->size = V2(obj->data->dw/2,obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 		break;
@@ -715,7 +644,7 @@ void BG_Break_capsule_u(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Break_capsule_u;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -733,7 +662,7 @@ void BG_Fly_mini_capsule_l(LAND_SCAPE_OBJ* obj) {
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Fly_mini_capsule_l;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -751,7 +680,7 @@ void BG_Fly_mini_capsule_d(LAND_SCAPE_OBJ* obj) {//É_Å[ÉN
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Fly_mini_capsule_d;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -770,7 +699,7 @@ void BG_Fly_mini_capsule_m(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Fly_mini_capsule_m;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = BEGIN;
 
@@ -790,7 +719,7 @@ void BG_Mini_capsule_l(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Mini_capsule_l;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 
 		break;
@@ -808,7 +737,7 @@ void BG_Mini_capsule_d(LAND_SCAPE_OBJ* obj) {//É_Å[ÉN
 		obj->custom.scaleMode = SCALE_MODE::BOTTOMCENTER;
 
 		obj->data = &spr_Mini_capsule_d;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = MOVE;
 
 		break;
@@ -830,7 +759,7 @@ void BG_Display_a(LAND_SCAPE_OBJ* obj) {
 	case INIT:
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->data = &spr_Display_a;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 
 		obj->state = MOVE;
 		break;
@@ -848,7 +777,7 @@ void BG_Display_b(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Display_b;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -875,7 +804,7 @@ void BG_Display_c(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 		obj->animetion_data = anime_Display_cd;
 		obj->data = &spr_Display_c;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -883,6 +812,7 @@ void BG_Display_c(LAND_SCAPE_OBJ* obj) {
 		break;
 	}
 }
+
 void BG_Display_d(LAND_SCAPE_OBJ* obj) {
 	switch (obj->state)
 	{
@@ -890,7 +820,7 @@ void BG_Display_d(LAND_SCAPE_OBJ* obj) {
 		obj->custom.scaleMode = SCALE_MODE::CENTER;
 
 		obj->data = &spr_Display_d;
-		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
+		obj->size = V2((float)obj->data->dw / 2, (float)obj->data->dh / 2);
 		obj->state = BEGIN;
 		break;
 	case BEGIN:
@@ -899,95 +829,3 @@ void BG_Display_d(LAND_SCAPE_OBJ* obj) {
 	}
 }
 
-
-
-//static SPR_DATA anime_circleext[] = {
-//	SPR_DATA{ spr_data::Circle, 128 * 0, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 1, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 2, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 3, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 4, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 5, 0, 128, 128, -64, -64,2 },
-//	SPR_DATA{ spr_data::Circle, 128 * 6, 0, 128, 128, -64, -64,3 },
-//	SPR_STOP
-//};
-//
-//static Animetion anime_circleext_data[] = {
-//	{ &anime_circleext[0],4 },
-//	{ &anime_circleext[1],4 },
-//	{ &anime_circleext[2],4 },
-//	{ &anime_circleext[3],4 },
-//	{ &anime_circleext[4],4 },
-//	{ &anime_circleext[5],4 },
-//	{ &anime_circleext[6],4 },
-//	{ NULL,ANIM_FLG_LOOP }
-//};
-//
-////ãÛíÜëÂÉJÉvÉZÉãîjóÙ
-//void BG_Fly_capsule_l_break(LAND_SCAPE_OBJ* obj) {
-//	switch (obj->state)
-//	{
-//	case INIT:
-//		obj->custom.scaleMode = SCALE_MODE::CENTER;
-//		obj->data = &spr_Fly_capsule_l;
-//		obj->size = V2(obj->data->dw / 2, obj->data->dh / 2);
-//
-//		obj->state = BEGIN;
-//		break;
-//	case BEGIN:
-//		obj->timer++;
-//		if (obj->timer > 300) {
-//			obj->state = BREAK;
-//			pLandScape->searchSet(obj->type, obj->wpos, V2(5,1), CircleExt, NULL, obj->z);
-//		}
-//		break;
-//	case BREAK:
-//		//pLandScape->searchSet(obj->type, obj->wpos + V2(64,-256), V2(0.2,0), CircleExt, NULL, obj->z);
-//		//pLandScape->searchSet(obj->type, obj->wpos + V2(-64, -256), V2(0.2, 0), CircleExt, NULL, obj->z);
-//
-//		if (obj->timer++ > 60) {
-//			obj->timer = 0;
-//			{
-//				V2 ofs;
-//				ofs.x = (rand() % 200) - 100;
-//				ofs.y = (rand() % 200) - 100;
-//				pLandScape->searchSet(obj->type, obj->wpos + ofs, V2(0.6,0.7), CircleExt, NULL, obj->z);
-//			}
-//
-//		}
-//		obj->wpos.y ++;
-//		break;
-//
-//	default:
-//		break;
-//	}
-//}
-//
-//void CircleExt(LAND_SCAPE_OBJ *obj)
-//{
-//	switch (obj->state)
-//	{
-//	case INIT:
-//		
-//		obj->animetion_data = anime_circleext_data;
-//		//obj->data = &obj->animeData[0];
-//		obj->custom.scaleMode = CENTER;
-//		
-//		obj->timer = 0;
-//		obj->custom.argb = 0x00FFFFFF | ((int)(255 * obj->spd.y)) << 24;
-//		obj->state = MOVE;
-//		//break;
-//	case MOVE:
-//		obj->custom.scaleX = obj->custom.scaleY = obj->spd.x;
-//		if (obj->timer++>15) {
-//			obj->state = CLEAR; //è¡ãéèàóùÇ÷
-//		}
-//
-//		break;
-//	case CLEAR:
-//		obj->clear();
-//		break;
-//	default:
-//		break;
-//	}
-//}

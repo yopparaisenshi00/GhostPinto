@@ -791,7 +791,7 @@ void Combo(Effect* obj) {
 		obj->state=MOVE;
 		//break;
 	case MOVE:
-		obj->i_work[7] = obj->spd.x; //コンボ
+		obj->i_work[7] = (int)obj->spd.x; //コンボ
 		obj->data = &combo_number[obj->i_work[7]]; //コンボ表示
 		Combo_Color(obj); //色
 		if ((obj->f_work[8]-40)<obj->pos.y) obj->pos.y += obj->spd.y; //移動処理
@@ -1390,10 +1390,10 @@ void fade_Out(Effect* obj) {
 
 
 
-#define SHAKE_MAX obj->i_work[2]
-#define SHAKE_MIN obj->i_work[3]
-#define SHAKE_X obj->i_work[7]
-#define SHAKE_Y obj->i_work[8]
+#define SHAKE_MAX obj->f_work[12]
+#define SHAKE_MIN obj->f_work[13]
+#define SHAKE_X obj->f_work[14]
+#define SHAKE_Y obj->f_work[15]
 void Shake(Effect* obj) {
 
 	int randxy = rand();
@@ -1401,29 +1401,29 @@ void Shake(Effect* obj) {
 	switch (obj->state)
 	{
 	case INIT:
-		SHAKE_MAX = (int)obj->pos.x;
-		SHAKE_MIN = (int)obj->pos.y;
+		SHAKE_MAX = obj->pos.x;
+		SHAKE_MIN = obj->pos.y;
 
 		obj->timer = (int)obj->spd.x;
-		obj->state = (int)obj->spd.y;
+		obj->state = (int) obj->spd.y;
 		break;
 	case MOVE: //ジャストピント時振動もしくは、マルチフォーカス失敗振動
 		//SHAKE_Y =  (int)((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
 		//SHAKE_X = (int)(randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
-		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
 		//-100～100 -1～1 MIN～MAX
 
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = CLEAR;
 		}
-		pEffect_Manager->add_object(V2((float)SHAKE_X, (float)SHAKE_Y));
+		pEffect_Manager->add_object(V2(SHAKE_X, SHAKE_Y));
 
 		break;
 	case MOVE2:
 		//SHAKE_X = (randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN;
 		//SHAKE_Y = ((randxy % (SHAKE_MAX - SHAKE_MIN)) - SHAKE_MIN)/2;
-		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = CLEAR;
@@ -1432,7 +1432,7 @@ void Shake(Effect* obj) {
 		break;
 
 	case MOVE3: //マルチフォーカス失敗振動(右下UI)
-		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = CLEAR;
@@ -1440,7 +1440,7 @@ void Shake(Effect* obj) {
 		pEffect_Manager->add_multierror(V2(SHAKE_X, SHAKE_Y));
 		break;
 	case MOVE4: //ジャストピント時振動
-		SHAKE_X = (int)(((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN);
+		SHAKE_X = ((randxy%201)-100)*0.01f*(SHAKE_MAX-SHAKE_MIN)+SHAKE_MIN;
 		if (obj->timer-- < 0) {
 			obj->timer = 0;
 			obj->state = CLEAR;

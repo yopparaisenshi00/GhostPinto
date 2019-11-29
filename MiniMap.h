@@ -17,7 +17,7 @@ class MiniMap :public OBJ2D
 
 
 public:
-	int ReductionSize;
+	float ReductionSize;
 	V2 Limits;
 	int count;
 
