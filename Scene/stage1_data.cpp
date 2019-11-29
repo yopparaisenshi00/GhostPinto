@@ -4,7 +4,7 @@
 #include "Player/Frame.h"
 #include "Enemy/Enemy.h"
 #include "Map/BGFG.h"
-#include "Map/stage_data.h"
+#include "Scene/stage_data.h"
 
 
 //時間による出現データ

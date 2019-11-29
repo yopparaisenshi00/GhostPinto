@@ -7,7 +7,7 @@
 #include "Effect/Effect.h"
 #include "Map/MAP.h"
 #include "Map/BGFG.h"
-#include "Map/stage_data.h"
+#include "Scene/stage_data.h"
 
 enum 
 {

@@ -10,7 +10,7 @@
 #include "Enemy.h"
 #include "Effect/Effect.h"
 
-#include "Map/stage_data.h"
+#include "Scene//stage_data.h"
 
 #include "Sound/Sound.h"
 #include "Scene/sceneMain.h"

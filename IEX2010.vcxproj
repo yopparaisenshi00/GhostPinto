@@ -144,7 +144,7 @@
     <ClCompile Include="Scene\sceneTutorial.cpp" />
     <ClCompile Include="Sound\Sound.cpp" />
     <ClCompile Include="spr_data.cpp" />
-    <ClCompile Include="Map\stage1_data.cpp" />
+    <ClCompile Include="Scene\stage1_data.cpp" />
     <ClCompile Include="system\Framework.cpp" />
     <ClCompile Include="system\System.cpp" />
     <ClCompile Include="system\WinMain.cpp" />
@@ -174,7 +174,7 @@
     <ClInclude Include="spr_data.h" />
     <ClInclude Include="Map\Stage_tuto.h" />
     <ClInclude Include="Map\Stage_1.h" />
-    <ClInclude Include="Map\stage_data.h" />
+    <ClInclude Include="Scene\stage_data.h" />
     <ClInclude Include="system\Framework.h" />
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\System.h" />
