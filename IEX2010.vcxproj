@@ -165,6 +165,7 @@
     <ClInclude Include="Player\Frame.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Misc\Ranking.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Scene\sceneClear.h" />
     <ClInclude Include="Scene\sceneMain.h" />
     <ClInclude Include="Scene\sceneOver.h" />
