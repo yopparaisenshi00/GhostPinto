@@ -6,6 +6,8 @@
 #include "Map/MAP.h"
 #include "Effect.h"
 
+#include "Scene/sceneMain.h"
+
 enum {
 	INIT=0,		//初期設定
 	MOVE,		//移動処理
@@ -748,7 +750,6 @@ void Lock(Effect* obj) {
 	}
 }
 
-#include "Scene/sceneMain.h"
 
 //コンボカラー
 void Combo_Color(Effect*obj) {

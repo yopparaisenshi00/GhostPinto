@@ -3,8 +3,12 @@
 #define _EFFECT_H_
 
 
-//#define EFF_MAX 256
-#define EFF_MAX 512
+
+//----------------------------------------------------------------
+//
+//	 ìG
+//
+//----------------------------------------------------------------
 class Effect : public OBJ2DEX
 {
 public:
@@ -22,24 +26,19 @@ public:
 	virtual void Render();
 	virtual void clear();
 
-
-
-	//void update();
-	//void render();
 protected:
 
 };
 
-
-
-
-
-
-
-
+//----------------------------------------------------------------
+//
+//	 ìGä«óù
+//
+//----------------------------------------------------------------
 class Effect_Manager :public Singleton<Effect_Manager>
 {
 public:
+#define EFF_MAX 512
 	Effect* effect[EFF_MAX];
 	void searchSet(V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(Effect*) = nullptr, OBJ2D* parent = nullptr);
 	//bool shift_objects_flg;
@@ -66,8 +65,6 @@ public:
 	void Update();
 	void Render();
 private:
-
-	void Shift_Update();
 
 	V2 shift_objects;
 	V2 shift_all;
