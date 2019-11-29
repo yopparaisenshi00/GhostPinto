@@ -240,24 +240,7 @@ public:
 
 	void searchSet(V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(Enemy*) = nullptr,float _z = 0,Enemy* parent = NULL);
 	void searchSet(void(*_move)(Enemy*), V2 &_pos = Vector2(0, 0), V2 &_spd = Vector2(0, 0), V2 &_spdAcc = Vector2(0, 0),
-		V2 &_spdMax = Vector2(0, 0), float _z = 0) {
-		for (int i = 0; i < ENEMY_MAX; i++)
-		{
-			if (enemy[i] && enemy[i]->init_fg) {
-				continue;
-			}
-			if (!enemy[i])enemy[i] = new Enemy;
-			enemy[i]->move = _move;
-			enemy[i]->pos = _pos;
-			enemy[i]->spd = _spd;
-			enemy[i]->spdAcc = _spdAcc;
-			enemy[i]->spdMax = _spdMax;
-			(_z == rand_PINTO) ? enemy[i]->z = ((rand() % (PINTO_MAX * 2)) - PINTO_MAX): enemy[i]->z = _z;
-			enemy[i]->init_fg = true;
-			return;
-		}
-		return;
-	}
+		V2 &_spdMax = Vector2(0, 0), float _z = 0);
 
 
 

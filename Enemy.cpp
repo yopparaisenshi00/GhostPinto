@@ -312,8 +312,12 @@ void Enemy_Manager::damage_Calculation(Enemy* obj) {
 //{
 //
 //}
-
 //
+float RandamZ() {
+	float z = (float)((rand() % (PINTO_MAX * 2)) - PINTO_MAX);
+	return z;
+}
+
 void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Enemy* parent) {
 	for (int i = 0; i < ENEMY_MAX; i++) {
 		//中身があり、行動が行われているならループ
@@ -325,12 +329,33 @@ void Enemy_Manager::searchSet(V2 pos, V2 spd, void(*move)(Enemy*), float _z, Ene
 		enemy[i]->pos = pos;
 		enemy[i]->spd = spd;
 		enemy[i]->move = move;
-		(_z == rand_PINTO) ? enemy[i]->z = ((rand() % (PINTO_MAX * 2)) - PINTO_MAX) : enemy[i]->z = _z;
+		((int)_z == rand_PINTO) ? enemy[i]->z = RandamZ(): enemy[i]->z = _z;
 		enemy[i]->init_fg = true;
 		if (parent)enemy[i]->parent = parent;
 		break;
 	}
 }
+
+void Enemy_Manager::searchSet(void(*_move)(Enemy *), V2 & _pos, V2 & _spd, V2 & _spdAcc, V2 & _spdMax, float _z) {
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		if (enemy[i] && enemy[i]->init_fg) {
+			continue;
+		}
+		if (!enemy[i])enemy[i] = new Enemy;
+		enemy[i]->move = _move;
+		enemy[i]->pos = _pos;
+		enemy[i]->spd = _spd;
+		enemy[i]->spdAcc = _spdAcc;
+		enemy[i]->spdMax = _spdMax;
+		((int)_z == rand_PINTO) ? enemy[i]->z = RandamZ() : enemy[i]->z = _z;
+		enemy[i]->init_fg = true;
+		return;
+	}
+	return;
+}
+
+
 
 STAGE_DATA* stageSetData_time[] = {
 	tutorial_time,
@@ -385,7 +410,7 @@ void Enemy::DotLine() {
 		{
 			//if ( e_p.x<x && e_p.y<y || x2<e_p.x ) { //敵の半径外なら描画
 				D3DXVec2Lerp(&e_p,&pos,&pPlayer->pos,i/len);
-				pEffect_Manager->searchSet(e_p, V2(alpha, 0), line);
+				pEffect_Manager->searchSet(e_p, V2((float)alpha, 0), line);
 				//Dot_argb = (Dot_alpha << 24 | Dot_argb << 8 >> 8);
 				//spr_data::Render(e_p, &line_data_e,Dot_argb,0);
 			//}

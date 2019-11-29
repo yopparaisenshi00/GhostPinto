@@ -162,7 +162,6 @@ void	sceneMain::Update()
 		//‰Šúİ’è
 		pMAP->Init(&st1_bg);
 		pLandScape->Init(stage_no);
-		//pLandScape->setMainBG(&main, MainBG);
 
 		//((BG*)bg)->Init();
 		//bg->data(&main)

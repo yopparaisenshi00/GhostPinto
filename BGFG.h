@@ -150,45 +150,21 @@ class LandScape :public Singleton<LandScape>
 public:
 	//BG backobj;
 	//FG flontobj;
-	
 	int timer;				//出現等制御用
 	LAND_SCAPE_DATA* data;	//BG配置データポインタ
-
 	BGOBJ bg; //　メイン(最奥)
 	LAND_SCAPE_OBJ* LandScapeObjs[256];
 
 	void Init(int stage_no);
-	void setMainBG(SPR_DATA* BG, void(*move)(FGOBJ*)) {
-		bg.data = BG;
-		bg.move = move;
-	}
+	void setMainBG(SPR_DATA* BG, void(*move)(FGOBJ*));
+	void searchSet(int type = 0, V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(FGOBJ*) = nullptr, OBJ2D* parent = nullptr, int _z = 0);
 
-	void searchSet(int type = 0 ,V2 pos = V2(0, 0), V2 spd = V2(0, 0), void(*move)(FGOBJ*) = nullptr, OBJ2D* parent = nullptr,int _z = 0) {
-		//LandScapeObjs;
-		//LAND_SCAPE_OBJ** obj;
-  		for (int i = 0; i < LANDSCAPE_MAX; i++) {
-			if (LandScapeObjs[i] && LandScapeObjs[i]->init_fg)continue;
-			if (!LandScapeObjs[i])LandScapeObjs[i] = new LAND_SCAPE_OBJ;
-
-			LandScapeObjs[i]->clear();//
-			LandScapeObjs[i]->wpos = pos;
-			LandScapeObjs[i]->spd = spd;
-			LandScapeObjs[i]->move = move;
-			LandScapeObjs[i]->init_fg = true;
-			LandScapeObjs[i]->parent = parent;
-			LandScapeObjs[i]->z = _z;
-			LandScapeObjs[i]->type = type;
-			break;
-		}
-
-	}
 
 	void stage_update();
 	void Update();
 	void RenderBG();
 	void RenderFG();
 	void add_RenderObj(LAND_SCAPE_OBJ* obj, int z); 
-
 private:
 
 	class ReducedObj {
@@ -198,7 +174,7 @@ private:
 		void Init(float);
 		void Update();
 		void Render();
-		float Reduced_level;
+		float Reduced_level; 
 		LAND_SCAPE_OBJ* data[LANDSCAPE_MAX];
 		int count;
 		void clear() {
@@ -209,6 +185,7 @@ private:
 		}
 	};
 
+	// 背景レイヤー
 	ReducedObj BG_RenderBox[BG_REDUCED_LV_MAX];
 	ReducedObj FG_RenderBox[FG_REDUCED_LV_MAX];
 	
@@ -216,6 +193,7 @@ public:
 	
 };
 
+// move() 
 void MainBG(LAND_SCAPE_OBJ*);
 void BG_pc(LAND_SCAPE_OBJ*);
 void BG_container(LAND_SCAPE_OBJ*);

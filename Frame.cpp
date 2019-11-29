@@ -20,33 +20,14 @@ enum {
 	MOVE,
 };
 
-
-//SPR_DATA spr_flame_out = { flame_out,0,0,960,540,-480,-270 };
+// フレーム画像
 SPR_DATA spr_flame_out = { flame_out,0,0,1024,540,-512,-270 };
 SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774/2,-774/2 };
-//SPR_DATA spr_pinto_l_MF = { pinto_l,0,0,774,774,-(int)(774*1.08f)/2,-(int)(774*1.08f)/2,(int)(774*1.08f),(int)(774*1.08f) }; //大
-SPR_DATA spr_pinto_l_MF = { pinto_l,0,0,774,774,-(int)(774*0.92f)/2,-(int)(774*0.92f)/2,(int)(774*0.92f),(int)(774*0.92f) }; //小
+SPR_DATA spr_pinto_l_MF = { pinto_l,0,0,774,774,-(int)(774*0.92f)/2,-(int)(774*0.92f)/2,(int)(774*0.92f),(int)(774*0.92f) }; 
 
-
-
-//SPR_DATA spr_pinto_l = { pinto_l,0,0,774,774,-774 / 2,-774 / 2 };
 SPR_DATA spr_pinto_a2 = { pinto_a,0,0,128,128,-64,-64 };
-
 SPR_DATA spr_exorcise_frame= { flame_out,0,32*18,32,64,0,0 };
 
-
-//SPR_DATA spr_Frame[] = {
-//};
-
-//Frame::Frame()
-//{
-//
-//}
-//
-//Frame::~Frame()
-//{
-//
-//}
 
 void Frame::clear() {
 	OBJ2D::clear();
@@ -73,8 +54,6 @@ void Frame::clear() {
 	count = 0;
 	multifocus_timer = 0;
 
-	
-
 	D3DCOLOR light_argb = 0; //発光用
 
 }
@@ -90,24 +69,25 @@ void Frame::Update() {
 
 	switch (state)
 	{
+		// 初期化
 	case INIT:
 		pos = V2((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2));
 		sc_w = 0;
 		sc_h = 0;
 		size = V2(240/2,160/2);
 		exorcise = EXORCISE_MAX;
-
 		old_exorcise = EXORCISE_MAX;
 		flash_timer = 0;
 		flash_flg = false;
 
 		pinto_argb = 0xFFFFFFFF; //白
-
 		state = MOVE;
 		break;
 	case MOVE:
+		// 
 		f_move();
 		exorcise_Update();
+
 
 		//マルチフォーカス処理
 		if (multifocus_flg == true && multi_flg == false) multi_flg = true;
@@ -196,12 +176,14 @@ void Frame::Render() {
 
 }
 
+//======================================
+// 霊力更新
+//======================================
 void Frame::R_Update() {
 	//if (pPlayer->fear_flg) {
 	//	state = 3;
 	//	lock_flg = true;
 	//}
-
 	switch (state)
 	{
 	case INIT:
@@ -223,20 +205,6 @@ void Frame::R_Update() {
 	}
 }
 
-
-
-void Frame::SetMain() {
-	pMAP->SetCenter((OBJ2D*)(this));
-	state = 2;
-}
-
-
-float normalizeAngle(float radian)
-{
-	while (radian >  D3DX_PI) radian -= D3DX_PI * 2;
-	while (radian < -D3DX_PI) radian += D3DX_PI * 2;
-	return radian;
-}
 
 void Frame::f_move() {
 
@@ -296,40 +264,36 @@ void Frame::f_move() {
 //----------------------------------------------------------------------------------------------------
 void Frame::exorcise_Update() {
 
-	switch (exorciseDwon_flg)
+	// ダウン中ならダイマー更新
+	// ダウンしていないならダウンチェック
+	if (exorciseDwon_flg)
 	{
-	case true:
-		if (exorciseDwon_timer-- < 0) { //霊力タイマー
+		if (exorciseDwon_timer-- < 0) { //霊力ダウンタイマー
 			exorciseDwon_timer = 0;
 			exorciseDwon_flg = false;
 			exorcise = EXORCISE_MAX;
 			IEX_PlaySound(SE_RETURN, FALSE); //霊力復活のSE　
-
 		}
-		break;
-	case false:
-		axisy = (float)(KEY_Get(KEY_AXISY2));				// スティック情報取得
-		if (0 > axisy) { axisy *= -1; }				// 負の値なら逆転
-		if (axisy < 100)axisy = 0;					// スティック感度以下なら0
-		axisy *= 0.001f;							// スティック情報 0～1に正規化 
-		{
-			//pD_TEXT->set_Text(V2(400, 200), "axisy", axisy, 0xFFFFFF00);
-
-			float Ex = (PINTO_COST_S)*(axisy);//  
-			//pD_TEXT->set_Text(V2(400, 220), "Ex/s", Ex * 60, 0xFFFFFF00);
-
-			//if (0 > Ex) { Ex *= -1; }
-			exorcise -= Ex;
-
-		}
-		//霊力ダウンチェック(UI一時削除)
+	}
+	else
+	{
+		axisy = (float)(KEY_Get(KEY_AXISY2));		// スティック情報取得
+		if (0 > axisy) { axisy *= -1; }						// 負の値なら逆転
+		if (axisy < 100)axisy = 0;							// スティック感度以下なら0
+		axisy *= 0.001f;									// スティック情報 0～1に正規化 
+		// 操作量計算
+		float Ex = (PINTO_COST_S)*(axisy);//  
+		exorcise -= Ex;
+		
+		//霊力ダウンチェック(効果:UI一時削除)
 		if (0 >= exorcise) {						//霊力が0以下なら霊力ダウン
-			if (exorcise)exorcise = 0;				//霊力初期化
+			if (exorcise)exorcise = 0;			//霊力初期化
 			exorciseDwon_timer = PINTO_DOWN_TIME;	//ダウンタイム設定
 			exorciseDwon_flg = true;				//霊力ダウンフラグ
 			IEX_PlaySound(SE_LOSS, FALSE);			//霊力が0のSE
-
 		}
+		
+		// 未操作時霊力自然回復
 		if (!move_flg) {
 			if (f_timer++ > EXORCISE_AUTOHEEL_TIME) {
 				f_timer &= 0x0000FFFF;
@@ -337,12 +301,9 @@ void Frame::exorcise_Update() {
 			}
 		}
 		else {
-			f_timer &= 0;
+			f_timer = 0;
 		}
-
-		break;
 	}
-
 	//******************************************************************************************************
 	//霊力ゲージ点滅
 	if (exorcise!=EXORCISE_MAX &&
@@ -369,7 +330,6 @@ void Frame::exorcise_Update() {
 	//UIダウンタイマー更新
 	//pD_TEXT->set_Text(V2(400, 260), "multiF_timer", multifocus_timer, 0xFFFFFFFF);
 	//pD_TEXT->set_Text(V2(400, 280), "multiF_flg", (int)multifocus_flg, 0xFFFFFFFF);
-
 	//pD_TEXT->set_Text(V2(400, 240), "exorcise", exorcise,0xFFFFFF00);
 
 }
@@ -394,7 +354,6 @@ void Frame::add_Exorcise(float add) {
 	exorcise += add;
 	if (100 < exorcise)exorcise = EXORCISE_MAX;
 	if ( 0 > exorcise)exorcise = 0;
-
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -432,7 +391,9 @@ void Frame::use_lockPinto() {
 	}
 }
 
-
+//----------------------------------------------------------------------------------------------------
+//  ピントの差を計算
+//----------------------------------------------------------------------------------------------------
 float Frame::get_sz(float z) {
 	float sz = 0;
 	float ez = z;
@@ -444,6 +405,5 @@ float Frame::get_sz(float z) {
 	else {
 		sz = (ez) - (fz);
 	}
-
 	return sz;
 }

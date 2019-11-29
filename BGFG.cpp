@@ -111,8 +111,10 @@ float FG_REDUCED_DATA[] = {
 	0.5,0.7,
 };
 
+//=====================
+// 初期化
+//=====================
 void LandScape::Init(int stage_no) {
-	
 	bg.clear();
 	setMainBG(&main,MainBG);
 	for (int i = 0; i < LANDSCAPE_MAX;i++) {
@@ -131,7 +133,17 @@ void LandScape::Init(int stage_no) {
 
 }
 
+//==========================================
+//  BGデータセット
+//==========================================
+void LandScape::setMainBG(SPR_DATA * BG, void(*move)(FGOBJ *)) {
+	bg.data = BG;
+	bg.move = move;
+}
 
+//==========================================
+//  更新
+//==========================================
 void LandScape::Update() {
 	stage_update();
 	//bg.Update();
@@ -158,6 +170,10 @@ void LandScape::Update() {
 static int d_txt_x = 0;
 static int d_txt_y = 0;
 
+
+//==========================================
+//  描画
+//==========================================
 void LandScape::RenderBG() {
 	bg.Render();
 	d_txt_y = 0;
@@ -176,6 +192,30 @@ void LandScape::RenderFG() {
 
 
 
+void LandScape::searchSet(int type, V2 pos, V2 spd, void(*move)(FGOBJ *), OBJ2D * parent, int _z) {
+	//LandScapeObjs;
+	//LAND_SCAPE_OBJ** obj;
+	for (int i = 0; i < LANDSCAPE_MAX; i++) {
+		if (LandScapeObjs[i] && LandScapeObjs[i]->init_fg)continue;
+		if (!LandScapeObjs[i])LandScapeObjs[i] = new LAND_SCAPE_OBJ;
+
+		LandScapeObjs[i]->clear();//
+		LandScapeObjs[i]->wpos = pos;
+		LandScapeObjs[i]->spd = spd;
+		LandScapeObjs[i]->move = move;
+		LandScapeObjs[i]->init_fg = true;
+		LandScapeObjs[i]->parent = parent;
+		LandScapeObjs[i]->z = (float)_z;
+		LandScapeObjs[i]->type = type;
+		break;
+	}
+
+}
+
+
+//==========================================
+//  出現管理
+//==========================================
 void LandScape::stage_update() {
 	timer++;
 	//timerで管理
@@ -190,6 +230,9 @@ void LandScape::stage_update() {
 	}
 }
 
+//==========================================
+//  オブジェクト追加 + ソート
+//==========================================
 void LandScape::add_RenderObj(LAND_SCAPE_OBJ* obj, int z) {
 	ReducedObj* reducedObj;
 	if (z > -1) { //0以上なら背景、以下なら前景

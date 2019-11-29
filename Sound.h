@@ -2,10 +2,9 @@
 #define _SOUND_H_
 
 
-static enum {
+enum {
 	BGM_MAIN = 0,	//メインBGM
 	BGM_TITLE,	//タイトルBGM
-
 	SE_COUNT,	//スタートカウント
 	SE_LOCK,	//ロックした時
 	SE_PINTO,	//ピントが合った時
@@ -16,7 +15,7 @@ static enum {
 	SE_DAMAGE,	//ダメージ
 	SE_MULCH_FIRE,	//マルチフォーカス使用時
 	SE_MULCH_STOCK,	//マルチフォーカスが溜まった時
-	SE_GAMEOVER,//そのまんま
+	SE_GAMEOVER,//
 };
 
 
