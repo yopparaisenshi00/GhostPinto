@@ -1,14 +1,14 @@
 #include "iextreme.h"
 #include "system\System.h"
 
-#include "Game.h"
+#include "Misc/Misc.h"
 #include "Frame.h"
 #include "Player.h"
-#include "Effect.h"
-#include "MAP.h"
-#include "Enemy.h"
-#include "Sound.h"
-#include "sceneMain.h"
+#include "Effect/Effect.h"
+#include "Map/MAP.h"
+#include "Enemy/Enemy.h"
+#include "Sound/Sound.h"
+#include "Scene/sceneMain.h"
 
 SPR_DATA p_spr_data[] = {
 	{ spr_data::Player1,0,0,64,64,-32,-32 },

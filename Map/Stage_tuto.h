@@ -5,9 +5,9 @@
 //
 //
 //******************************************************************************
-#include "Game.h"
+#include "Misc/Misc.h"
 
-#include "MAP.h"
+#include "Map/MAP.h"
 
 //////// モジュールデータ ////////
 MODULE_DATA tutorial_module[] = {

@@ -602,21 +602,21 @@ public:
 	struct SPR_DATA {
 		//描画用データ変数
 		int no;		//データ番号
-		int dx, dy; //切り取り座標
-		int sx, sy; //切り取り幅
-		int dw, dh; //描画幅
-		int ofsx, ofsy;//ずらし幅
+		float dx, dy; //切り取り座標
+		float sx, sy; //切り取り幅
+		float dw, dh; //描画幅
+		float ofsx, ofsy;//ずらし幅
 		int frameNum;
 
 		//関数//
 		//コンストラクタ
 		SPR_DATA()
 			:no(0), dx(0), dy(0), sx(0), sy(0), ofsx(0), ofsy(0), dw(0), dh(0) {}
-		SPR_DATA(int _no, int _dx, int _dy, int _sx, int _sy, int _ofsx = 0, int _ofsy = 0, int _frameNum = 0)
+		SPR_DATA(int _no, float _dx, float _dy, float _sx, float _sy, float _ofsx = 0, float _ofsy = 0, int _frameNum = 0)
 			:no(_no), dx(_dx), dy(_dy), sx(_sx), sy(_sy), ofsx(_ofsx), ofsy(_ofsy), dw(_sx), dh(_sy), frameNum(_frameNum) {}
-		SPR_DATA(int _no, int _dx, int _dy, int _sx, int _sy, int _ofsx, int _ofsy, int _dw, int _dh)
+		SPR_DATA(int _no, float _dx, float _dy, float _sx, float _sy, float _ofsx, float _ofsy, float _dw, float _dh)
 			:no(_no), dx(_dx), dy(_dy), sx(_sx), sy(_sy), ofsx(_ofsx), ofsy(_ofsy), dw(_dw), dh(_dh) {}
-		//
+		//,
 
 	};
 

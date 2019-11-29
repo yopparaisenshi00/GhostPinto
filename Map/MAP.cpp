@@ -6,11 +6,11 @@
 //
 //******************************************************************************
 #include "iextreme.h"
-#include "Game.h"
+#include "Misc/Misc.h"
 #include "Player/Player.h"
 #include "Player/Frame.h"
-#include "Enemy.h"
-#include "Effect.h"
+#include "Enemy/Enemy.h"
+#include "Effect/Effect.h"
 #include "BGFG.h"
 #include "MAP.h"
 
@@ -109,7 +109,7 @@ void MAP::Update()
 	if ( dust_timer++>200 ) {
 		for ( int i = 0; i<4; i++ ){
 			pEffect_Manager->searchSet(
-				V2(400*i+(rand()%100), SCREEN_HEIGHT-(rand()%100)),					//x=400*i-600*i,y=440-540
+				V2((float)(400*i+(rand()%100)), (float)(SCREEN_HEIGHT-(rand()%100))),					//x=400*i-600*i,y=440-540
 				V2((float)(rand()%2)/100.0f+0.02f, -(float)(rand()%2+1)), dust);	//x=0.04f-0.07f,y=-(1-3)
 		}
 		dust_timer = 0;

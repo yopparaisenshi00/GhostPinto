@@ -1,14 +1,17 @@
 #include "iextreme.h"
 #include "system\System.h"
 #include "system\Framework.h"
-#include "Game.h"
+
+#include "Misc/Misc.h"
+#include "Misc/Number.h"
+#include "Misc/Ranking.h"
+
+#include "Player/Player.h"
+#include "Enemy/Enemy.h"
+
 #include "sceneMain.h"
 #include "sceneTitle.h"
 #include "sceneClear.h"
-#include "Enemy.h"
-#include "Number.h"
-#include "Player/Player.h"
-#include "Ranking.h"
 
 
 

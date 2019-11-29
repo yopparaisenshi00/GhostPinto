@@ -1,10 +1,10 @@
 #include "iextreme.h"
-#include "Game.h"
-#include "MAP.h"
+#include "Misc/Misc.h"
+#include "Map/MAP.h"
 #include "Frame.h"
 #include "Player.h"
-#include "Sound.h"
-#include "sceneMain.h"
+#include "Sound/Sound.h"
+#include "Scene/sceneMain.h"
 
 enum {
 	pinto_s = spr_data::UI1,

@@ -361,13 +361,13 @@ void spr_data::Release() {
 	}
 }
 void spr_data::Render(V2 pos ,SPR_DATA* data) {
-	obj[data->no]->Render((int)pos.x + data->ofsx, (int)pos.y + data->ofsy, data->dw, data->dh, data->dx, data->dy, data->sx,data->sy, .0f,RS_COPY, 0xFFFFFFFF, .0f);
+	obj[data->no]->Render((int)(pos.x + data->ofsx), (int)(pos.y + data->ofsy), (int)data->dw, (int)data->dh, (int)data->dx, (int)data->dy, (int)data->sx, (int)data->sy);
 }
 void spr_data::Render(V2 pos, SPR_DATA* data,UINT color,float angle) {
-	obj[data->no]->Render((int)pos.x + data->ofsx, (int)pos.y + data->ofsy, data->dw, data->dh, data->dx, data->dy, data->sx, data->sy,angle, RS_COPY, color);
+	obj[data->no]->Render((int)pos.x + (int)data->ofsx, (int)pos.y + (int)data->ofsy, (int)data->dw, (int)data->dh, (int)data->dx, (int)data->dy, (int)data->sx, (int)data->sy,angle, RS_COPY, color);
 }
 void spr_data::Render(V2 pos,SPR_DATA* data,UINT color,float angle,iexShader* shader,char* tech) {
-	obj[data->no]->Render((int)pos.x + data->ofsx, (int)pos.y + data->ofsy, data->dw, data->dh, data->dx, data->dy, data->sx,data->sy,angle,shader,tech,RS_COPY,color);
+	obj[data->no]->Render((int)pos.x + (int)data->ofsx, (int)pos.y + (int)data->ofsy, (int)data->dw, (int)data->dh, (int)data->dx, (int)data->dy, (int)data->sx, (int)data->sy,angle,shader,tech,RS_COPY,color);
 }
 void spr_data::Render(V2 pos, SPR_DATA* data, CUSTOM* custom ,D3DCOLOR argb, iexShader* shader, char* tech) {
 	obj[data->no]->customRender(

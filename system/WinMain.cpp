@@ -1,10 +1,10 @@
 #include	"iextreme.h"
 #include	"Framework.h"
-#include	"Game.h"
-#include	"sceneTitle.h"
+#include	"Misc/Misc.h"
+#include	"Scene/sceneTitle.h"
 
-#include	"MAP.h"
-#include	"sceneMain.h"
+#include	"Map/MAP.h"
+#include	"Scene/sceneMain.h"
 
 
 //*****************************************************************************************************************************

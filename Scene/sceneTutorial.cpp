@@ -10,24 +10,24 @@
 #include	"iextreme.h"			//	IEXライブラリ(全般)
 #include	"system\System.h"
 #include	"system\Framework.h"
-#include	"Game.h"				//	ゲーム汎用
+#include	"Misc/Misc.h"//	ゲーム汎用
+#include	"Misc/Number.h"				//　ナンバー
+
 #include	"Player/Player.h"				//	プレイヤー
 #include	"Player/Frame.h"				//	ピント
-#include	"Enemy.h"				//　敵用
-#include	"Effect.h"				//　エフェクト
-#include	"MAP.h"					//  マップチップ
-#include	"UI.h"
-#include	"BGFG.h"
-#include	"Number.h"				//　ナンバー
-#include	"Sound.h"				//　サウンド
-#include	"stagetuto.h"				//　サウンド
+#include	"Enemy/Enemy.h"				//　敵用
+#include	"Effect/Effect.h"				//　エフェクト
+#include	"Map/MAP.h"					//  マップチップ
+#include	"Map/BGFG.h"
+#include  "Map/Stage_tuto.h"
+#include	"UI/UI.h"						
+#include	"Sound/Sound.h"				//　サウンド
 
-#include	"sceneTitle.h"			//　シーンタイトル
-#include	"sceneOver.h"			//　ゲームオーバー
-#include	"sceneClear.h"			//　ゲームクリア
-#include	"sceneMain.h"			//	シーンメイン
-#include	"sceneTutorial.h"		//	シーンチュートリアル
-#include	"tutorial_move.h"		//　チュートリアル行動関数
+#include	"Scene/sceneTitle.h"			//　シーンタイトル
+#include	"Scene/sceneOver.h"			//　ゲームオーバー
+#include	"Scene/sceneClear.h"			//　ゲームクリア
+#include	"Scene/sceneMain.h"			//	シーンメイン
+#include	"Scene/sceneTutorial.h"		//	シーンチュートリアル
 
 #define DELAY_TIME (60)
 
@@ -123,15 +123,11 @@ enum {
 	GAMEOVER,
 	GAMECLEAR,
 };
+
+
 //*****************************************************************************
-//
-//				更新
-//										作成者:
-//
+//		更新
 //*****************************************************************************
-
-
-
 //	メイン更新処理
 void	sceneTutorial::Update()
 {
@@ -178,8 +174,6 @@ void	sceneTutorial::Update()
 			fade_argb = 0x00000000;
 			state = MAIN;
 		}
-		//pEffect_Manager->searchSet(V2(0, 0), V2(0, 0), fade_In);
-		//state = READY;
 		break;
 	case READY:
 		state = MAIN;
@@ -195,42 +189,28 @@ void	sceneTutorial::Update()
 		pNumber->Update(timer);
 		pLandScape->Update();
 		tuto_operator.Update();
-		//pD_TEXT->set_Text(center.pos, "cpos", center.pos, 0xFFFF0000);
 
 		timer--;
+
+		// ゲームメインに移行
 		if (tuto_operator.State() == TutoOperater::END) {
 			fade_argb = fade_out(fade_argb,0x11000000);
 			if ( fade_argb>0xEE000000 ) {
 				fade_argb = 0xFF000000;
 				MainFrame->ChangeScene(new sceneMain());
 			}
-			//MainFrame->ChangeScene(new sceneMain());
 		}
-
-		//if () {
-		//	
-		//}
 		break;
+
+
 	case GAMEOVER:
 		fade_argb = fade_out(fade_argb,0x11000000);
 		if ( fade_argb>0xEE000000 ) {
 			fade_argb = 0xFF000000;
 			MainFrame->ChangeScene(new sceneOver());
 		}
-
-		//MainFrame->ChangeScene(new sceneOver());
 		
 		break;
-	case GAMECLEAR:
-		fade_argb = fade_out(fade_argb,0x11000000);
-		if ( fade_argb>0xEE000000 ) {
-			fade_argb = 0xFF000000;
-			MainFrame->ChangeScene(new sceneMain());
-		}
-		//MainFrame->ChangeScene(new sceneMain());
-
-		break;
-
 	default:
 		break;
 	}
@@ -271,9 +251,6 @@ void	sceneTutorial::Render()
 
 	switch (state)
 	{
-	case READY:
-		//pNumber->RenderFree(480 - 32, 270 - 96, count_down, 1, 64, 0xFFFFFFFF);
-		break;
 	case FADE_IN:
 		iexPolygon::Rect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,0,fade_argb,0); //暗転
 		break;
@@ -287,8 +264,6 @@ void	sceneTutorial::Render()
 	default:
 		break;
 	}
-
-	//pD_TEXT->Render();
 
 }
 

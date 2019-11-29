@@ -10,17 +10,18 @@
 #include	"iextreme.h"			//	IEXライブラリ(全般)
 #include	"system\System.h"
 #include	"system\Framework.h"
-#include	"Game.h"				//	ゲーム汎用
+#include	"Misc/Misc.h"//	ゲーム汎用
+#include	"Misc/Number.h"				//　ナンバー
+
 #include	"Player/Player.h"				//	プレイヤー
 #include	"Player/Frame.h"				//	ピント
-#include	"Enemy.h"				//　敵用
-#include	"Effect.h"				//　エフェクト
-#include	"MAP.h"					//  マップチップ
-#include	"UI.h"
-#include	"BGFG.h"
-#include	"Number.h"				//　ナンバー
-#include	"Sound.h"				//　サウンド
-#include	"Stage_1.h"				//　ステージ１
+#include	"Enemy/Enemy.h"				//　敵用
+#include	"Effect/Effect.h"				//　エフェクト
+#include	"MAP/MAP.h"					//  マップチップ
+#include	"MAP/BGFG.h"
+#include	"Map/Stage_1.h"				//　ステージ１
+#include	"UI/UI.h"
+#include	"Sound/Sound.h"				//　サウンド
 #include	"sceneTitle.h"			//　シーンタイトル
 #include	"sceneOver.h"			//　ゲームオーバー
 #include	"sceneClear.h"			//　ゲームクリア

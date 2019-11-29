@@ -1,16 +1,19 @@
 #include "iextreme.h"
 #include "system\System.h"
-#include "Game.h"
-#include "Map.h"
+#include "Misc/Misc.h"
+#include "Map/Map.h"
+#include "Misc/Number.h"
+
 #include "Player/Player.h"
 #include "Player/Frame.h"
-#include "Enemy.h"
-#include "Effect.h"
-#include "Number.h"
 
-#include "stage_data.h"
-#include "sceneMain.h"
-#include "Sound.h"
+#include "Enemy.h"
+#include "Effect/Effect.h"
+
+#include "Map/stage_data.h"
+
+#include "Sound/Sound.h"
+#include "Scene/sceneMain.h"
 
 
 enum {

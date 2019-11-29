@@ -1,7 +1,7 @@
 #include	<time.h>
 #include	"iextreme.h"
 #include	"system.h"
-#include    "Sound.h"
+#include   "Sound/Sound.h"
 
 //*****************************************************************************************************************************
 //

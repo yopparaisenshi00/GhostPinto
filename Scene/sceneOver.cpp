@@ -1,14 +1,14 @@
 #include "iextreme.h"
 #include "system\System.h"
 #include "system\Framework.h"
-#include "Game.h"
+#include "Misc/Misc.h"
+#include "Misc/Ranking.h"
+
 #include "sceneMain.h"
 #include "sceneTitle.h"
 #include "sceneOver.h"
-#include "Enemy.h"
-#include "Ranking.h"
-#include "Sound.h"
-
+#include "Enemy/Enemy.h"
+#include "Sound/Sound.h"
 
 SPR_DATA over = { 0,192,192,640,128,0,0,600,90 }; //GAMEOVER文字
 SPR_DATA over_back = { 8,0,0,960,540,0,0 }; //ゲームオーバー画面

@@ -1,4 +1,4 @@
-#include "MiniMap.h"
+#include "Map/MiniMap.h"
 #ifndef _BG_H_
 #define	_BG_H_
 

@@ -1,9 +1,9 @@
 #include "iextreme.h"
-#include "Game.h"
+#include "Misc/Misc.h"
 #include "Player/Player.h"
 #include "Player/Frame.h"
-#include "Enemy.h"
-#include "MAP.h"
+#include "Enemy/Enemy.h"
+#include "Map/MAP.h"
 #include "Effect.h"
 
 enum {
@@ -748,9 +748,8 @@ void Lock(Effect* obj) {
 	}
 }
 
+#include "Scene/sceneMain.h"
 
-
-#include "sceneMain.h"
 //コンボカラー
 void Combo_Color(Effect*obj) {
 	if ( pScore->getCombo()<=9 ) { //0～コンボ時の色

@@ -1,9 +1,9 @@
 #include	"iextreme.h"
 #include	"system.h"
 #include	"Framework.h"
-#include	"Game.h"
+#include	"Misc/Misc.h"
 
-#include	"sceneMain.h"
+#include	"Scene/sceneMain.h"
 #include	<time.h>
 
 

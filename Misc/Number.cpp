@@ -5,11 +5,11 @@
 //*****************************************************************************
 #include "iextreme.h"
 #include "system\System.h"
-#include "Game.h"
+#include "Misc/Misc.h"
 #include "Player/Player.h"
 #include "Player/Frame.h"
 #include "Number.h"
-#include "sceneMain.h"
+#include "Scene/sceneMain.h"
 
 
 Number score;		//スコア
@@ -35,20 +35,6 @@ SPR_DATA ui_data[] = {
 	{ spr_data::Number,  64*2,64*2,64,64,-32,-32,42,42 },//スラッシュ
 };
 
-
-//static SPR_DATA anime_Number_data[] = {
-//	SPR_DATA{spr_data::Ext, 64*0, 0, 64, 64, -32, -32}, //0
-//	SPR_DATA{spr_data::Ext, 64*1, 0, 64, 64, -32, -32}, //1
-//	SPR_DATA{spr_data::Ext, 64*2, 0, 64, 64, -32, -32}, //2
-//	SPR_DATA{spr_data::Ext, 64*3, 0, 64, 64, -32, -32}, //3
-//	SPR_DATA{spr_data::Ext, 64*4, 0, 64, 64, -32, -32}, //4
-//	SPR_DATA{spr_data::Ext, 64*0,64, 64, 64, -32, -32}, //5
-//	SPR_DATA{spr_data::Ext, 64*1,64, 64, 64, -32, -32}, //6
-//	SPR_DATA{spr_data::Ext, 64*2,64, 64, 64, -32, -32}, //7
-//	SPR_DATA{spr_data::Ext, 64*3,64, 64, 64, -32, -32}, //8
-//	SPR_DATA{spr_data::Ext, 64*4,64, 64, 64, -32, -32}, //9
-//	SPR_DATA{			-1,	   0, 0,  0,  0,   0,   0}
-//};
 
 
 Number::Number() {
@@ -76,26 +62,12 @@ Number::Number() {
 	eval_justpinto.SetSize((int)(32 * 0.7f));
 	eval_total.SetSize((int)(32 * 0.9f));
 
-	//右下
-	//eval.result_pos =	V2(680,320+0);
-	//eval.time_pos =		V2(680,320+40);
-	//eval.combo_pos =	V2(680,320+80);
-	//eval.just_pos =		V2(680,320+120);
-	//eval.total_pos =	V2(680,320+160);
-
 	//左真ん中
 	eval.result_pos =	V2(-10,200+0);
 	eval.time_pos =		V2(-10,200+40);
 	eval.combo_pos =	V2(-10,200+80);
 	eval.just_pos =		V2(-10,200+120);
 	eval.total_pos =	V2(5,200+160);
-
-	//左上
-	//eval.result_pos =	V2(150,20+0);
-	//eval.time_pos =		V2(150,20+40);
-	//eval.combo_pos =	V2(150,20+80);
-	//eval.just_pos =		V2(150,20+120);
-	//eval.total_pos =	V2(150,20+160);
 
 
 	eval_addscore.custom.scaleMode = CENTER;
@@ -127,11 +99,7 @@ void Number::Init() {
 void Number::Frash_Color_two(Number* obj,int num,D3DCOLOR argb1, D3DCOLOR argb2) {
 	if ((eval.timer % (num * 2)) <  num) obj->custom.argb = argb1;
 	if ((eval.timer % (num * 2)) >= num) obj->custom.argb = argb2;
-	//if ((eval.timer % (num * 2)) <  num) obj->custom.argb = argb1;
-	//if ( (eval.timer%(num*2))>=num ) {
-	//	obj->custom.argb = argb2;
-	//	eval.alpha = (int)(255*0.5f);
-	//}
+
 }
 
 //点滅関数(虹色)
@@ -201,12 +169,7 @@ void Number::eval_agree() {
 		if ( eval_total.custom.scaleX = eval_total.custom.scaleY			<=1.0f )	eval_total.custom.scaleX = eval_total.custom.scaleY			= 1.0f;
 		if ( eval.custom.scaleX = eval.custom.scaleY						<=1.0f )	eval.custom.scaleX = eval.custom.scaleY						= 1.0f;
 
-		//if ( (eval.timer%8)<4 ) {
-		//	custom.argb = 0xFFff7a7a;
-		//}
-		//if ( (eval.timer%8)>=4 ) {
-		//	custom.argb = 0xFFFFFFFF;
-		//}
+		
 		eval.alpha += 50;
 		if ( eval.alpha>=(int)(255*1.0f) ) eval.alpha = (int)(255*1.0f);
 	}
@@ -257,8 +220,6 @@ void Number::Update(int timer) {
 	score.SetNum(pScore->getScore(), 5);		//スコア処理
 	if ((timer / 60)>10) gametimer_argb = 0xFFFFFFFF;	//白
 	else gametimer_argb = 0xFFFF0000;					//10秒未満なら赤
-	//gametimer.AddScale((int)(timer/60),1.5f);
-	//gametimer2.AddScale((int)(timer/60),1.5f);
 	gametimer.SetNum(timer / 60, 2);			//ゲームタイマー (上2ケタ)処理
 	gametimer2.SetNum(timer % 60, 2);			//ゲームタイマー2(下2ケタ)処理
 	crushnum.AddScale(pScore->getKill_num(),1.7f);	//撃破数加算時の拡大表示
@@ -269,15 +230,8 @@ void Number::Update(int timer) {
 		(pFrame->exorciseDwon_timer==60) ) {
 		exorcise_argb = 0xFFFF3333;
 	}
-	//if ( (pFrame->exorciseDwon_timer!=180) || (pFrame->exorciseDwon_timer!=120) ||
-	//	(pFrame->exorciseDwon_timer!=60) ) {
-	//	exorcise_argb += 0x00001111;
-	//	//if ( exorcise_argb>=0xFFFFBBBB ) exorcise_argb = WHITE;
-	//	if ( exorcise_argb==WHITE ) exorcise_argb = WHITE;
-	//}
 	else {
-		//exorcise_argb += 0x00001111;
-		//if ( exorcise_argb>=0xFFFFBBBB ) exorcise_argb = WHITE;
+		
 		if ( exorcise_argb==WHITE ) exorcise_argb = WHITE;
 		else exorcise_argb += 0x00001111;
 	}
@@ -312,6 +266,7 @@ void Number::Render() {
 		eval_combo.Render3(		eval.combo_pos.x +205+5,  eval.combo_pos.y-14,2,eval_combo.custom.argb);
 		eval_justpinto.Render3(	eval.just_pos.x  +205+5,  eval.just_pos.y	-14,2,eval_justpinto.custom.argb);
 		eval_total.Render3(		eval.total_pos.x +190+5,  eval.total_pos.y-14,4,eval_total.custom.argb);
+		
 		spr_data::Render(eval.result_pos,&ui_data[2],&eval.custom,eval.custom.argb);//コンボリザルト------------------------
 		spr_data::Render(eval.time_pos,&ui_data[3],&eval.custom,eval_addscore.custom.argb);	//TIMETOSHOOT：撮影スコア（映してる間増加するスコア）
 		spr_data::Render(eval.combo_pos,&ui_data[4],&eval.custom,eval_combo.custom.argb);	//COMBO COUNT：倒した数

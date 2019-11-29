@@ -111,10 +111,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BGFG.cpp" />
-    <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="MAP.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Map\BGFG.cpp" />
+    <ClCompile Include="Effect\Effect.cpp" />
+    <ClCompile Include="Map\MAP.cpp" />
+    <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="IEX\IEX_2DObject.cpp" />
     <ClCompile Include="IEX\IEX_3DObject.cpp" />
     <ClCompile Include="IEX\IEX_Audio.cpp" />
@@ -131,57 +131,55 @@
     <ClCompile Include="IEX\IEX_System.cpp" />
     <ClCompile Include="IEX\IEX_Texture.cpp" />
     <ClCompile Include="IEX\IEX_View.cpp" />
-    <ClCompile Include="MiniMap.cpp" />
-    <ClCompile Include="Number.cpp" />
+    <ClCompile Include="Map\MiniMap.cpp" />
+    <ClCompile Include="Misc\Number.cpp" />
     <ClCompile Include="Obj2D.cpp" />
     <ClCompile Include="Player\Frame.cpp" />
     <ClCompile Include="Player\Player.cpp" />
-    <ClCompile Include="Ranking.cpp" />
-    <ClCompile Include="sceneClear.cpp" />
-    <ClCompile Include="sceneMain.cpp" />
-    <ClCompile Include="sceneOver.cpp" />
-    <ClCompile Include="sceneTitle.cpp" />
-    <ClCompile Include="sceneTutorial.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="tutorial_move.cpp" />
+    <ClCompile Include="Misc\Ranking.cpp" />
+    <ClCompile Include="Scene\sceneClear.cpp" />
+    <ClCompile Include="Scene\sceneMain.cpp" />
+    <ClCompile Include="Scene\sceneOver.cpp" />
+    <ClCompile Include="Scene\sceneTitle.cpp" />
+    <ClCompile Include="Scene\sceneTutorial.cpp" />
+    <ClCompile Include="Sound\Sound.cpp" />
     <ClCompile Include="spr_data.cpp" />
-    <ClCompile Include="stage1_data.cpp" />
+    <ClCompile Include="Map\stage1_data.cpp" />
     <ClCompile Include="system\Framework.cpp" />
     <ClCompile Include="system\System.cpp" />
     <ClCompile Include="system\WinMain.cpp" />
-    <ClCompile Include="Trigger.cpp" />
-    <ClCompile Include="tutorialstage_data.cpp" />
-    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Misc\Trigger.cpp" />
+    <ClCompile Include="Scene\tutorialstage_data.cpp" />
+    <ClCompile Include="UI\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BGFG.h" />
-    <ClInclude Include="Effect.h" />
-    <ClInclude Include="MAP.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="Map\BGFG.h" />
+    <ClInclude Include="Effect\Effect.h" />
+    <ClInclude Include="Map\MAP.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Misc\Misc.h" />
     <ClInclude Include="IEX\iextreme.h" />
-    <ClInclude Include="MiniMap.h" />
-    <ClInclude Include="Number.h" />
+    <ClInclude Include="Map\MiniMap.h" />
+    <ClInclude Include="Misc\Number.h" />
     <ClInclude Include="Obj2D.h" />
     <ClInclude Include="Player\Frame.h" />
     <ClInclude Include="Player\Player.h" />
-    <ClInclude Include="Ranking.h" />
-    <ClInclude Include="sceneClear.h" />
-    <ClInclude Include="sceneMain.h" />
-    <ClInclude Include="sceneOver.h" />
-    <ClInclude Include="sceneTitle.h" />
-    <ClInclude Include="sceneTutorial.h" />
-    <ClInclude Include="Sound.h" />
+    <ClInclude Include="Misc\Ranking.h" />
+    <ClInclude Include="Scene\sceneClear.h" />
+    <ClInclude Include="Scene\sceneMain.h" />
+    <ClInclude Include="Scene\sceneOver.h" />
+    <ClInclude Include="Scene\sceneTitle.h" />
+    <ClInclude Include="Scene\sceneTutorial.h" />
+    <ClInclude Include="Sound\Sound.h" />
     <ClInclude Include="spr_data.h" />
-    <ClInclude Include="stagetuto.h" />
-    <ClInclude Include="Stage_1.h" />
-    <ClInclude Include="stage_data.h" />
+    <ClInclude Include="Map\Stage_tuto.h" />
+    <ClInclude Include="Map\Stage_1.h" />
+    <ClInclude Include="Map\stage_data.h" />
     <ClInclude Include="system\Framework.h" />
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\System.h" />
     <ClInclude Include="Template.h" />
-    <ClInclude Include="tutorial_move.h" />
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DATA\Shader\2D.fx" />
@@ -193,9 +191,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

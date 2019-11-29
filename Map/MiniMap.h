@@ -26,7 +26,7 @@ public:
 	~MiniMap(){}
 
 
-	void Init(int LimitR, int LimitD);
+	void Init(float LimitR, float LimitD);
 	void Update();
 	void Render();
 	void clear() {
